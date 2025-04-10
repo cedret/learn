@@ -1,0 +1,72 @@
+version: "3.9"
+services:
+  php-apache:
+    ports:
+      - "80:80"
+    build: '~/Desktop/Divers/Cours-TPs-Linux_Reseau/Linux/lamp-app/build/php'
+    volumes:
+      - ~/Desktop/Divers/Cours-TPs-Linux_Reseau/Linux/lamp-app/app:/var/www/html
+  mysql:
+    ports:
+      - "33306:33306"
+    build: '~/Desktop/Divers/Cours-TPs-Linux_Reseau/Linux/lamp-app/build/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: "Bonjour"
+      MYSQL_DATABASE: "Mon_siteweb"
+    volumes:
+      - dbData:/var/lib/mysql
+volumes:
+  app:
+  dbData:
+============================
+
+version: "3.9"
+services:
+  php-apache:
+    ports:
+      - "80:80"
+    build: '~/Desktop/lamp-app/build/php'
+    volumes:
+      - ~/Desktop/lamp-app/app:/var/www/html
+  mysql:
+    ports:
+      - "33306:33306"
+    build: '~/Desktop/lamp-app/build/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: "Bonjour"
+      MYSQL_DATABASE: "Mon_siteweb"
+    volumes:
+      - dbData:/var/lib/mysql
+volumes:
+  app:
+  dbData:
+
+
+=========================================== CAS VM
+
+version: "3.9"
+services:
+  php-apache:
+    ports:
+      - "80:80"
+#    build: '/lamp_app/build/php'
+    build: '/home/cedrik/lamp_app/build/php'
+#    build: '~/lamp_app/build/php'
+
+    volumes:
+      - /home/cedrik/lamp_app/app:/var/www/html
+#      - ~/lamp_app/app:/var/www/html
+  mysql:
+    ports:
+      - "33306:33306"
+#    build: '~/Desktop/Divers/Cours-TPs-Linux_Reseau/Linux/lamp-app/build/mysql'
+    build: '/home/cedrik/lamp_app/build/mysql'
+#    build: '~/lamp_app/build/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: "Bonjour"
+      MYSQL_DATABASE: "Mon_siteweb"
+    volumes:
+      - dbData:/var/lib/mysql
+volumes:
+  app:
+  dbData:
