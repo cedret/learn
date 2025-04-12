@@ -1,5 +1,9 @@
 **GitHub**
 
+## A rassembler:
+https://blog.bytebytego.com/
+
+
 ## Pré-requis
 ### Installer Git bash pour Windows
 https://git-scm.com/downloads
@@ -29,8 +33,38 @@ https://grafikart.fr/tutoriels/init-config-add-log-585#autoplay
 https://www.youtube.com/watch?v=e9lnsKot_SQ
 
 https://www.youtube.com/watch?v=b581jEZOS40
+
 - Git Visually Explained 
 https://www.youtube.com/watch?v=-iWaarLI7zI
+
+### 1 Working directory area
+````
+mkdir blabla
+touch truk.py
+git init
+ls -la .git
+````
+### 2 Staging area
+````
+git add truk.py
+git status
+.gitignore
+````
+### 3 Local repository
+````
+git commit
+git commit -m "initial commit"
+git status
+git log
+````
+### 4 Evolution
+modifier truk.py
+````
+git add.
+git commit -m "modif"
+git log --oneline
+git checkout skfksdjhfk
+````
 - Git Tutorial For Dummies
 https://www.youtube.com/watch?v=mJ-qvsxPHpY
 
