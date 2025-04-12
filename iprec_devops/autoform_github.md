@@ -29,11 +29,10 @@ https://github.com/JustFS/cours-github
 
 ### Autres sources
 https://grafikart.fr/tutoriels/init-config-add-log-585#autoplay
-
+- Bytebytego
 https://www.youtube.com/watch?v=e9lnsKot_SQ
-
+- Git Made Easy: Learn Version Control & Collaboration in Minutes!
 https://www.youtube.com/watch?v=b581jEZOS40
-
 - Git Visually Explained 
 https://www.youtube.com/watch?v=-iWaarLI7zI
 
