@@ -10,14 +10,13 @@ Après installation, clic droit avec gitbash here depuis n'importe quel dossier.
 
 ### Autres sources:
 
-#### Bande de codeurs
+- Bande de codeurs
 https://www.youtube.com/watch?v=gGKZLfPYORs
-
-#### Graven (bof?)
+- Graven (bof?)
 https://www.youtube.com/watch?v=gp_k0UVOYMw
-
-#### From scratch
+- From scratch
 https://www.youtube.com/watch?v=eXF0epLeCgo
+
 continuer à 28 minutes
 
 https://qtext.io/
