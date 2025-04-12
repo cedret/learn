@@ -1,12 +1,14 @@
 **GitHub**
 
-### Installer Git bash
+## Pré-requis
+### Installer Git bash pour Windows
 https://git-scm.com/downloads
 
 Après installation, clic droit avec gitbash here depuis n'importe quel dossier.
 
-https://qtext.io/
-https://www.sharemycode.fr/uz3
+*Différence entre main et master?*
+
+### Autres sources:
 
 #### Bande de codeurs
 https://www.youtube.com/watch?v=gGKZLfPYORs
@@ -18,14 +20,12 @@ https://www.youtube.com/watch?v=gp_k0UVOYMw
 https://www.youtube.com/watch?v=eXF0epLeCgo
 continuer à 28 minutes
 
+https://qtext.io/
+https://www.sharemycode.fr/uz3
 https://github.com/JustFS/cours-github
-
-#### DIfférence entre main et master?
 
 ### Autres sources
 https://grafikart.fr/tutoriels/init-config-add-log-585#autoplay
-
-### Rattrapage
 
 https://www.youtube.com/watch?v=e9lnsKot_SQ
 
