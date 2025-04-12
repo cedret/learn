@@ -15,11 +15,7 @@ Après installation, clic droit avec gitbash here depuis n'importe quel dossier.
 *Différence entre main et master?*
 
 ### Sources Youtube
-https://grafikart.fr/tutoriels/init-config-add-log-585#autoplay
-- Bytebytego
-https://www.youtube.com/watch?v=e9lnsKot_SQ
-- Git Made Easy: Learn Version Control & Collaboration in Minutes!
-https://www.youtube.com/watch?v=b581jEZOS40
+
 - Git Visually Explained 
 https://www.youtube.com/watch?v=-iWaarLI7zI
 
@@ -112,12 +108,18 @@ https://www.youtube.com/watch?v=mJ-qvsxPHpY
 https://www.youtube.com/watch?v=gGKZLfPYORs
 - Graven (bof?)
 https://www.youtube.com/watch?v=gp_k0UVOYMw
-- From scratch
+- From scratch (continuer à 28 minutes)
 https://www.youtube.com/watch?v=eXF0epLeCgo
+- Grafikart
+https://grafikart.fr/tutoriels/init-config-add-log-585#autoplay
+- Bytebytego
+https://www.youtube.com/watch?v=e9lnsKot_SQ
+- Git Made Easy: Learn Version Control & Collaboration in Minutes!
+https://www.youtube.com/watch?v=b581jEZOS40
 
-continuer à 28 minutes
 
 https://medium.com/@sivesh-kumar/git-cheat-sheet-44752b679295
+https://lepeng.org/2023-03-28-git-cheatsheet/
 ---
 
 ## IPREC
