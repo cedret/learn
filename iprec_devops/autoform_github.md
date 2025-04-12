@@ -29,9 +29,9 @@ https://grafikart.fr/tutoriels/init-config-add-log-585#autoplay
 https://www.youtube.com/watch?v=e9lnsKot_SQ
 
 https://www.youtube.com/watch?v=b581jEZOS40
-
+- Git Visually Explained 
 https://www.youtube.com/watch?v=-iWaarLI7zI
-
+- Git Tutorial For Dummies
 https://www.youtube.com/watch?v=mJ-qvsxPHpY
 
 ## Préparation compte
