@@ -27,7 +27,6 @@ https://grafikart.fr/tutoriels/init-config-add-log-585#autoplay
 
 ## Préparation compte
 ```
-
 access@DESKTOP-4E2R2LH MINGW64 ~
 $ pwd
 /c/Users/access
@@ -99,7 +98,6 @@ Fait apparaître ce qui a été modifié en local
 $ git add .
 
 $ git status
-
 
 ```
 access@DESKTOP-4E2R2LH MINGW64 ~/fscratch (master)
