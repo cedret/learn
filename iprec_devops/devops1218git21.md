@@ -42,7 +42,7 @@ git log --graph
 git diff branch1 branch2
 
 ============================ passage sur VScode
-
+````
 cedrik@cedrik-virtual-machine:~/devops1218$ ls
 docker-compose.yaml  elastic  github
 cedrik@cedrik-virtual-machine:~/devops1218$ cd github/
@@ -125,3 +125,4 @@ Fast-forward
  2 files changed, 1 insertion(+)
  create mode 100644 ced1.txt
  create mode 100644 test3.py
+````
