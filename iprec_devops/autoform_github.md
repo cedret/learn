@@ -63,8 +63,47 @@ modifier truk.py
 git add.
 git commit -m "modif"
 git log --oneline
+# Previous version (skfksdjhfk)
 git checkout skfksdjhfk
+# Compare version
+git diff poazpoa skfksdjhfk
 ````
+### 5 Remote repository
+````
+git remote add origin https://github.com/bidule/bidule-git.git
+git push --set-upstream origin main
+````
+### 6 Stash
+````
+# safe area before comminting
+git stash save
+# For moving into working directory
+git stash pop
+````
+### 7 Collaboration
+````
+git clone //github.com/bidule/bidule-git.git
+# modifications
+git add truk.py
+git commit -m....
+git push
+````
+### 8 Remote to local
+````
+# check changes
+git fetch
+````
+### 9 local to working directory
+````
+git merge
+````
+### 10 remote to working directory
+````
+# git fetch + git merge
+git pull
+````
+
+
 - Git Tutorial For Dummies
 https://www.youtube.com/watch?v=mJ-qvsxPHpY
 
