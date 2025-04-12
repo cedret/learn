@@ -448,6 +448,46 @@ To https://github.com/cedret/fscratch_gh.git
    6c99c42..448b10b  main -> main
 branch 'main' set up to track 'origin/main'.
 ````
+
+Oui, tu **peux créer un repository distant (remote)** sur GitHub **depuis ta machine** via la ligne de commande, mais il faut passer **par l’API GitHub**, ou utiliser un outil comme **GitHub CLI (`gh`)**, ce qui est **plus simple**.
+
+---
+
+## ✅ Méthode recommandée : utiliser GitHub CLI (`gh`)
+
+### 1. **Installer GitHub CLI**
+- macOS : `brew install gh`
+- Ubuntu : `sudo apt install gh`
+- Windows : via [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/) ou l’[installateur](https://cli.github.com/)
+
+### 2. **Te connecter à ton compte GitHub**
+```bash
+gh auth login
+```
+Choisis GitHub.com → SSH → Se connecter via navigateur.
+
+### 3. **Créer un nouveau dépôt distant depuis le terminal**
+```bash
+gh repo create mon-nouveau-repo --public --source=. --remote=origin --push
+```
+
+Explication :
+- `mon-nouveau-repo` : nom de ton dépôt GitHub.
+- `--public` ou `--private` : visibilité du repo.
+- `--source=.` : indique que tu veux utiliser le dossier actuel.
+- `--remote=origin` : nom du remote ajouté.
+- `--push` : pousse le contenu existant (si tu as déjà un commit).
+
+---
+
+## 🔁 Autre méthode : via API GitHub (moins convivial)
+
+Tu peux aussi utiliser un `curl` vers l'API GitHub, mais ça demande un **token personnel** et un peu plus de manip. Si tu veux, je peux te montrer cette méthode aussi.
+
+---
+
+Tu veux que je t’aide à l’installer ou à créer ton repo avec `gh` ?
+
 ### Pour créer un site hébergé par github
 Créer un repository de la forme
 **cedret.github.io**
