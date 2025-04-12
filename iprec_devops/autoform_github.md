@@ -116,6 +116,8 @@ https://www.youtube.com/watch?v=gp_k0UVOYMw
 https://www.youtube.com/watch?v=eXF0epLeCgo
 
 continuer à 28 minutes
+
+https://medium.com/@sivesh-kumar/git-cheat-sheet-44752b679295
 ---
 
 ## IPREC
