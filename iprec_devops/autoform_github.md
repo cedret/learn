@@ -118,13 +118,14 @@ https://www.youtube.com/watch?v=e9lnsKot_SQ
 https://www.youtube.com/watch?v=b581jEZOS40
 
 ### Github actions
-MTG France
-- https://www.youtube.com/watch?v=DpAgmhwgnO8
-Itech time
-- https://www.youtube.com/watch?v=RF2i8_xYHgg
-Github actions -Fireship - 12'
-- https://www.youtube.com/watch?v=eB0nUzAI7M8
-- https://www.youtube.com/watch?v=yfBtjLxn_6k
+- MTG France
+https://www.youtube.com/watch?v=DpAgmhwgnO8
+- Itech time
+https://www.youtube.com/watch?v=RF2i8_xYHgg
+- Github actions -Fireship - 12'
+https://www.youtube.com/watch?v=eB0nUzAI7M8
+
+https://www.youtube.com/watch?v=yfBtjLxn_6k
 
 https://medium.com/@sivesh-kumar/git-cheat-sheet-44752b679295
 
