@@ -25,6 +25,14 @@ https://github.com/JustFS/cours-github
 ### Autres sources
 https://grafikart.fr/tutoriels/init-config-add-log-585#autoplay
 
+### Rattrapage
+
+https://www.youtube.com/watch?v=e9lnsKot_SQ
+
+https://www.youtube.com/watch?v=b581jEZOS40
+
+https://www.youtube.com/watch?v=-iWaarLI7zI
+
 ## Préparation compte
 ```
 access@DESKTOP-4E2R2LH MINGW64 ~
