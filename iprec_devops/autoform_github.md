@@ -65,6 +65,7 @@ git stash pop
 ### 7 Collaboration
 ````
 git clone //github.com/bidule/bidule-git.git
+git clone https://github.com/fireship-io/225-github-actions-demo.git
 # modifications
 git add truk.py
 git commit -m....
@@ -95,13 +96,20 @@ git checkout evolution
 git commit -am "added machin"
 git push --set-upstream origin evolution
 ````
-### New developper
+### 12 New developper
 ````
 git fetch
 git merge origin/evolution
 # 
 git cherry-pick abc1234
 ````
+### 13 Change repository
+````
+git remote -v
+git remote add origin git@github.com:cedret/prof25.git
+git remote set-url origin git@github.com:cedret/prof25.git
+
+
 - Git Tutorial For Dummies
 https://www.youtube.com/watch?v=mJ-qvsxPHpY
 - Bande de codeurs
