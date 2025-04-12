@@ -44,13 +44,13 @@ touch truk.py
 git init
 ls -la .git
 ````
-### 2 Staging area
+### 2 To staging area
 ````
 git add truk.py
 git status
 .gitignore
 ````
-### 3 Local repository
+### 3 To local repository
 ````
 git commit
 git commit -m "initial commit"
@@ -63,17 +63,17 @@ modifier truk.py
 git add.
 git commit -m "modif"
 git log --oneline
-# Previous version (skfksdjhfk)
+# Relaod previous version (skfksdjhfk)
 git checkout skfksdjhfk
 # Compare version
 git diff poazpoa skfksdjhfk
 ````
-### 5 Remote repository
+### 5 To remote repository
 ````
 git remote add origin https://github.com/bidule/bidule-git.git
 git push --set-upstream origin main
 ````
-### 6 Stash
+### 6 To stash
 ````
 # safe area before comminting
 git stash save
@@ -93,17 +93,33 @@ git push
 # check changes
 git fetch
 ````
-### 9 local to working directory
+### 9 Local to working directory
 ````
 git merge
 ````
-### 10 remote to working directory
+### 10 Remote to working directory
 ````
 # git fetch + git merge
 git pull
 ````
-
-
+### 11 Branches
+````
+git branch evolution
+# Liste des branches et celle active
+git branch
+# Switch to new branch
+git checkout evolution
+# COmmit with staging
+git commit -am "added machin"
+git push --set-upstream origin evolution
+````
+### New developper
+````
+git fetch
+git merge origin/evolution
+# 
+git cherry-pick abc1234
+````
 - Git Tutorial For Dummies
 https://www.youtube.com/watch?v=mJ-qvsxPHpY
 
