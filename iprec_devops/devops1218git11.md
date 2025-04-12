@@ -5,7 +5,7 @@ https://www.sharemycode.fr/h20
 cedrik@cedrik-virtual-machine:~/devops1218/elastic$ sudo docker-compose up
 
 ============== VERIFICATION SSH ==================
-
+````
 cedrik@cedrik-virtual-machine:~/devops1218/elastic$ systemctl status ssh
 ● ssh.service - OpenBSD Secure Shell server
      Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
@@ -25,7 +25,7 @@ déc. 18 10:02:40 cedrik-virtual-machine sshd[271587]: Server listening on :: po
 déc. 18 10:02:40 cedrik-virtual-machine systemd[1]: Started OpenBSD Secure Shell server.
 
 cedrik@cedrik-virtual-machine:~/devops1218/elastic$ systemctl restart ssh
-
+````
 
 =======================
 
@@ -34,8 +34,8 @@ Après correction du logstash.conf
 http://localhost:5601/app/dev_tools#/console
 
 ============ script python
+````
 cedrik@cedrik-virtual-machine:~/devops1218/elastic$ cat recup.py
-
 
 #! /usr/bin/python
 from elasticsearch import Elasticsearch
@@ -67,21 +67,21 @@ with open("./{}.json".format("reponse" + Ville), "w") as f:
 
 with open("./{}.json".format("requete" + Ville), "w") as f:
   json.dump(query, f, indent=2)
-
+````
   ================================
-
+````
 cedrik@cedrik-virtual-machine:~$ cd devops1218/
 cedrik@cedrik-virtual-machine:~/devops1218$ mkdir github
 cedrik@cedrik-virtual-machine:~/devops1218$ cd github/
 cedrik@cedrik-virtual-machine:~/devops1218/github$ git config --global user.email "cedret3@mail.fr"
 cedrik@cedrik-virtual-machine:~/devops1218/github$ git config --global user.name "cedret"
-
+````
 ============== token github
 depuis settings à droite, puis developper , puis token, puis classic
 A copier-coller
 
 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
-
+````
 cedrik@cedrik-virtual-machine:~/devops1218/github$ git clone https://github.com/cedret/cedret3.git
 Clonage dans 'cedret3'...
 Username for 'https://github.com': cedret
@@ -90,7 +90,7 @@ remote: Enumerating objects: 3, done.
 remote: Counting objects: 100% (3/3), done.
 remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
 Réception d'objets: 100% (3/3), fait.
-
+````
 ============================= COMMANDES
 
 git clone https://github.com/asrs-iprec/projet.git
