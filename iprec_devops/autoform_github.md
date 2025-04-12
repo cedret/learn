@@ -2,7 +2,9 @@
 
 ## A rassembler:
 https://blog.bytebytego.com/
-
+https://qtext.io/
+https://www.sharemycode.fr/uz3
+https://github.com/JustFS/cours-github
 
 ## Pré-requis
 ### Installer Git bash pour Windows
@@ -12,22 +14,7 @@ Après installation, clic droit avec gitbash here depuis n'importe quel dossier.
 
 *Différence entre main et master?*
 
-### Autres sources:
-
-- Bande de codeurs
-https://www.youtube.com/watch?v=gGKZLfPYORs
-- Graven (bof?)
-https://www.youtube.com/watch?v=gp_k0UVOYMw
-- From scratch
-https://www.youtube.com/watch?v=eXF0epLeCgo
-
-continuer à 28 minutes
-
-https://qtext.io/
-https://www.sharemycode.fr/uz3
-https://github.com/JustFS/cours-github
-
-### Autres sources
+### Sources Youtube
 https://grafikart.fr/tutoriels/init-config-add-log-585#autoplay
 - Bytebytego
 https://www.youtube.com/watch?v=e9lnsKot_SQ
@@ -121,8 +108,18 @@ git cherry-pick abc1234
 ````
 - Git Tutorial For Dummies
 https://www.youtube.com/watch?v=mJ-qvsxPHpY
+- Bande de codeurs
+https://www.youtube.com/watch?v=gGKZLfPYORs
+- Graven (bof?)
+https://www.youtube.com/watch?v=gp_k0UVOYMw
+- From scratch
+https://www.youtube.com/watch?v=eXF0epLeCgo
 
-## Préparation compte
+continuer à 28 minutes
+---
+
+## IPREC
+### Préparation compte
 ```
 access@DESKTOP-4E2R2LH MINGW64 ~
 $ pwd
