@@ -108,7 +108,33 @@ git cherry-pick abc1234
 git remote -v
 git remote add origin git@github.com:cedret/prof25.git
 git remote set-url origin git@github.com:cedret/prof25.git
+````
 
+````
+             +------------------+
+             |  Remote Repo     |
+             +------------------+
+                      ^
+                      | git push / git pull
+                      v
+             +------------------+
+             |  Local Repo      |
+             +------------------+
+                      ^
+        git commit    |
+                      v
+             +------------------+
+             |  Staging Area    |
+             +------------------+
+                      ^
+          git add     |
+                      v
+             +------------------+
+             | Working Directory|
+             +------------------+
+                      |
+         edit / modify files
+````
 
 - Git Tutorial For Dummies
 https://www.youtube.com/watch?v=mJ-qvsxPHpY
