@@ -1,4 +1,4 @@
-test
+test code mermaid
 
 ```mermaid
 graph TD
