@@ -5,33 +5,33 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="2" value="How Git works" style="swimlane;whiteSpace=wrap;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
-          <mxGeometry x="160" y="120" width="720" height="510" as="geometry" />
+          <mxGeometry x="160" y="120" width="720" height="460" as="geometry" />
         </mxCell>
         <mxCell id="7" value="Workspace&#xa;&#xa;.git&#xa;__init_.py&#xa;src" style="" parent="2" vertex="1">
-          <mxGeometry x="120" y="65" width="120" height="130" as="geometry" />
+          <mxGeometry x="80" y="65" width="120" height="130" as="geometry" />
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-45" value="Local repository" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="2">
-          <mxGeometry x="520" y="300" width="80" height="120" as="geometry" />
+          <mxGeometry x="560" y="300" width="80" height="120" as="geometry" />
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-42" value="Stage" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="2">
-          <mxGeometry x="480" y="80" width="120" height="60" as="geometry" />
+          <mxGeometry x="520" y="80" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-41" value="Stage" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="2">
-          <mxGeometry x="490" y="90" width="120" height="60" as="geometry" />
+          <mxGeometry x="530" y="90" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-43" value="Stage" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="2">
-          <mxGeometry x="500" y="100" width="120" height="60" as="geometry" />
+          <mxGeometry x="540" y="100" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-44" value="Stage" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="2">
-          <mxGeometry x="510" y="110" width="120" height="60" as="geometry" />
+          <mxGeometry x="550" y="110" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-46" value="&lt;div&gt;Remote&lt;/div&gt;&lt;div&gt;Repository&lt;/div&gt;&lt;div&gt;(Github, Gitlab, Bitbucket)&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="2">
-          <mxGeometry x="90" y="290" width="190" height="140" as="geometry" />
+          <mxGeometry x="60" y="290" width="190" height="140" as="geometry" />
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-47" value="" style="endArrow=classic;html=1;rounded=0;fontColor=light-dark(#000000,#66B2FF);strokeColor=light-dark(#000000,#66FFFF);" edge="1" parent="2">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="280" y="80" as="sourcePoint" />
-            <mxPoint x="400" y="80" as="targetPoint" />
+            <mxPoint x="300" y="99.5" as="sourcePoint" />
+            <mxPoint x="420" y="99.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-48" value="git add" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="laH91wkhJFRu4g_jg35R-47">
@@ -41,8 +41,8 @@
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-49" value="" style="endArrow=none;html=1;rounded=0;fontColor=light-dark(#000000,#66B2FF);strokeColor=light-dark(#000000,#FFFF66);startArrow=classic;startFill=0;" edge="1" parent="2">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="280" y="119.5" as="sourcePoint" />
-            <mxPoint x="400" y="119.5" as="targetPoint" />
+            <mxPoint x="300" y="139" as="sourcePoint" />
+            <mxPoint x="420" y="139" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-50" value="git reset" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="laH91wkhJFRu4g_jg35R-49">
@@ -52,8 +52,8 @@
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-52" value="" style="endArrow=none;html=1;rounded=0;startArrow=classic;startFill=0;strokeColor=light-dark(#000000,#66FFFF);" edge="1" parent="2">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="559.5" y="280" as="sourcePoint" />
-            <mxPoint x="559.5" y="180" as="targetPoint" />
+            <mxPoint x="599.5" y="280" as="sourcePoint" />
+            <mxPoint x="600" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-53" value="git commit" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="laH91wkhJFRu4g_jg35R-52">
@@ -63,8 +63,8 @@
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-54" value="" style="endArrow=classic;html=1;rounded=0;startArrow=none;startFill=0;strokeColor=light-dark(#000000,#66FFFF);endFill=1;" edge="1" parent="2">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="180.5" y="290" as="sourcePoint" />
-            <mxPoint x="180" y="210" as="targetPoint" />
+            <mxPoint x="140" y="290" as="sourcePoint" />
+            <mxPoint x="139.5" y="210" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-55" value="git commit" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="laH91wkhJFRu4g_jg35R-54">
@@ -93,6 +93,15 @@
           <mxGeometry x="0.06" y="-1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="laH91wkhJFRu4g_jg35R-60" value="Local Repository" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="430" y="600" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="laH91wkhJFRu4g_jg35R-61" value="Local Repository" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="600" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="laH91wkhJFRu4g_jg35R-62" value="Workspace" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="600" width="160" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
