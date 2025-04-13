@@ -7,9 +7,5 @@ graph TD
   C --> D[Remote Repository]
                   
                                               
-                                              
-                                              
-                                              
-                                              
-                              ───────────────►
+
 ````
