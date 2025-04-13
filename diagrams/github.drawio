@@ -95,13 +95,46 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-60" value="Local Repository" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="430" y="600" width="200" height="40" as="geometry" />
+          <mxGeometry x="440" y="600" width="140" height="40" as="geometry" />
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-61" value="Local Repository" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="160" y="600" width="200" height="40" as="geometry" />
+          <mxGeometry x="160" y="600" width="140" height="40" as="geometry" />
         </mxCell>
         <mxCell id="laH91wkhJFRu4g_jg35R-62" value="Workspace" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="720" y="600" width="160" height="40" as="geometry" />
+          <mxGeometry x="740" y="600" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="laH91wkhJFRu4g_jg35R-63" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=light-dark(#000000,#FFFF66);" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="310" y="619.5" as="sourcePoint" />
+            <mxPoint x="430" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="laH91wkhJFRu4g_jg35R-64" value="git fetch" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="laH91wkhJFRu4g_jg35R-63">
+          <mxGeometry x="-0.0332" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="laH91wkhJFRu4g_jg35R-65" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=light-dark(#000000,#66FFFF);" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="619.5" as="sourcePoint" />
+            <mxPoint x="720" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="laH91wkhJFRu4g_jg35R-66" value="git merge" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="laH91wkhJFRu4g_jg35R-65">
+          <mxGeometry x="-0.0332" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="laH91wkhJFRu4g_jg35R-67" value="" style="endArrow=classic;html=1;rounded=0;startArrow=none;startFill=0;strokeColor=light-dark(#000000,#66FFFF);endFill=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="510.5" y="730" as="sourcePoint" />
+            <mxPoint x="510" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="laH91wkhJFRu4g_jg35R-68" value="git pull = git fetch + git merge" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="laH91wkhJFRu4g_jg35R-67">
+          <mxGeometry x="-0.04" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
