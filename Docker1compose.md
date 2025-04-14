@@ -2,6 +2,9 @@
 
 https://docs.docker.com/engine/install/ubuntu/
 
+https://www.youtube.com/watch?v=gthvzSE4yIY&list=PLTk5ZYSbd9Mg51szw21_75Hs1xUpGObDm
+
+
 ### Installer Docker sur Ubuntu 20
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
 ````
@@ -287,6 +290,10 @@ stage@tst20docker1:~$ ./testurl.sh
 ````
 Le navigateur doit afficher:
 ``Index of /``
+
+**Peut être vérifié aussi avec curl!**
+``curl -v localhost:80`` ou IP appropriée??
+
 Modifier contenu du dossier htdocs
 ````
 stage@tst20docker1:~$ cd htdocs/
@@ -422,23 +429,71 @@ hello-world       latest    74cc54e27dc4   2 months ago    10.1kB
 ubuntu            18.04     f9a80a55f492   22 months ago   63.2MB
  ````
 
- ### NetworkChuck
+ ### NetworkChuck -16:25-
 
  https://www.youtube.com/watch?v=DM65_JyGxCo
 
- ````
-blabla
+````
+sudo apt update
+sudo apt install docker.io docker-compose -y
+sudo docker run --name web -itd -p 8080:80 nginx
 ````
 
 
 ````
-blabla
-````
+stage@tst20vide:~/coffee$ nano docker-compose.yml
+stage@tst20vide:~/coffee$ cat docker-compose.yml
+version: "3"
+services:
+        website:
+                image: nginx
+                ports:
+                        - "8081:80"
+                restart: always
 
 
 ````
-blabla
+
+#### Exercice 2
 ````
+
+stage@tst20vide:~$ mkdir wordprezz
+stage@tst20vide:~$ cd wordprezz/
+stage@tst20vide:~/wordprezz$ sudo nano docker-compose.yaml
+stage@tst20vide:~/wordprezz$ cat docker-compose.yaml
+version: "3"
+services:
+        wordpress:
+                image: wordpress
+                ports:
+                        - "8089:80"
+                depends_on:
+                        - mysql
+                environment:
+                        WORDPRESS_DB_HOST: mysql
+                        WORDPRESS_DB_USER: root
+                        WORDPRESS_DB_PASSWORD: "coffee"
+                        WORDPRESS_DB_NAME: wordpress
+        mysql:
+                image: "mysql:5.7"
+                environment:
+                        MYSQL_ROOT_PASSWORD: "coffee"
+                        MYSQL_DATABASE: wordpress
+                volumes:
+                        - ./mysql:/var/lib/mysql
+networks:
+        reseau:
+                ipam:
+                        driver: default
+                        config:
+                                - subnet: "192.168.90.0/24"
+
+````
+### Monis Yousouf
+https://www.youtube.com/watch?v=k29FmUcihSA
+https://monisyousuf.medium.com/what-is-docker-docker-file-images-and-containers-with-code-examples-6d81d426b3a0
+https://www.youtube.com/watch?app=desktop&v=BTXfR76WmCw
+https://github.com/monisyousuf/youtube-tutorials/blob/main/CD_007_docker_2/database/database.Dockerfile
 
 
 ````
