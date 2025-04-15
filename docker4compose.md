@@ -2,6 +2,8 @@ docker4compose.md
 
 Sur vm ubuntu 22 !!
 
+sudo apt update
+
 Si besoin ssh:
 ``sudo apt install openssh-server``
 ``sudo ufw allow ssh``
