@@ -1,0 +1,55 @@
+sostart.md
+````
+#!/bin/bash
+
+echo "🔍 Vérification de l'état SSH sur ce système Ubuntu..."
+
+# 1. Vérifie si sshd est installé
+if ! command -v sshd &> /dev/null; then
+  echo "❌ OpenSSH Server (sshd) n'est pas installé."
+  echo "➡️  Installe-le avec : sudo apt install -y openssh-server"
+  exit 1
+else
+  echo "✅ OpenSSH Server est installé."
+fi
+
+# 2. Vérifie si le service est actif
+STATUS=$(systemctl is-active ssh)
+if [ "$STATUS" != "active" ]; then
+  echo "❌ Le service SSH n'est pas actif."
+  echo "➡️  Démarre-le avec : sudo systemctl enable --now ssh"
+else
+  echo "✅ Le service SSH est actif."
+fi
+
+# 3. Vérifie que le port 22 est à l'écoute
+PORT_CHECK=$(ss -tlnp | grep ":22")
+if [ -z "$PORT_CHECK" ]; then
+  echo "❌ Le port 22 n'est pas en écoute. SSH ne répondra pas."
+else
+  echo "✅ Le port 22 est bien en écoute."
+fi
+
+# 4. Vérifie si ufw est actif et bloque SSH
+if command -v ufw &> /dev/null; then
+  UFW_STATUS=$(sudo ufw status | grep "Status: active")
+  if [ -n "$UFW_STATUS" ]; then
+    SSH_RULE=$(sudo ufw status | grep "22")
+    if [ -z "$SSH_RULE" ]; then
+      echo "⚠️  Le pare-feu UFW est actif mais ne permet pas SSH."
+      echo "➡️  Autorise-le avec : sudo ufw allow ssh"
+    else
+      echo "✅ UFW autorise les connexions SSH."
+    fi
+  else
+    echo "ℹ️  UFW n'est pas actif. Pas de pare-feu bloquant SSH."
+  fi
+fi
+
+# 5. Affiche l'adresse IP de la machine
+IP=$(hostname -I | awk '{print $1}')
+echo "📡 Adresse IP locale du serveur : $IP"
+
+echo "✅ Vérification SSH terminée."
+echo "🧪 Tu peux maintenant tester : ssh ton_user@$IP"
+````
