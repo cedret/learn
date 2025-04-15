@@ -32,7 +32,7 @@ version: '3.8'
 
 services:
   web:
-    build: ./apache-php
+    build: ./apaphp
     ports:
       - "8080:80"
     volumes:
@@ -52,7 +52,7 @@ services:
       - "3306:3306"
 ````
 
-Fichier Dockerfile dans apache-php/
+Fichier Dockerfile dans apaphp/
 ````
 FROM php:7.4-apache
 
@@ -63,7 +63,7 @@ RUN docker-php-ext-install mysqli
 RUN a2enmod rewrite
 ````
 
-index.php dans apache-php/www/
+index.php dans apaphp/www/
 ````
 <!DOCTYPE html>
 <html lang="fr">
@@ -78,7 +78,7 @@ index.php dans apache-php/www/
 </html>
 ````
 
-about.php dans apache-php/www/
+about.php dans apaphp/www/
 ````
 <!DOCTYPE html>
 <html lang="fr">
@@ -93,7 +93,7 @@ about.php dans apache-php/www/
 </html>
 ````
 
-contact.php dans  (dynamique avec MySQL)
+contact.php dans apaphp/www/ (dynamique avec MySQL)
 ````
 <?php
 $servername = "db"; // nom du service docker-compose
