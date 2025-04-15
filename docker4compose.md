@@ -11,14 +11,14 @@ Si besoin ssh:
 ``sudo service ssh restart``
 
 ````
-mon-projet-docker/
+dckr/
 ├── docker-compose.yml
-├── apache-php/
+├── apaphp/
 │   ├── Dockerfile
 │   └── www/
-│       ├── index.php         # Page dynamique (avec MySQL)
-│       ├── page1.php         # Page statique 1
-│       └── page2.php         # Page statique 2
+│       ├── contact.php       # Page dynamique (avec MySQL)
+│       ├── index.php         # Page statique 1
+│       └── about.php         # Page statique 2
 ````
 
 
@@ -36,7 +36,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./apache-php/www:/var/www/html
+      - ./apaphp/www:/var/www/html
     depends_on:
       - db
 
