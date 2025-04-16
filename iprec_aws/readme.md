@@ -21,4 +21,192 @@ Créer un bucket S3 avec un nom unique
 Uploader des images dans le bucket S3
 Trouver comment référencer les images de votre bucket dans le site que vous aviez créer tout à l'heure sur EC2 (Plusieurs solutions)
 
-sudo yum install -y mariadb-server mariadb
+``sudo yum install -y mariadb-server mariadb``
+### Exercice Pratique AWS EC2
+Objectif : Déployer et configurer une instance EC2 basique avec un serveur web
+
+Durée estimée : 30-45 minutes
+````
+Étapes :
+1. Connectez-vous à la console AWS
+2. Lancez une instance EC2 avec les paramètres suivants :
+• Donnez un nom à l’instance selon la nomenclature suivante : ec2-
+[VOTRE_NOM]-test
+• Amazon Linux 2
+• Type t2.micro (eligible free tier)
+• Créer une nouvelle paire de clés
+• Créer un nouveau groupe de sécurité autorisant :
+• SSH (port 22)
+• HTTP (port 80)
+3. Une fois l'instance lancée :
+• Connectez-vous en SSH en utilisant l’IP publique et l’utilisateur ec2-user
+• Installez un serveur web Apache :
+• sudo yum update -y
+• sudo yum install httpd -y
+• sudo systemctl start httpd
+• sudo systemctl enable httpd
+4. Créez une page web simple :
+5. echo "<html><body><h1>Mon premier serveur web AWS !</h1></body></html>" | sudo
+tee /var/www/html/index.html
+6. Vérifiez que votre site est accessible via l'IP publique de votre instance
+Bonus :
+• Ajoutez une image à votre page web et quelques composants HTML
+N'oubliez pas de terminer votre instance à la fin de la journée après l'exercice pour éviter
+des frais supplémentaires !
+````
+### Exercice Pratique AWS RDS
+Objectif : Créer une base de données MySQL sur RDS et la connecter à votre instance EC2 via Node.js
+
+Durée : 45-60 minutes
+````
+Configuration RDS
+- Choisir MySQL comme moteur
+- Version : MySQL 8.0.28
+- Template : Free tier
+- DB Instance Identifier : myapp-database
+- Master username : admin
+- Générer un mot de passe sécurisé
+- Instance type : db.t3.micro
+
+1. Sur l'EC2, installer le client MySQL et créer la base de données
+# Installation du client MySQL
+sudo dnf install mariadb105 -y
+# Connexion à votre instance RDS
+mysql -h [VOTRE-ENDPOINT-RDS] -P 3306 -u admin -p
+# Une fois connecté à MySQL, créer la base et la table
+CREATE DATABASE webappdb;
+USE webappdb;
+# Création de la table users
+CREATE TABLE users (
+id INT AUTO_INCREMENT PRIMARY KEY,
+username VARCHAR(50) NOT NULL,
+email VARCHAR(100) NOT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+# Insertion de données de test
+INSERT INTO users (username, email) VALUES
+('john_doe', 'john@example.com'),
+('jane_doe', 'jane@example.com'),
+('bob_smith', 'bob@example.com');
+# Vérifier que tout est bien créé
+SELECT * FROM users;
+# Quitter MySQL
+exit
+
+2. Sur votre instance EC2, installer Node.js
+# Installation de Node.js
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+. ~/.nvm/nvm.sh
+nvm install 16
+nvm use 16
+
+3. Créer un projet Node.js
+mkdir myapp
+cd myapp
+npm init -y
+# Installation des dépendances
+npm install express mysql2 dotenv
+Créer le fichier server.js
+require('dotenv').config();
+const express = require('express');
+const mysql = require('mysql2/promise');
+const app = express();
+const pool = mysql.createPool({
+host: votre-endpoint-rds,
+user: admin,
+password: votre-mot-de-passe,
+database: webappdb
+});
+app.get('/', async (req, res) => {
+try {
+const [rows] = await pool.query('SELECT * FROM users');
+res.send(`
+<h1>Liste des utilisateurs</h1>
+${rows.map(user => `
+<div>
+<p>Utilisateur : ${user.username}</p>
+<p>Email : ${user.email}</p>
+</div>
+`).join('')}
+`);
+} catch (error) {
+console.error(error);
+res.status(500).send('Erreur serveur');
+}
+});
+app.listen(3000, () => {
+console.log('Serveur en cours d\'exécution sur le port 3000');
+});
+
+4. Lancer l'application
+# Lancer en arrière-plan
+node server.js &
+# Noter le PID si vous devez arrêter le processus plus tard
+# Pour arrêter : kill <PID>
+5. Vérifier que l'application fonctionne
+# Tester localement
+curl http://localhost:3000
+# L'application sera accessible via
+http://[IP-PUBLIQUE-EC2]:3000
+N'oubliez pas :
+D'ouvrir le port 3000 dans le Security Group de l'EC2
+De sauvegarder le PID quelque part si vous devez arrêter le processus
+Cette méthode est pour le développement/test uniquement, pas pour la production
+Pour arrêter l'application :
+# Trouver le PID
+ps aux | grep node
+# Arrêter l'application
+kill <PID>
+````
+###Exercice Pratique AWS S3
+Objectif : Créer un site web statique hébergé sur S3
+
+Durée : 45-60 minutes
+````
+Étapes :
+
+1. Création du Bucket
+• Connectez-vous à la console AWS
+• Créez un bucket S3 avec un nom unique
+• Désactivez "Bloquer tout accès public"
+
+2. Configuration du Site Web Statique
+• Créez les fichiers suivants sur votre ordinateur :
+// index.html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mon Site S3</title>
+</head>
+<body>
+<h1>Bienvenue sur mon site hébergé sur S3!</h1>
+<img src="image.jpg" alt="Mon image">
+</body>
+</html>
+Trouvez une image libre de droits et renommez-la "image.jpg"
+
+3. Upload et Configuration
+• Uploadez index.html et image.jpg dans votre bucket
+• Configurez les permissions du bucket (politique) :
+{
+"Version": "2012-10-17",
+"Statement": [
+{
+"Effect": "Allow",
+"Principal": "*",
+"Action": "s3:GetObject",
+"Resource": "arn:aws:s3:::NOM-DE-VOTRE-BUCKET/*"
+}
+]
+}
+Activez l'hébergement de site web statique dans les propriétés du bucket
+
+4. Tests et Modifications
+• Accédez à votre site via l'URL fournie par S3
+• Modifiez index.html pour ajouter du contenu
+• Créez une page error.html pour les erreurs 404
+
+Bonus :
+• Ajoutez du CSS pour styliser votre page
+````
+
