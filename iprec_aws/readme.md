@@ -1,3 +1,14 @@
+## GLANAGE
+#### AWS CLI
+- https://gist.github.com/apolloclark/b3f60c1f68aa972d324b
+- https://www.bluematador.com/learn/aws-cli-cheatsheet
+- https://blog.rishabkumar.com/aws-cli-cheat-sheet
+- https://gist.github.com/ssstonebraker/72973278a1386f28b9b78c3fcbb120d8
+- 
+
+
+---
+## IPREC
 - Maarek https://www.youtube.com/@StephaneMaarek
 - https://aws.amazon.com/fr/ec2/instance-types/
 - https://aws-experience.com/emea/france/
