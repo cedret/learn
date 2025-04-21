@@ -3,6 +3,7 @@
 - https://www.samgalope.dev/category/downloadable-resources/
 - https://github.com/fireship-io/225-github-actions-demo#
 - https://blog.stephane-robert.info/docs/developper/autres-langages/yaml/introduction/
+- https://www.youtube.com/watch?v=nmUBSX6BEak
 
 ## Docker compose
 ### générique
