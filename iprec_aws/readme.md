@@ -1,4 +1,8 @@
 ## GLANAGE
+#### AWS Accès
+- https://aws.amazon.com/fr/registration-confirmation/
+- https://eu-north-1.console.aws.amazon.com/console/home?region=eu-north-1#
+- 
 #### AWS CLI
 - https://gist.github.com/apolloclark/b3f60c1f68aa972d324b
 - https://www.bluematador.com/learn/aws-cli-cheatsheet
