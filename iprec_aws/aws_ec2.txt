@@ -1,0 +1,162 @@
+aws ec2 create-security-group --group-name "launch-wizard-2" --description "launch-wizard-2 created 2025-04-23T10:29:09.172Z" --vpc-id "vpc-0f478a12b7036a247" 
+aws ec2 authorize-security-group-ingress --group-id "sg-preview-1" --ip-permissions '{"IpProtocol":"tcp","FromPort":22,"ToPort":22,"IpRanges":[{"CidrIp":"0.0.0.0/0"}]}' '{"IpProtocol":"tcp","FromPort":80,"ToPort":80,"IpRanges":[{"CidrIp":"0.0.0.0/0"}]}' 
+aws ec2 run-instances --image-id "ami-08f78cb3cc8a4578e" --instance-type "t3.micro" --key-name "toptest" --network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-preview-1"]}' --credit-specification '{"CpuCredits":"unlimited"}' --tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"ec2-cedrik-test"}]}' --metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' --private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":true,"EnableResourceNameDnsAAAARecord":false}' --count "1" 
+
+C:\Users\POURRET\Documents\Iprec\iprec25aws
+
+https://www.youtube.com/watch?v=kzLRxVgos2M
+
+PS C:\Users\POURRET\Documents> pwd
+
+Path
+----
+C:\Users\POURRET\Documents
+
+PS C:\Users\POURRET\Documents> ssh -i \Iprec\iprec25aws\toptest.pem ec2-user@16.170.214.25
+Warning: Identity file \Iprec\iprec25aws\toptest.pem not accessible: No such file or directory.
+ec2-user@16.170.214.25: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+PS C:\Users\POURRET\Documents> ssh -i Iprec\iprec25aws\toptest.pem ec2-user@16.170.214.25
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+Last login: Wed Apr 23 10:56:27 2025 from 13.48.4.203
+[ec2-user@ip-172-31-31-2 ~]$ hostname
+ip-172-31-31-2.eu-north-1.compute.internal
+[ec2-user@ip-172-31-31-2 ~]$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: ens5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc mq state UP group default qlen 1000
+    link/ether 06:d7:28:8e:e6:59 brd ff:ff:ff:ff:ff:ff
+    altname enp0s5
+    altname eni-0e032e1d753da9c43
+    altname device-number-0.0
+    inet 172.31.31.2/20 metric 512 brd 172.31.31.255 scope global dynamic ens5
+       valid_lft 2356sec preferred_lft 2356sec
+    inet6 fe80::4d7:28ff:fe8e:e659/64 scope link proto kernel_ll
+       valid_lft forever preferred_lft forever
+[ec2-user@ip-172-31-31-2 ~]$ sudo yum update -y
+Amazon Linux 2023 Kernel Livepatch repository                                                                                                               128 kB/s |  15 kB     00:00
+Dependencies resolved.
+Nothing to do.
+Complete!
+[ec2-user@ip-172-31-31-2 ~]$ sudo su - root
+[root@ip-172-31-31-2 ~]# yum install httpd -y
+Last metadata expiration check: 0:00:34 ago on Wed Apr 23 12:26:20 2025.
+Dependencies resolved.
+[root@ip-172-31-31-2 ~]# systemctl start httpd
+[root@ip-172-31-31-2 ~]# systemctl enable httpd
+Created symlink /etc/systemd/system/multi-user.target.wants/httpd.service → /usr/lib/systemd/system/httpd.service.
+[root@ip-172-31-31-2 ~]# systemctl status httpd
+● httpd.service - The Apache HTTP Server
+     Loaded: loaded (/usr/lib/systemd/system/httpd.service; enabled; preset: disabled)
+     Active: active (running) since Wed 2025-04-23 12:27:49 UTC; 17s ago
+       Docs: man:httpd.service(8)
+   Main PID: 29407 (httpd)
+     Status: "Total requests: 0; Idle/Busy workers 100/0;Requests/sec: 0; Bytes served/sec:   0 B/sec"
+      Tasks: 177 (limit: 1057)
+     Memory: 13.3M
+        CPU: 71ms
+     CGroup: /system.slice/httpd.service
+             ├─29407 /usr/sbin/httpd -DFOREGROUND
+             ├─29408 /usr/sbin/httpd -DFOREGROUND
+             ├─29409 /usr/sbin/httpd -DFOREGROUND
+             ├─29410 /usr/sbin/httpd -DFOREGROUND
+             └─29411 /usr/sbin/httpd -DFOREGROUND
+
+Apr 23 12:27:49 ip-172-31-31-2.eu-north-1.compute.internal systemd[1]: Starting httpd.service - The Apache HTTP Server...
+Apr 23 12:27:49 ip-172-31-31-2.eu-north-1.compute.internal systemd[1]: Started httpd.service - The Apache HTTP Server.
+Apr 23 12:27:49 ip-172-31-31-2.eu-north-1.compute.internal httpd[29407]: Server configured, listening on: port 80
+[root@ip-172-31-31-2 ~]# echo "<html><body><h1>Serveur web AWS cedrik!</h1></body></html>" | sudo
+tee /var/www/html/index.html
+-bash: !: event not found
+^[[A^[[B^C
+[root@ip-172-31-31-2 ~]#
+[root@ip-172-31-31-2 ~]#  echo "<html><body><h1>Serveur web AWS cedrik!</h1></body></html>" | sudo tee /var/www/html/index.html
+-bash: !: event not found
+[root@ip-172-31-31-2 ~]# ls /var/www/html/
+index.html
+[root@ip-172-31-31-2 ~]# nano /var/www/html/index.html
+[root@ip-172-31-31-2 ~]# [root@ip-172-31-31-2 ~]# ^C
+[root@ip-172-31-31-2 ~]# nano /var/www/html/index.html
+[root@ip-172-31-31-2 ~]# [root@ip-172-31-31-2 ~]#
+[root@ip-172-31-31-2 ~]# scp -i Iprec\iprec25aws\toptest.pem blueteam.jpg ec2-user@16.170.214.25:/var/www/html/
+Warning: Identity file Ipreciprec25awstoptest.pem not accessible: No such file or directory.
+The authenticity of host '16.170.214.25 (16.170.214.25)' can't be established.
+ED25519 key fingerprint is SHA256:0YjWxB3VT3+BQxkfZD8dQHwM/yRQSziJcPdsUKhFBlI.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '16.170.214.25' (ED25519) to the list of known hosts.
+ec2-user@16.170.214.25: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+Connection closed
+[root@ip-172-31-31-2 ~]# scp -i Iprec\iprec25aws\toptest.pem blueteam.jpg ec2-user@16.170.214.25:/var/www/html/
+Warning: Identity file Ipreciprec25awstoptest.pem not accessible: No such file or directory.
+ec2-user@16.170.214.25: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+Connection closed
+[root@ip-172-31-31-2 ~]# nano /var/www/html/index.html
+[root@ip-172-31-31-2 ~]# [root@ip-172-31-31-2 ~]# nano /var/www/html/index.html
+[root@ip-172-31-31-2 ~]# [root@ip-172-31-31-2 ~]# nano /var/www/html/index.html
+[root@ip-172-31-31-2 ~]# [root@ip-172-31-31-2 ~]# nano /var/www/html/index.html
+[root@ip-172-31-31-2 ~]# [root@ip-172-31-31-2 ~]# nano /var/www/html/index.html
+[root@ip-172-31-31-2 ~]# nano /var/www/html/index.html
+[root@ip-172-31-31-2 ~]# [root@ip-172-31-31-2 ~]# cat /var/www/html/index.html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue sur Apache</title>
+</head>
+<body>
+    <h1>Bienvenue sur le site cedrik !</h1>
+    <p>Voici une page avec images intégrées depuis une URL.</p>
+    <img src="https://blog-fr.orson.io/wp-content/uploads/2017/06/url-definition.jpg" alt="Image depuis une URL" style="width: 100%; max-width: 600px;">
+<br>
+    <img src="https://img.freepik.com/premium-photo/female-robot-with-hands-back-her-head_662214-115186.jpg" alt="Image depuis une URL" style="width: 100%; max-width: 600px;">
+
+</body>
+</html>
+
+---
+## S3
+
+````
+<!DOCTYPE html>
+<html>
+<head>
+<title>Site S3 Cedrik</title>
+</head>
+<body>
+<h1>Bienvenue sur le site Cedrik sur S3!</h1>
+<img src="image.jpg" alt="Mon image">
+</body>
+</html>
+````
+
+````
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page non trouvée</title>
+</head>
+<body>
+    <h1>Oups ! Cette page n'existe pas.</h1>
+    <p>La page que vous avez demandée est introuvable.</p>
+    <p><a href="/">Retour à la page d'accueil</a></p>
+</body>
+</html>
+````
+
