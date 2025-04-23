@@ -4,6 +4,8 @@
 - https://eu-north-1.console.aws.amazon.com/console/home?region=eu-north-1#
 - https://944569698746.signin.aws.amazon.com/console
 - https://cedretaws.signin.aws.amazon.com/console
+- arn:aws:iam::944569698746:user/testeur
+- 
 
 #### AWS CLI
 - https://gist.github.com/apolloclark/b3f60c1f68aa972d324b
