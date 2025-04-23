@@ -12,6 +12,7 @@
 - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-to-linux-instance.html?icmpid=docs_ec2_console
 - https://eu-north-1.console.aws.amazon.com/s3/bucket/create?region=eu-north-1&bucketType=general
 - http://cedrik1bucket.s3-website.eu-north-1.amazonaws.com/
+- https://cedrik1bucket.s3.eu-north-1.amazonaws.com/index.html
 
 #### AWS CLI
 - https://gist.github.com/apolloclark/b3f60c1f68aa972d324b
