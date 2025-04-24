@@ -1,5 +1,6 @@
 sostart.md
 ### Rapat github
+````
   313  ls
   314  mkdir iprec25learn
   315  cd iprec25learn/
@@ -10,7 +11,7 @@ sostart.md
   320  pwd
   321  git clone https://github.com/cedret/learn.git
   322  history
-
+````
 
 
 ### Script check
