@@ -4,6 +4,7 @@
 - https://github.com/fireship-io/225-github-actions-demo#
 - https://blog.stephane-robert.info/docs/developper/autres-langages/yaml/introduction/
 - https://www.youtube.com/watch?v=nmUBSX6BEak
+- https://www.youtube.com/@cultrepo/videos
 
 ## Docker compose
 ### générique
