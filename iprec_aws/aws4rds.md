@@ -10,11 +10,8 @@ https://www.youtube.com/watch?v=bKSh1gEZe2I&list=PL5dpzLb9u7J2QpigtDDfhs3ziUhrM3
 
 https://www.youtube.com/watch?v=i5oU38ejlfI
 
-
 ### Github's ssh
 https://www.youtube.com/watch?v=P56Kuk6XePY
-
-
 
 ### IAM
 testeur//
@@ -27,24 +24,20 @@ https://cedrik1bucket.s3.eu-north-1.amazonaws.com/index.html
 
 north europe 1c
 
-
 identifiant:
 admin//
-cp4zcWLJHsYxy1tsYV5o
+4zcWLJHsYxy1tsYVkoko
 
 endpoint:
 myapp1database.cfsqamwuwe6v.eu-north-1.rds.amazonaws.com
 
 myapp1database.cfsqamwuwe6v.eu-north-1.rds.amazonaws.com
 
-
-
 port 3306
 
 vpc-0f478a12b7036a247
 
 https://www.youtube.com/watch?v=jswJLTm8FOo
-
 
 mysql -h [VOTRE-ENDPOINT-RDS] -P 3306 -u admin -p
 
