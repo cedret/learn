@@ -1,4 +1,19 @@
 sostart.md
+### Rapat github
+  313  ls
+  314  mkdir iprec25learn
+  315  cd iprec25learn/
+  316   ssh-keygen -t ed25519 -C "cedret3@mail.fr"
+  317  cat /home/access/.ssh/id_ed25519.pub
+  318  cat  /c/Users/access/.ssh/id_ed25519.pub
+  319  cat  /c/Users/access/.ssh/id_ed25519.pub
+  320  pwd
+  321  git clone https://github.com/cedret/learn.git
+  322  history
+
+
+
+### Script check
 ````
 #!/bin/bash
 
