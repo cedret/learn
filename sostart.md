@@ -13,6 +13,13 @@ sostart.md
   322  history
 ````
 
+https://www.outdoortechnologist.com/2024/01/31/remove-ssh-known-hosts-on-windows/
+
+~/.ssh/known_hosts
+
+C:\Users\username\.ssh
+
+So the /home/username/.ssh/known_hosts is in C:\cygwin64\home\username\.ssh\known_hosts
 
 ### Script check
 ````
