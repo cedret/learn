@@ -12,7 +12,7 @@ sostart.md
   321  git clone https://github.com/cedret/learn.git
   322  history
 ````
-
+### SSH
 https://www.outdoortechnologist.com/2024/01/31/remove-ssh-known-hosts-on-windows/
 
 ~/.ssh/known_hosts
@@ -20,6 +20,15 @@ https://www.outdoortechnologist.com/2024/01/31/remove-ssh-known-hosts-on-windows
 C:\Users\username\.ssh
 
 So the /home/username/.ssh/known_hosts is in C:\cygwin64\home\username\.ssh\known_hosts
+
+#### Parc clé publique (dans serveur)
+````
+sudo nano /etc/ssh/sshd_config
+PasswordAuthentication yes
+PubkeyAuthentication yes
+sudo systemctl restart sshd
+````
+
 
 ### Script check
 ````
