@@ -6,6 +6,11 @@
 - https://www.youtube.com/watch?v=nmUBSX6BEak
 - https://www.youtube.com/@cultrepo/videos
 
+## Port listening
+- https://go.lightnode.com/fr/tech/linux-netstat-command
+- https://www.hivelocity.net/kb/check-what-ports-are-listening-on-server/
+- https://www.cyberciti.biz/faq/unix-linux-check-if-port-is-in-use-command/
+
 ## Docker compose
 ### générique
 - https://m.youtube.com/watch?v=DM65_JyGxCo
