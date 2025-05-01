@@ -9,6 +9,7 @@
 - https://blog.stephane-robert.info/docs/developper/autres-langages/yaml/introduction/
 - https://www.youtube.com/watch?v=nmUBSX6BEak
 - https://www.youtube.com/@cultrepo/videos
+- https://www.it-connect.fr/it-tools-boite-a-outils-web-indispensable-pour-les-pros-de-informatique/
 
 ## Port listening
 - https://go.lightnode.com/fr/tech/linux-netstat-command
