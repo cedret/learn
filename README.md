@@ -1,5 +1,9 @@
 # learn
 
+## Culture digitale
+- https://www.youtube.com/watch?v=kjJHBi_iWlc
+
+##
 - https://www.samgalope.dev/category/downloadable-resources/
 - https://github.com/fireship-io/225-github-actions-demo#
 - https://blog.stephane-robert.info/docs/developper/autres-langages/yaml/introduction/
