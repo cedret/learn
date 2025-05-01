@@ -28,6 +28,24 @@ PasswordAuthentication yes
 PubkeyAuthentication yes
 sudo systemctl restart sshd
 ````
+### Mermaid dans markdown
+```mermaid
+graph TD
+    CEO("Directeur Général")
+    CEO --> DAF("Directeur Administratif et Financier")
+    CEO --> CTO("Directeur Technique")
+    CEO --> RH("Directeur des Ressources Humaines")
+    
+    CTO --> DEV("Responsable Développement")
+    CTO --> INFRA("Responsable Infrastructure")
+    
+    DAF --> COMPTA("Chef comptable")
+    DAF --> CONTROLE("Contrôleur de gestion")
+    
+    RH --> RECRUT("Chargé de recrutement")
+    RH --> PAIE("Gestionnaire paie")
+````
+
 ### Python graphiques
 ````
 # Graphiques avec matplotlib
@@ -39,6 +57,7 @@ python gantt.py
 pip install diagrams
 
 ````
+
 Sources:
 - https://www.youtube.com/watch?v=Oa-_EUg44cQ
 - 
