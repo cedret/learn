@@ -1,5 +1,12 @@
 docker5compose.md
 
+TP Docker Devops /Iprec
+Cédric Pourret - Avril 2025
+
+Effectué sur VM Ubuntu server 24.04 créée avec vmware
+Commandes passées par SSH depuis Moba Xterm
+
+### Mise en place vm
 Avec Ubuntu 24
 ````
 stage@srv24vide:~$ sudo apt update
@@ -22,8 +29,8 @@ stage@srv24vide:~/apaphp/www$ sudo nano index.php
 stage@srv24vide:~/apaphp/www$ sudo nano about.php
 stage@srv24vide:~/apaphp/www$ sudo nano dynamique.php
 ````
-### Affichage des fichiers
-stage@srv24vide:~/apaphp/www$ cat index.php
+### Contenus des fichiers
+``stage@srv24vide:~/apaphp/www$ cat index.php``
 ````
 <!DOCTYPE html>
 <html lang="fr">
@@ -37,7 +44,7 @@ stage@srv24vide:~/apaphp/www$ cat index.php
 </body>
 </html>
 ````
-stage@srv24vide:~/apaphp/www$ cat about.php
+``stage@srv24vide:~/apaphp/www$ cat about.php``
 ````
 <!DOCTYPE html>
 <html lang="fr">
@@ -51,7 +58,7 @@ stage@srv24vide:~/apaphp/www$ cat about.php
 </body>
 </html>
 ````
-stage@srv24vide:~/apaphp/www$ cat dynamique.php
+``stage@srv24vide:~/apaphp/www$ cat dynamique.php``
 ````
 <?php
 $host = 'db';
@@ -75,9 +82,8 @@ while ($row = $result->fetch_assoc()) {
 $conn->close();
 ?>
 ````
-stage@srv24vide:~/apaphp/www$ cd -
-/home/stage/apaphp
-stage@srv24vide:~/apaphp$ cat Dockerfile
+
+``stage@srv24vide:~/apaphp$ cat Dockerfile``
 ````
 FROM php:7.4-apache
 
@@ -90,14 +96,10 @@ RUN docker-php-ext-install mysqli
 # Copier un fichier de config Apache si besoin (optionnel)
 # COPY my-apache.conf /etc/apache2/sites-available/000-default.conf
 ````
-stage@srv24vide:~/apaphp$ cd -
-/home/stage/apaphp/www
-stage@srv24vide:~/apaphp/www$ cd ~
-stage@srv24vide:~$ cd dckr/
-stage@srv24vide:~/dckr$ sudo nano docker-compose.yml
 
 ### Création fichier docker-compose
-stage@srv24vide:~/dckr$ cat docker-compose.yml
+
+``stage@srv24vide:~/dckr$ sudo nano docker-compose.yml``
 ````
 version: '3.8'
 
@@ -124,8 +126,8 @@ services:
 ````
 
 ### Structure construite
+``stage@srv24vide:~$ tree``
 ````
-stage@srv24vide:~$ tree
 .
 └── dckr
     ├── apaphp
@@ -140,7 +142,7 @@ stage@srv24vide:~$ tree
 
 5 directories, 6 files
 ````
-
+### Construction des conteneurs
 ``stage@srv24vide:~/dckr$ docker-compose up --build``
 
 ````
@@ -531,9 +533,13 @@ web_1  | 192.168.80.1 - - [15/Apr/2025:09:04:36 +0000] "GET /about.php HTTP/1.1"
 web_1  | 192.168.80.1 - - [15/Apr/2025:09:04:48 +0000] "GET /dynamique.php HTTP/1.1" 200 402 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36"
 Gracefully stopping... (press Ctrl+C again to force)
 ````
-### Modification des messages
-````
+### Premiers résultats
+Depuis un client sur le même réseau
+![docker1compose.png](docker1compose.png)  ![docker2compose.png](docker2compose.png)  ![docker3compose.png](docker3compose.png) 
 
+### Modification des messages
+dans le fichier index.php et dans la base de données.
+````
 stage@srv24vide:~/dckr$ cat db/init.sql
 CREATE TABLE messages (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -556,21 +562,16 @@ stage@srv24vide:~/dckr$ cat apaphp/www/index.php
     <p>Mais il ne contient que du html!</p>
 </body>
 </html>
-
 ````
 
-### Validation des changements
+### Application des changements
+Visible pour le fichier index.php
+![docker4compose.png](docker4compose.png) 
 ````
 stage@srv24vide:~/dckr$ docker-compose start -d
 Start existing containers.
 
 Usage: start [SERVICE...]
-stage@srv24vide:~/dckr$ docker ps
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-stage@srv24vide:~/dckr$ docker-compose stop
-stage@srv24vide:~/dckr$ docker-compose start
-Starting db  ... done
-Starting web ... done
 stage@srv24vide:~/dckr$ docker ps
 CONTAINER ID   IMAGE       COMMAND                  CREATED          STATUS          PORTS                                   NAMES
 170e835610e1   dckr_web    "docker-php-entrypoi…"   39 minutes ago   Up 30 seconds   0.0.0.0:8080->80/tcp, :::8080->80/tcp   dckr_web_1
@@ -609,7 +610,7 @@ Attaching to dckr_db_1, dckr_web_1
 
 ````
 
-
+![docker5compose.png](docker5compose.png) 
 ````
-blabla
+Fin
 ````
