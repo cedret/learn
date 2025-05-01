@@ -28,7 +28,20 @@ PasswordAuthentication yes
 PubkeyAuthentication yes
 sudo systemctl restart sshd
 ````
+### Python graphiques
+````
+# Graphiques avec matplotlib
+pip list
+pip install matplotlib pandas
+python gantt.py
 
+# Graphiques avec graphviz
+pip install diagrams
+
+````
+Sources:
+- https://www.youtube.com/watch?v=Oa-_EUg44cQ
+- 
 
 ### Script check
 ````
