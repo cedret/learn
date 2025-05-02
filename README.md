@@ -3,6 +3,30 @@
 ## Culture digitale
 - https://www.youtube.com/watch?v=kjJHBi_iWlc
 
+## Git
+
+Click here to download the latest (2.49.0) x64 version of Git for Windows. This is the most recent maintained build. It was released over 1 month ago, on 2025-03-17.
+Other Git for Windows downloads
+Standalone Installer
+
+Git for Windows/x64 Setup.
+
+Git for Windows/ARM64 Setup.
+Portable ("thumbdrive edition")
+
+Git for Windows/x64 Portable.
+
+Git for Windows/ARM64 Portable.
+Using winget tool
+
+Install winget tool if you don't already have it, then type this command in command prompt or Powershell.
+winget install --id Git.Git -e --source winget
+
+The current source code release is version 2.49.0. If you want the newer version, you can build it from the source code.
+Now What?
+
+Now that you have downloaded Git, it's time to start using it. 
+
 ##
 - https://www.samgalope.dev/category/downloadable-resources/
 - https://github.com/fireship-io/225-github-actions-demo#
