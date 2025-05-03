@@ -2,6 +2,7 @@
 
 ## Culture digitale
 - https://www.youtube.com/watch?v=kjJHBi_iWlc
+- https://www.markdownguide.org/hacks/
 
 ## Git
 
