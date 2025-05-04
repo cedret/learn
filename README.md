@@ -4,6 +4,13 @@
 - https://www.youtube.com/watch?v=kjJHBi_iWlc
 - https://www.markdownguide.org/hacks/
 
+## Sites de formation
+- https://grafikart.fr/formations
+- https://www.ambient-it.net/devops/
+- https://www.techworld-with-nana.com/
+- https://cours.cocadmin.com/
+- 
+
 ## Git
 
 Click here to download the latest (2.49.0) x64 version of Git for Windows. This is the most recent maintained build. It was released over 1 month ago, on 2025-03-17.
