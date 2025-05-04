@@ -10,6 +10,7 @@
 - https://www.techworld-with-nana.com/
 - https://cours.cocadmin.com/
 - opencalssromm ???
+- https://www.udemy.com/courses/search/?q=devops&src=sac&kw=devops
 - https://www.udemy.com/fr/?srsltid=AfmBOoqcoGdubphXrmyxuounE_QN-e2WXcFLXO_VDgSSowL0eB8N0K3e
 
 ## Certifications
