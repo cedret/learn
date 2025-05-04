@@ -9,6 +9,11 @@
 - https://www.ambient-it.net/devops/
 - https://www.techworld-with-nana.com/
 - https://cours.cocadmin.com/
+- opencalssromm ???
+- https://www.udemy.com/fr/?srsltid=AfmBOoqcoGdubphXrmyxuounE_QN-e2WXcFLXO_VDgSSowL0eB8N0K3e
+
+## Certifications
+- https://www.lpi.org/fr/exam-101-102-objectives/
 - 
 
 ## Git
