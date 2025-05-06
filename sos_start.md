@@ -1,4 +1,8 @@
 sostart.md
+### PANDONC Convertisseur de textes
+pandoc rapport25bloc001.md -o mon_fichier.docx --toc
+
+
 ### Rapat github
 ````
   313  ls
