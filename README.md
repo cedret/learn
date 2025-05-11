@@ -78,4 +78,26 @@ Now that you have downloaded Git, it's time to start using it.
 - https://medium.com/@mikez_dg/how-to-set-up-a-simple-lamp-server-with-docker-images-in-2023-9b0e24476ec6
 - https://mariadb.com/kb/en/setting-up-a-lamp-stack-with-docker-compose/
 - https://doc.ubuntu-fr.org/docker_lamp
-- 
+
+
+## portables collège
+ 
+````
+__**Voici la liste des bios avec leur mot de passe**__
+**Ces mots de passe sont à écrire en Qwerty.**
+
+> Ene 7 : PYH7Ad284a soit en qwerty: `PYHèQdé_'q`
+> Ene 6: YaJ585mkXg soit en qwerty: `YqJ(_(,kXg`
+> Ene 5: 74m4MEHwe7 soit en qwerty: `è','?EHzeè`
+> Ene 4: gGVrQNhmH2 soit en qwerty:  `gGVrANh,Hé`
+> Ene 3 : gs6W5gFjPB soit en qwerty: `gs-Z(gFjPB`
+> Ene 2 : 8wjeASK5xC soit en qwerty: `_zjeQSK(xC`
+> Ene 1: zF5VafSnsD soit en qwerty: `wF(VqfSnsD`
+> Ene : F8Hv4U3T67 soit en qwerty: `F_Hv'U"T-è`
+
+> PC 2020/2019 :  F8Hv4U3T67 soit en qwerty: `F_Hv'U"T-è`
+> Timing:  F8Hv4U3T67 soit en qwerty: `F_Hv'U"T-è`
+
+
+**La version de votre Bios doit correspondre à celle du mot de passe**, par exemple si j'ouvre l'invite de commande windows et que je fait la commande `wmic bios get smbiosbiosversion` et que je prend le dernier caractère (c'est a dire  `ENE_[nombre]`, par exemple `ENE_6`), le mot de passe de mon bios sera  `YqJ(_(,kXg`.
+````
