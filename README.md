@@ -1,7 +1,9 @@
 # learn
 
 ## Mermaid export
--https://ikalas.com/app/mermaid-live-editor
+- https://ikalas.com/app/mermaid-live-editor
+
+- https://fogproject.org/
 
 ## Culture digitale
 - https://www.youtube.com/watch?v=kjJHBi_iWlc
