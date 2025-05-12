@@ -1,3 +1,8 @@
+
+- http://sdz.tdct.org/sdz/installer-et-configurer-conky.html
+- https://www.linuxtricks.fr/wiki/conky-des-variables-systeme-sur-le-bureau
+- 
+
 ```
 secours@secours-Macmini:~$ cat ~/.config/autostartconky.desktop
 [Desktop Entry]
