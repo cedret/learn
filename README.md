@@ -10,6 +10,10 @@
 - https://www.markdownguide.org/hacks/
 - 
 
+## Serveurs
+- proxmox/file server https://www.youtube.com/watch?v=-pUrAZw2xhU
+- 
+
 ChatGPT/ ByteBytego
 - https://www.youtube.com/watch?v=bSvTVREwSNw
 
