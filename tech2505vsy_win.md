@@ -1,7 +1,10 @@
 tech2505vsy_win.md
 
-### nextcl140
+### nextcl140 ubuntu 22.04.5 LTS
+secours@miniflsv:~$ sudo poweroff
+
 nimda//ministrator
+
 
 Outil de surveillance externe:
 
