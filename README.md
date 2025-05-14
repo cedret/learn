@@ -8,6 +8,10 @@
 ## Culture digitale
 - https://www.youtube.com/watch?v=kjJHBi_iWlc
 - https://www.markdownguide.org/hacks/
+- 
+
+ChatGPT/ ByteBytego
+- https://www.youtube.com/watch?v=bSvTVREwSNw
 
 ## Sites de formation
 - https://www.linkedin.com/learning/paths/devenir-expert-experte-en-devops
