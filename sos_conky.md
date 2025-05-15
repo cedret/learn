@@ -3,6 +3,8 @@
 - https://www.linuxtricks.fr/wiki/conky-des-variables-systeme-sur-le-bureau
 - 
 
+### First step
+
 ```
     1  sudo apt update
     2  sudo apt-get install conky-all
@@ -35,6 +37,9 @@ X-GNOME-Autostart-Delay=0
     8  chmod +x ~/.config/autostartconky.desktop
     9  sudo chmod +x ~/.config/autostartconky.desktop
    10  history
+```
+### Second step
+```
 secours@secours-Macmini:~$ cat /etc/conky/conky.conf
 -- Conky, a system monitor https://github.com/brndnmtthws/conky
 --
