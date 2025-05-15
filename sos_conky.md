@@ -4,7 +4,14 @@
 - 
 
 ```
-secours@secours-Macmini:~$ cat ~/.config/autostartconky.desktop
+    1  sudo apt update
+    2  sudo apt-get install conky-all
+    3  mkdir -p ~/.config/autostart
+    4  sudo nano ~/.config/autostart/conky.desktop
+    5  
+    6  sudo chmod +x ~/.config/autostart/conky.desktop
+    7  history
+secours@secours-NUC7i7BNH:~$ cat ~/.config/autostart/conky.desktop
 [Desktop Entry]
 Type=Application
 Exec=conky -p 5
@@ -14,10 +21,6 @@ Hidden=false
 Name[fr_FR]=Conky
 Comment[fr_FR]=Conky
 X-GNOME-Autostart-Delay=0
-secours@secours-Macmini:~$ chmod +x ~/.config/autostartconky.desktop
-chmod: modification des droits de '/home/secours/.config/autostartconky.desktop': Opération non permise
-secours@secours-Macmini:~$ sudo chmod +x ~/.config/autostartconky.desktop
-secours@secours-Macmini:~$ history 
 ```
 ```
     1  sudo apt update
