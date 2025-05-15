@@ -119,3 +119,99 @@ ${color lightgrey} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
 
 
 ```
+Pour vérifier la vitesse du ventilateur CPU avec **Conky**, tu peux suivre ces étapes :
+
+### 1. Vérifie si ton système possède les outils nécessaires
+
+Assure-toi que tu as installé **`lm-sensors`**, qui est un paquet utilisé pour accéder aux informations des capteurs de température et de vitesse des ventilateurs.
+
+* Sur **Ubuntu/Debian** :
+
+  ```bash
+  sudo apt-get install lm-sensors
+  ```
+
+* Sur **Arch Linux** :
+
+  ```bash
+  sudo pacman -S lm_sensors
+  ```
+
+Ensuite, lance la commande suivante pour détecter les capteurs disponibles :
+
+```bash
+sudo sensors-detect
+```
+
+Réponds aux questions en acceptant les options par défaut (en appuyant sur "Entrée").
+
+### 2. Vérifie la vitesse du ventilateur
+
+Après avoir configuré `lm-sensors`, tu peux utiliser la commande suivante pour voir les vitesses des ventilateurs :
+
+```bash
+sensors
+```
+
+Cela te donnera des informations comme la température des différents composants et la vitesse des ventilateurs (par exemple, `fan1`, `fan2`, etc.).
+
+### 3. Intégrer la vitesse du ventilateur dans Conky
+
+Maintenant, pour afficher la vitesse du ventilateur CPU dans **Conky**, tu peux ajouter la ligne suivante dans ton fichier de configuration Conky (`~/.conkyrc` ou `/etc/conky/conky.conf`, selon ton installation) :
+
+```conky
+${execi 10 sensors | grep 'fan1' | cut -d' ' -f2} RPM
+```
+
+* **`execi 10`** : Cette commande exécute `sensors` toutes les 10 secondes (ajuste ce chiffre selon tes préférences).
+* **`grep 'fan1'`** : Filtre la sortie pour afficher uniquement la ligne contenant la vitesse du ventilateur `fan1` (si ton ventilateur est étiqueté différemment, tu devras ajuster `fan1` par le bon nom).
+* **`cut -d' ' -f2`** : Extraie la vitesse en RPM.
+
+Si tu as plusieurs ventilateurs, tu peux répéter cette ligne pour afficher la vitesse d'autres ventilateurs, par exemple `fan2`, `fan3`, etc.
+
+### 4. Exemple complet de configuration Conky
+
+Voici un exemple simple de fichier `.conkyrc` où la vitesse des ventilateurs est affichée :
+
+```conky
+conky.config = {
+    alignment = 'top_left',
+    background = true,
+    double_buffer = true,
+    own_window = true,
+    own_window_type = 'desktop',
+    update_interval = 1.0,
+};
+
+conky.text = [[
+    ${time %H:%M:%S}
+    CPU Temp: ${execi 10 sensors | grep 'Core 0' | cut -d' ' -f3}
+    Fan Speed: ${execi 10 sensors | grep 'fan1' | cut -d' ' -f2} RPM
+]];
+```
+``${execi 10 sensors | grep 'fan1' | cut -d' ' -f2} RPM``
+
+Cela va afficher l'heure, la température du CPU et la vitesse du ventilateur.
+
+### 5. Personnalisation
+
+Si tu veux personnaliser davantage la sortie ou si tes ventilateurs sont étiquetés différemment, n'hésite pas à adapter les commandes `grep` et `cut` en fonction de ce que retourne la commande `sensors`.
+
+Voilà, tu devrais maintenant pouvoir voir la vitesse du ventilateur CPU dans Conky ! Si tu as d'autres questions ou si tu rencontres un problème, je suis là pour t'aider !
+**.conkyrc**
+```
+conky.config = {
+    alignment = 'top_left',
+    background = true,
+    double_buffer = true,
+    own_window = true,
+    own_window_type = 'desktop',
+    update_interval = 1.0,
+};
+
+conky.text = [[
+    ${time %H:%M:%S}
+    CPU Temp: ${execi 10 sensors | grep 'Core 0' | cut -d' ' -f3}
+    Fan Speed: ${execi 10 sensors | grep 'fan1' | cut -d' ' -f2} RPM
+]];
+```
