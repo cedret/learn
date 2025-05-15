@@ -11,6 +11,8 @@
     5  
     6  sudo chmod +x ~/.config/autostart/conky.desktop
     7  history
+    8  reboot
+
 secours@secours-NUC7i7BNH:~$ cat ~/.config/autostart/conky.desktop
 [Desktop Entry]
 Type=Application
