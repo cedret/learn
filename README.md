@@ -90,7 +90,6 @@ Now that you have downloaded Git, it's time to start using it.
 - https://mariadb.com/kb/en/setting-up-a-lamp-stack-with-docker-compose/
 - https://doc.ubuntu-fr.org/docker_lamp
 
-
 ## portables collège
  
 ````
@@ -109,6 +108,8 @@ __**Voici la liste des bios avec leur mot de passe**__
 > PC 2020/2019 :  F8Hv4U3T67 soit en qwerty: `F_Hv'U"T-è`
 > Timing:  F8Hv4U3T67 soit en qwerty: `F_Hv'U"T-è`
 
-
-**La version de votre Bios doit correspondre à celle du mot de passe**, par exemple si j'ouvre l'invite de commande windows et que je fait la commande `wmic bios get smbiosbiosversion` et que je prend le dernier caractère (c'est a dire  `ENE_[nombre]`, par exemple `ENE_6`), le mot de passe de mon bios sera  `YqJ(_(,kXg`.
+**La version de votre Bios doit correspondre à celle du mot de passe**,
+ par exemple si j'ouvre l'invite de commande windows et que je fais la commande `wmic bios get smbiosbiosversion`
+ et que je prends le dernier caractère (c'est a dire  `ENE_[nombre]`,
+ par exemple `ENE_6`), le mot de passe de mon bios sera  `YqJ(_(,kXg`.
 ````
