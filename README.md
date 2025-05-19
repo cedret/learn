@@ -5,6 +5,9 @@
 
 - https://fogproject.org/
 
+Ventilateur - arduino
+- https://github.com/szarvas/fanduino
+
 ## Culture digitale
 - https://www.youtube.com/watch?v=kjJHBi_iWlc
 - https://www.markdownguide.org/hacks/
