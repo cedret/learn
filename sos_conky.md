@@ -67,7 +67,7 @@ conky.config = {
     draw_outline = false,
     draw_shades = false,
     extra_newline = false,
-    font = 'DejaVu Sans Mono:size=12',
+    font = 'DejaVu Sans Mono:size=10',
     gap_x = 20,
     gap_y = 20,
     minimum_height = 5,
@@ -105,7 +105,7 @@ ${color grey}CPU Usage:$color $cpu% ${cpubar 4}
 ${color grey}Processes:$color $processes  ${color grey}Running:$color $running_processes
 $hr
 ${color grey}File systems:
- / $color${fs_used /}/${fs_size /} ${fs_bar 6 /}
+ / $color${fs_used /}/${fs_size /} ${fs_bar 5 /}
 ${color grey}Networking:
 Up:$color ${upspeed} ${color grey} - Down:$color ${downspeed}
 $hr
@@ -213,4 +213,41 @@ conky.text = [[
     CPU Temp: ${execi 10 sensors | grep 'Core 0' | cut -d' ' -f3}
     Fan Speed: ${execi 10 sensors | grep 'fan1' | cut -d' ' -f2} RPM
 ]];
+```
+### Occupation des disques
+
+   36  df -h
+   38  lsblk -f
+   
+```
+conky.text = [[
+${color grey}Info:$color ${scroll 32 Conky $conky_version - $sysname $nodename $kernel $machine}
+$hr
+${color grey}Uptime:$color $uptime
+${color grey}Frequency (in MHz):$color $freq
+${color grey}Frequency (in GHz):$color $freq_g
+${color grey}RAM Usage:$color $mem/$memmax - $memperc% ${membar 4}
+${color grey}Swap Usage:$color $swap/$swapmax - $swapperc% ${swapbar 4}
+${color grey}CPU Usage:$color $cpu% ${cpubar 4}
+${color grey}Processes:$color $processes  ${color grey}Running:$color $running_processes
+$hr
+${color grey}File systems:
+ = $color${fs_used /}/${fs_size /} ${fs_bar 3 /}
+ = $color${fs_used /media/secours/secu2505v1}/${fs_size /media/secours/secu2505v1} ${fs_bar 3/}
+${color grey}Networking:
+Up:$color ${upspeed} ${color grey} - Down:$color ${downspeed}
+$hr
+${color grey}Name              PID     CPU%   MEM%
+${color lightgrey} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+${color lightgrey} ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
+${color lightgrey} ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
+${color lightgrey} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
+
+${color lightblue}Drive Usage${color}
+
+Root (/)      : ${fs_used /} / ${fs_size /} (${fs_used_perc /}%)
+Home (/home)  : ${fs_used /home} / ${fs_size /home} (${fs_used_perc /home}%)
+Secu1 (/dev/sda) : ${fs_used /media/secours/secu2505v1} / ${fs_size /media/secours/secu2505v1} (${fs_used_perc /media/secours/secu2505v1}%)
+External (/media/usb) : ${fs_used /media/usb} / ${fs_size /media/usb} (${fs_used_perc /media/usb}%)
+]]
 ```
