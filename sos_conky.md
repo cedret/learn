@@ -37,8 +37,9 @@ X-GNOME-Autostart-Delay=0
     7  sudo sensors-detect
 ```
 ### Second step
-```
+
 secours@secours-Macmini:~$ cat /etc/conky/conky.conf
+```
 -- Conky, a system monitor https://github.com/brndnmtthws/conky
 --
 -- This configuration file is Lua code. You can write code in here, and it will
