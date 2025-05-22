@@ -26,17 +26,15 @@ Name[fr_FR]=Conky
 Comment[fr_FR]=Conky
 X-GNOME-Autostart-Delay=0
 ```
+#### Avec sensors
 ```
-    1  sudo apt update
-    2  sudo apt-get install conky-all
-    3  conky
-    4  mkdir -p ~/.config/autostart
-    5  ls -al
-    6  sudo nano ~/.config/autostartconky.desktop
-    7  cat ~/.config/autostartconky.desktop
-    8  chmod +x ~/.config/autostartconky.desktop
-    9  sudo chmod +x ~/.config/autostartconky.desktop
-   10  history
+    1  sudo apt-get install conky-all
+    2  mkdir -p ~/.config/autostart
+    3  sudo chmod +x ~/.config/autostart/conky.desktop
+    4  cat /etc/conky/conky.conf
+    5  sudo nano /etc/conky/conky.conf
+    6  sudo apt-get install lm-sensors
+    7  sudo sensors-detect
 ```
 ### Second step
 ```
