@@ -115,10 +115,10 @@ ${color lightgrey} ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
 ${color lightgrey} ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
 ${color lightgrey} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
 ]]
-
-
 ```
-Pour vérifier la vitesse du ventilateur CPU avec **Conky**, tu peux suivre ces étapes :
+---
+
+## Pour vérifier la vitesse du ventilateur CPU avec **Conky**, tu peux suivre ces étapes :
 
 ### 1. Vérifie si ton système possède les outils nécessaires
 
@@ -214,7 +214,114 @@ conky.text = [[
     Fan Speed: ${execi 10 sensors | grep 'fan1' | cut -d' ' -f2} RPM
 ]];
 ```
-### Occupation des disques et réseau
+---
+
+## Autre approche?
+To add **fan speed** information to your **Conky** setup, you'll need to first check if your system is reporting the fan speed and then display it in your Conky configuration.
+
+### 🧰 **Steps to Add Fan Speed to Conky**
+
+#### 1. **Check if fan speed is available on your system**
+
+Most Linux systems expose fan speed data via the `lm-sensors` package. Here’s how you can check:
+
+##### a. Install `lm-sensors` if you haven't already:
+
+```bash
+sudo apt install lm-sensors
+```
+
+##### b. Run the sensor detection tool:
+
+```bash
+sudo sensors-detect
+```
+
+Follow the prompts and let it scan for hardware sensors (this might take a few minutes). Once it's done, you can check your fan speeds with:
+
+```bash
+sensors
+```
+
+This command will show output like:
+
+```
+coretemp-isa-0000
+Adapter: ISA adapter
+Core 0:       +30.0°C  (high = +80.0°C, crit = +100.0°C)
+Core 1:       +32.0°C  (high = +80.0°C, crit = +100.0°C)
+
+fan1:        1200 RPM
+fan2:        1500 RPM
+```
+
+Look for lines like `fan1`, `fan2`, etc., which indicate fan speeds in RPM (Revolutions Per Minute).
+
+---
+
+#### 2. **Add fan speed to your Conky config**
+
+Once you've confirmed your fan speeds are available, you can display them in Conky.
+
+##### Example Conky Config:
+
+```lua
+# Fan speed
+Fan1 Speed: ${execi 10 sensors | grep 'fan1' | awk '{print $2}'} RPM
+Fan2 Speed: ${execi 10 sensors | grep 'fan2' | awk '{print $2}'} RPM
+```
+
+### Explanation:
+
+* **`execi 10`**: Executes the command every 10 seconds. You can adjust the interval (e.g., `execi 5` for 5 seconds).
+* **`sensors`**: Runs the `sensors` command to get temperature and fan data.
+* **`grep 'fan1'`**: Filters the output of `sensors` to only show lines containing `fan1`. You can change `fan1` to `fan2` or any other fan name depending on your system.
+* **`awk '{print $2}'`**: Extracts the second column, which in this case would be the RPM value of the fan.
+
+### 🧭 **Customizing Fan Speed Display**
+
+If you want to display more than one fan (e.g., `fan1`, `fan2`), you can simply add multiple lines as shown in the example. If your system has more fans, you can repeat this process for each one.
+
+---
+
+#### 3. **Testing and Adjusting**
+
+Once you've updated your Conky config, save it and restart Conky:
+
+```bash
+pkill conky
+conky
+```
+
+This will display the fan speeds (RPM) on your Conky desktop.
+
+---
+
+### 🛠 **Alternative: Direct Access to Fan Data Files**
+
+Some systems expose fan speed data directly via files under `/sys/class/hwmon/`. If you don't want to rely on `lm-sensors`, you can check if fan speed is available in those files.
+
+For example:
+
+```bash
+cat /sys/class/hwmon/hwmon0/fan1_input
+```
+
+If this file exists, it will give you the RPM of `fan1`.
+
+You can then modify your Conky config to display this file directly:
+
+```lua
+Fan1 Speed: ${execi 10 cat /sys/class/hwmon/hwmon0/fan1_input} RPM
+```
+
+---
+
+Let me know if you have trouble finding the fan data or need help customizing further!
+
+---
+
+## Occupation des disques et réseau
 
    36  df -h
    38  lsblk -f
