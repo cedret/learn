@@ -214,12 +214,65 @@ conky.text = [[
     Fan Speed: ${execi 10 sensors | grep 'fan1' | cut -d' ' -f2} RPM
 ]];
 ```
-### Occupation des disques
+### Occupation des disques et réseau
 
    36  df -h
    38  lsblk -f
    
 ```
+-- Conky, a system monitor https://github.com/brndnmtthws/conky
+--
+-- This configuration file is Lua code. You can write code in here, and it will
+-- execute when Conky loads. You can use it to generate your own advanced
+-- configurations.
+--
+-- Try this (remove the `--`):
+--
+--   print("Loading Conky config")
+--
+-- For more on Lua, see:
+-- https://www.lua.org/pil/contents.html
+
+conky.config = {
+    alignment = 'down_right',
+    background = false,
+    border_width = 1,
+    cpu_avg_samples = 2,
+    default_color = 'white',
+    default_outline_color = 'white',
+    default_shade_color = 'white',
+    double_buffer = true,
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+    extra_newline = false,
+    font = 'DejaVu Sans Mono:size=10',
+    gap_x = 100,
+    gap_y = 10,
+    minimum_height = 5,
+    minimum_width = 5,
+    net_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_ncurses = false,
+    out_to_stderr = false,
+    out_to_x = true,
+    own_window = true,
+    own_window_class = 'Conky',
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 0,
+    show_graph_range = false,
+    show_graph_scale = false,
+    stippled_borders = 0,
+    update_interval = 1.0,
+    uppercase = false,
+    use_spacer = 'none',
+    use_xft = true,
+}
+
 conky.text = [[
 ${color grey}Info:$color ${scroll 32 Conky $conky_version - $sysname $nodename $kernel $machine}
 $hr
@@ -231,23 +284,28 @@ ${color grey}Swap Usage:$color $swap/$swapmax - $swapperc% ${swapbar 4}
 ${color grey}CPU Usage:$color $cpu% ${cpubar 4}
 ${color grey}Processes:$color $processes  ${color grey}Running:$color $running_processes
 $hr
-${color grey}File systems:
+${color yellow}File systems:
  = $color${fs_used /}/${fs_size /} ${fs_bar 3 /}
- = $color${fs_used /media/secours/secu2505v1}/${fs_size /media/secours/secu2505v1} ${fs_bar 3/}
+ = $color${fs_used /media/secours/secu2505v1}/${fs_size /media/secours/secu2505v1} ${fs_bar 3 /media/secours/secu2505v1}
 ${color grey}Networking:
-Up:$color ${upspeed} ${color grey} - Down:$color ${downspeed}
+TtDw ${totaldown enp2s0}  # total downloaded
+TtUp ${totalup enp2s0}    # total uploaded
+Dw:$color ${downspeed enp2s0}  # download speed
+Up:$color ${upspeed enp2s0}    # upload speed
+
 $hr
 ${color grey}Name              PID     CPU%   MEM%
 ${color lightgrey} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
 ${color lightgrey} ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
 ${color lightgrey} ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
 ${color lightgrey} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
-
+${color lightgrey} ${top name 5} ${top pid 5} ${top cpu 5} ${top mem 5}
+$hr
 ${color lightblue}Drive Usage${color}
-
 Root (/)      : ${fs_used /} / ${fs_size /} (${fs_used_perc /}%)
 Home (/home)  : ${fs_used /home} / ${fs_size /home} (${fs_used_perc /home}%)
 Secu1 (/dev/sda) : ${fs_used /media/secours/secu2505v1} / ${fs_size /media/secours/secu2505v1} (${fs_used_perc /media/secours/secu2505v1}%)
 External (/media/usb) : ${fs_used /media/usb} / ${fs_size /media/usb} (${fs_used_perc /media/usb}%)
 ]]
+
 ```
