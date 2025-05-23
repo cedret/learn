@@ -221,7 +221,6 @@ conky.text = [[
    50  ip link
    51  ip route
 
-   
 ```
 -- Conky, a system monitor https://github.com/brndnmtthws/conky
 --
@@ -270,7 +269,7 @@ conky.config = {
     show_graph_range = false,
     show_graph_scale = false,
     stippled_borders = 0,
-    update_interval = 1.0,
+    update_interval = 2.0,
     uppercase = false,
     use_spacer = 'none',
     use_xft = true,
@@ -290,12 +289,19 @@ $hr
 ${color yellow}File systems:
  = $color${fs_used /}/${fs_size /} ${fs_bar 3 /}
  = $color${fs_used /media/secours/secu2505v1}/${fs_size /media/secours/secu2505v1} ${fs_bar 3 /media/secours/secu2505v1}
+ = $color${fs_used /media/secours/secu2505v2}/${fs_size /media/secours/secu2505v2} ${fs_bar 3 /media/secours/secu2505v2}
 ${color grey}Networking:
-TtDw ${totaldown enp2s0}  # total downloaded
-TtUp ${totalup enp2s0}    # total uploaded
-Dw:$color ${downspeed enp2s0}  # download speed
-Up:$color ${upspeed enp2s0}    # upload speed
+# Network speed (download and upload) with graph
+# Download speed
+${downspeedgraph enp2s0 20,150 0000ff 00ff00}  # Graph for download speed (20 width, 150 height, colors)
+Dw:$color ${downspeed enp2s0} KB/s
+# Upload speed
+${upspeedgraph enp2s0 20,150 ff0000 ffff00}  # Graph for upload speed (20 width, 150 height, colors)
+Up:$color ${upspeed enp2s0} KB/s
 
+# Add total data transferred
+Total Download: ${totaldown enp2s0} 
+Total Upload: ${totalup enp2s0}
 $hr
 ${color grey}Name              PID     CPU%   MEM%
 ${color lightgrey} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
@@ -308,7 +314,7 @@ ${color lightblue}Drive Usage${color}
 Root (/)      : ${fs_used /} / ${fs_size /} (${fs_used_perc /}%)
 Home (/home)  : ${fs_used /home} / ${fs_size /home} (${fs_used_perc /home}%)
 Secu1 (/dev/sda) : ${fs_used /media/secours/secu2505v1} / ${fs_size /media/secours/secu2505v1} (${fs_used_perc /media/secours/secu2505v1}%)
+Secu2 (/dev/sdb) : ${fs_used /media/secours/secu2505v2} / ${fs_size /media/secours/secu2505v2} (${fs_used_perc /media/secours/secu2505v2}%)
 External (/media/usb) : ${fs_used /media/usb} / ${fs_size /media/usb} (${fs_used_perc /media/usb}%)
 ]]
-
 ```
