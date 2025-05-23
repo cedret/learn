@@ -218,6 +218,9 @@ conky.text = [[
 
    36  df -h
    38  lsblk -f
+   50  ip link
+   51  ip route
+
    
 ```
 -- Conky, a system monitor https://github.com/brndnmtthws/conky
