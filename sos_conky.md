@@ -385,7 +385,7 @@ conky.config = {
 conky.text = [[
 ${color grey}Info:$color ${scroll 32 Conky $conky_version - $sysname $nodename $kernel $machine}
 $hr
-${color grey}Uptime:$color $uptime
+${color grey}SysTmp: ${execi 10 sensors | grep 'temp1' | awk '{print $2}'} - Uptime:$color $uptime
 ${color grey}Frequency (in MHz):$color $freq
 ${color grey}Frequency (in GHz):$color $freq_g
 ${color grey}RAM Usage:$color $mem/$memmax - $memperc% ${membar 4}
@@ -423,5 +423,18 @@ Home (/home)  : ${fs_used /home} / ${fs_size /home} (${fs_used_perc /home}%)
 Secu1 (/dev/sda) : ${fs_used /media/secours/secu2505v1} / ${fs_size /media/secours/secu2505v1} (${fs_used_perc /media/secours/secu2505v1}%)
 Secu2 (/dev/sdb) : ${fs_used /media/secours/secu2505v2} / ${fs_size /media/secours/secu2505v2} (${fs_used_perc /media/secours/secu2505v2}%)
 External (/media/usb) : ${fs_used /media/usb} / ${fs_size /media/usb} (${fs_used_perc /media/usb}%)
+# Fan speed
+CpuTmp: ${execi 10 sensors | grep 'Core0' | awk '{print $2}'}
+
+#acpitz-acpi-0
+#Adapter: ACPI interface
+#temp1:        +26.8°C  (crit = +95.0°C)
+#coretemp-isa-0000
+#Adapter: ISA adapter
+#Core 0:       +45.0°C  (high = +90.0°C, crit = +90.0°C)
+#Core 1:       +45.0°C  (high = +90.0°C, crit = +90.0°C)
+#Core 2:       +47.0°C  (high = +90.0°C, crit = +90.0°C)
+#Core 3:       +47.0°C  (high = +90.0°C, crit = +90.0°C)
 ]]
+
 ```
