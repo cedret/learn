@@ -18,7 +18,7 @@ sos_rsync.md
    16  probleme permission distante
    17  history 
    18  sudo mkdir -p /mnt/secu7test1
-   19  sudo mount -t cifs //192.168.1.207/vsy21v1bib_med /mnt/secu7test1 -o username=accesr,password=difficiL3
+   19  sudo mount -t cifs //192.168.1.207/vsy21v1bib_med /mnt/secu7test1 -o username=accesr,password=fastoche
    20  cd /mnt/secu7test1/
    21  ls
    22  ls -al
