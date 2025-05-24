@@ -1,8 +1,8 @@
-### Installer SSH rapidement
+### 1 - Installer SSH rapidement
 
 https://averagelinuxuser.com/how-to-install-and-use-ssh-on-linux/
 
-### Checklist pour se connecter proprement avec **MobaXterm + clé SSH** à un serveur Ubuntu
+### 2 - Checklist pour se connecter proprement avec **MobaXterm + clé SSH** à un serveur Ubuntu
 
 ---
 
