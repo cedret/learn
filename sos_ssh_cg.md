@@ -1,4 +1,8 @@
-Parfait, je te fais une **checklist ultra claire** pour que tu puisses te connecter proprement avec **MobaXterm + clé SSH** à ton serveur Ubuntu ! 🚀
+### Installer SSH rapidement
+
+https://averagelinuxuser.com/how-to-install-and-use-ssh-on-linux/
+
+### Checklist pour se connecter proprement avec **MobaXterm + clé SSH** à un serveur Ubuntu
 
 ---
 
