@@ -1,5 +1,7 @@
 sos_rsync.md
 
+### Script v1
+
 ````
     2  ls -al
     3  pwd
@@ -31,6 +33,69 @@ sos_rsync.md
    29  sudo rsync -av /mnt/secu7test1 /media/secours/secu2505v1
    30  history 
 ````
+### Script v2
+```
+#!/bin/bash
+
+lsblk
+cd /mnt/secu2505v2
+ls -al
+pwd
+echo "Contenu de mnt/secu2505v2"
+
+sleep 5
+cd /media/secours/secu2505v2
+ls -al
+pwd
+echo "Contenu de media/secours/secu2505v2"
+
+sleep 5
+# mkdir secu01test
+# sudo mkdir secu01test
+sudo mkdir -p /mnt/secu7test5
+sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=bill,password=fastoche
+cd /mnt/secu7test5/
+ls -al
+pwd
+echo "Contenu de secu7test5"
+
+sleep 5
+
+df -h
+echo "df-h"
+sleep 5
+lsblk -f
+echo "lsblk -f"
+
+sleep 5
+sensors
+date
+while true;
+do
+	echo "11 pour rsync depuis .207 -v1-"
+	echo "12 pour rsync depuis .207 -v2-"
+	echo "13 pour rsync depuis .207 -v2-"
+	echo "14 pour rsync depuis .207 -v3-"
+	echo "15 pour rsync depuis .207 -v4vrac-"
+	echo " 0 pour quitter"
+
+	read choix
+
+	case $choix in
+	15)
+		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
+		echo "sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
+		echo "terminé à"
+		date
+		;;
+	0)
+		 break
+		;;
+	esac
+done
+echo "Script fini"
+```
+### Autres pistes
 
 To copy a file from a **Samba shared directory** to a local directory, you can use a few different methods depending on how the Samba share is set up and the tools available on your system.
 
