@@ -1,4 +1,8 @@
 sostart.md
+- https://opensource.com/article/18/6/history-command
+- https://www.geeksforgeeks.org/history-command-in-linux-with-examples/
+- 
+
 ### PANDONC Convertisseur de textes
 pandoc rapport25bloc001.md -o mon_fichier.docx --toc
 
