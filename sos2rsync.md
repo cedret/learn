@@ -1,12 +1,14 @@
 sos_rsync.md
 
+## 1 - Monter répertoires avec linux pour Rsync
+
 Pour se **déplacer sur un autre disque** en ligne de commande Linux (CLI), il faut d'abord **s'assurer que le disque est monté**, puis vous pouvez simplement utiliser `cd` pour vous y rendre.
 
 ### Étapes détaillées :
 
 ---
 
-### ✅ 1. **Lister les disques disponibles**
+### 1. **Lister les disques disponibles**
 
 Utilisez `lsblk` pour voir les disques et partitions :
 
@@ -28,7 +30,7 @@ Ici, `sdb1` est une partition sur un second disque.
 
 ---
 
-### ✅ 2. **Créer un point de montage (si besoin)**
+### 2. **Créer un point de montage (si besoin)**
 
 Choisissez un répertoire où monter le disque, par exemple `/mnt/disque2` :
 
@@ -38,7 +40,7 @@ sudo mkdir -p /mnt/disque2
 
 ---
 
-### ✅ 3. **Monter le disque**
+### 3. **Monter le disque**
 
 Montez la partition (ex. `sdb1`) sur le point de montage :
 
@@ -50,7 +52,7 @@ sudo mount /dev/sdb1 /mnt/disque2
 
 ---
 
-### ✅ 4. **Se déplacer vers le disque**
+### 4. **Se déplacer vers le disque**
 
 Une fois monté, vous pouvez y accéder comme à n’importe quel répertoire :
 
@@ -60,7 +62,7 @@ cd /mnt/disque2
 
 ---
 
-### 🔁 (Facultatif) 5. **Démonter le disque après utilisation**
+### (Facultatif) 5. **Démonter le disque après utilisation**
 
 Quand vous avez fini :
 
@@ -70,7 +72,7 @@ sudo umount /mnt/disque2
 
 ---
 
-### ℹ️ Astuce : Disques automontés
+### ℹAstuce : Disques automontés
 
 Parfois, si vous branchez un disque externe, il peut être monté automatiquement sous `/media/username/`. Utilisez :
 
@@ -83,25 +85,20 @@ et listez avec :
 ```bash
 ls
 ```
-
 pour voir s’il y a un dossier avec le nom du disque.
-
----
 
 Si tu veux que le disque soit monté automatiquement au démarrage, je peux aussi t’expliquer comment éditer `/etc/fstab`.
 
-Souhaites-tu faire ça ?
-
 ---
 ---
 
-Pour **atteindre un dossier partagé via Samba (SMB)** en ligne de commande sous Linux, tu peux le faire de deux façons principales :
+## 2 - Atteindre un dossier partagé via Samba (SMB) en ligne de commande sous Linux
 
----
+Deux façons principales :
 
-## ✅ 1. **Monter un dossier Samba avec `mount` (temporaire)**
+## A. **Monter un dossier Samba avec `mount` (temporaire)**
 
-### 🔧 Étapes :
+### Étapes :
 
 ### ➊ Créer un point de montage
 
@@ -115,7 +112,7 @@ sudo mkdir -p /mnt/partage
 sudo mount -t cifs //IP_du_serveur/nom_partage /mnt/partage -o username=TON_UTILISATEUR,password=TON_MOTDEPASSE
 ```
 
-🔁 Exemple :
+ Exemple :
 
 ```bash
 sudo mount -t cifs //192.168.1.10/backup /mnt/partage -o username=admin,password=secret
@@ -127,9 +124,7 @@ sudo mount -t cifs //192.168.1.10/backup /mnt/partage -o username=admin,password
 -o username=admin,password=secret,domain=WORKGROUP,vers=3.0
 ```
 
----
-
-## ✅ 2. **Naviguer sans monter : utiliser `smbclient` (mode FTP)**
+## B. **Naviguer sans monter : utiliser `smbclient` (mode FTP)**
 
 Si tu veux **parcourir** ou **copier** des fichiers sans monter le partage, utilise :
 
@@ -156,13 +151,13 @@ put fichier       # envoie un fichier
 
 ---
 
-## 📌 Option : Montage permanent (dans `/etc/fstab`)
+### Option : Montage permanent (dans `/etc/fstab`)
 
 Si tu veux que le partage Samba soit monté **automatiquement au démarrage**, tu peux l’ajouter à ton fichier `/etc/fstab`. Je peux t’expliquer comment si tu veux.
 
 ---
 
-## 🧰 Paquets requis
+### Paquets requis
 
 Si tu as une erreur du genre "cifs: command not found" :
 
@@ -176,16 +171,15 @@ Souhaites-tu :
 
 * un **montage automatique au démarrage** ?
 * accéder à un partage **avec un nom d’utilisateur invité ou sans mot de passe** ?
-  Je peux adapter les commandes selon ton cas.
 
   ---
   ---
 
-  Pour **copier un répertoire depuis un partage Samba (SMB)** vers un répertoire local en ligne de commande, tu peux utiliser deux méthodes efficaces selon ton besoin :
+##  Pour **copier un répertoire depuis un partage Samba (SMB)** vers un répertoire local en ligne de commande, tu peux utiliser deux méthodes efficaces selon ton besoin :
 
----
 
-## ✅ **Méthode 1 : Monter le partage Samba + `cp` ou `rsync`**
+
+### **Méthode 1 : Monter le partage Samba + `cp` ou `rsync`**
 
 ### 🔧 Étapes :
 
@@ -228,7 +222,7 @@ sudo umount /mnt/partage
 
 ---
 
-## ✅ **Méthode 2 : Utiliser `smbclient` comme un client FTP**
+### **Méthode 2 : Utiliser `smbclient` comme un client FTP**
 
 Si tu **ne veux pas monter** le partage, tu peux copier avec `smbclient` :
 
@@ -252,7 +246,7 @@ Cela va **télécharger tous les fichiers du dossier distant** vers le dossier l
 
 ---
 
-## 📦 Paquets requis :
+### Paquets requis :
 
 Assure-toi d’avoir ces outils installés :
 
@@ -267,11 +261,11 @@ Souhaites-tu faire cela **automatiquement via un script**, ou avec **mot de pass
 ---
 ---
 
-Pour **copier tous les répertoires d’un partage Samba vers un répertoire local**, la méthode la plus robuste et simple consiste à **monter le partage Samba localement**, puis utiliser `rsync` ou `cp` pour tout copier.
+## **copier tous les répertoires d’un partage Samba vers un répertoire local**, la méthode la plus robuste et simple consiste à **monter le partage Samba localement**, puis utiliser `rsync` ou `cp` pour tout copier.
 
 ---
 
-## ✅ **Méthode recommandée : montage CIFS + rsync**
+### **Méthode recommandée : montage CIFS + rsync**
 
 ### 1. **Créer un point de montage**
 
@@ -289,7 +283,7 @@ Remplace `IP_SAMBA`, `PARTAGE`, `utilisateur`, `motdepasse` selon ton cas :
 sudo mount -t cifs //IP_SAMBA/PARTAGE /mnt/samba_partage -o username=utilisateur,password=motdepasse
 ```
 
-🔁 Exemple :
+Exemple :
 
 ```bash
 sudo mount -t cifs //192.168.1.100/backup /mnt/samba_partage -o username=admin,password=secret
@@ -306,7 +300,7 @@ mkdir -p ~/sauvegarde
 rsync -av /mnt/samba_partage/ ~/sauvegarde/
 ```
 
-📌 Explication :
+Explication :
 
 * `-a` : copie récursive avec préservation des attributs
 * `-v` : mode verbeux (affiche ce qui est copié)
@@ -322,7 +316,7 @@ sudo umount /mnt/samba_partage
 
 ---
 
-## ✅ Alternative : copier sans montage via `smbclient`
+### Alternative : copier sans montage via `smbclient`
 
 ```bash
 smbclient //192.168.1.100/backup -U admin
@@ -583,4 +577,80 @@ find "$DESTINATION_BASE" -maxdepth 1 -type d -name "20*" -mtime +7 -exec rm -rf 
 ```
 
 Souhaites-tu que je t’aide à **tester ce script**, ou à **l’adapter pour sauvegarder plusieurs partages Samba** ?
+
+## Avec MacOS
+
+Pour monter un répertoire **Samba (SMB)** en ligne de commande (**CLI**) sous **macOS**, tu peux utiliser la commande `mount_smbfs`.
+
+Voici les étapes détaillées :
+
+---
+
+### 🔧 **1. Syntaxe de base**
+
+```bash
+mount_smbfs //[user[:password]@]server/share /chemin/local
+```
+
+---
+
+### 📌 **2. Exemple concret**
+
+Supposons que :
+
+* Serveur : `192.168.1.100`
+* Partage : `partage`
+* Utilisateur : `john`
+* Mot de passe : `secret123`
+* Point de montage local : `/Volumes/partage`
+
+#### Étape 1 : Créer le dossier local pour le montage
+
+```bash
+mkdir -p /Volumes/partage
+```
+
+#### Étape 2 : Monter le partage Samba
+
+```bash
+mount_smbfs //john@192.168.1.100/partage /Volumes/partage
+```
+
+> macOS te demandera le mot de passe si tu ne le fournis pas directement dans l'URL.
+
+---
+
+### ⚠️ **Remarques de sécurité**
+
+* Évite de mettre le mot de passe en clair dans la commande pour des raisons de sécurité.
+* Pour une utilisation automatisée, tu peux utiliser un fichier d’identifiants sécurisé avec `keychain`, ou un système de montages auto (`/etc/auto_master` + `autofs`).
+
+---
+
+### ✅ **Vérification**
+
+Après le montage, tu peux vérifier avec :
+
+```bash
+df -h
+```
+
+ou
+
+```bash
+mount
+```
+
+---
+
+### 🛑 **Démonter le partage**
+
+```bash
+umount /Volumes/partage
+```
+
+---
+
+Si tu veux que je t’aide à créer un montage automatique au démarrage avec `autofs`, je peux te guider là-dessus aussi.
+
 
