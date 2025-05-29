@@ -453,7 +453,7 @@ ${color yellow}File systems:
  = $color${fs_used /}/${fs_size /} ${fs_bar 3 /}
  = $color${fs_used /media/secours/secu2505v1}/${fs_size /media/secours/secu2505v1} ${fs_bar 3 /media/secours/secu2505v1}
  = $color${fs_used /media/secours/secu2505v2}/${fs_size /media/secours/secu2505v2} ${fs_bar 3 /media/secours/secu2505v2}
-${color grey}Networking:
+${color grey}Networking: Local IP: ${addr enp2s0}
 # Network speed (download and upload) with graph
 # Download speed
 ${downspeedgraph enp2s0 20,150 0000ff 00ff00}  # Graph for download speed (20 width, 150 height, colors)
@@ -492,5 +492,4 @@ CpuTmp: ${execi 10 sensors | grep 'Core0' | awk '{print $2}'}
 #Core 2:       +47.0°C  (high = +90.0°C, crit = +90.0°C)
 #Core 3:       +47.0°C  (high = +90.0°C, crit = +90.0°C)
 ]]
-
 ```
