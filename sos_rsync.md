@@ -1,6 +1,6 @@
 sos_rsync.md
 
-### Script v1
+### Script v1 (ts253a)
 
 ````
     2  ls -al
@@ -33,7 +33,7 @@ sos_rsync.md
    29  sudo rsync -av /mnt/secu7test1 /media/secours/secu2505v1
    30  history 
 ````
-### Script v2
+### Script v2 (ts253a)
 ```
 #!/bin/bash
 
