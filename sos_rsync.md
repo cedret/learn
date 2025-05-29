@@ -52,12 +52,6 @@ echo "Contenu de media/secours/secu2505v2"
 sleep 5
 # mkdir secu01test
 # sudo mkdir secu01test
-sudo mkdir -p /mnt/secu7test5
-sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=bill,password=fastoche
-cd /mnt/secu7test5/
-ls -al
-pwd
-echo "Contenu de secu7test5"
 
 sleep 5
 
@@ -76,17 +70,53 @@ do
 	echo "12 pour rsync depuis .207 -v2-"
 	echo "13 pour rsync depuis .207 -v2-"
 	echo "14 pour rsync depuis .207 -v3-"
-	echo "15 pour rsync depuis .207 -v4vrac-"
+	echo "15 pour rsync depuis .207 -tri4ext- environ 3h"
+	echo "21 pour rsync depuis .207 -mni01- environ 15 min"
+
+	echo "99 Tout démonter"
 	echo " 0 pour quitter"
 
 	read choix
 
 	case $choix in
 	15)
+		sudo mkdir -p /mnt/secu7test5
+		sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=accesr,password=difficiL3
+		cd /mnt/secu7test5/
+		ls -al
+		pwd
+		echo "Contenu de secu7test5"
 		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
 		echo "sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
 		echo "terminé à"
 		date
+		;;
+	21)
+		sudo mkdir -p /mnt/secu7mni01
+		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/secu7mni01 -o username=accesr,password=difficiL3
+		cd /mnt/secu7mni01/
+		ls -al
+		pwd
+		echo "Contenu de secu7mni01"
+		sudo rsync -av /mnt/secu7mni01 /media/secours/secu2505v2
+		echo "sudo rsync -av /mnt/secu7mni01/ /media/secours/secu2505v2"
+		echo "terminé à"
+		date
+		;;
+
+	88)
+		date
+		sudo rsync -av /mnt/secu7mni01 /media/secours/secu2505v2
+		echo "sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
+		echo "terminé à"
+		date
+		;;
+	99)
+		sudo unmount /mnt/secu7test1
+		sudo unmount /mnt/secu7test2
+		sudo unmount /mnt/secu7test3
+		sudo unmount /mnt/secu7test4
+		sudo unmount /mnt/secu7test5
 		;;
 	0)
 		 break
