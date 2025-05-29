@@ -118,7 +118,63 @@ ${color lightgrey} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
 ```
 ---
 
-## Pour vérifier la vitesse du ventilateur CPU avec **Conky**, tu peux suivre ces étapes :
+### Afficher adresse IP
+
+To display your **local IP address** using **Conky**, you need to use the `${addr}` variable with the name of your **network interface**.
+
+### ✅ Step-by-Step
+
+1. **Find your network interface name**
+   Common ones are:
+
+   * `eth0` → for Ethernet
+   * `wlan0` or `wlp2s0` → for Wi-Fi
+
+   Run this command in the terminal to see your interface names:
+
+   ```bash
+   ip addr
+   ```
+
+2. **Edit your `.conkyrc` file** (or your `conky.conf` if using newer syntax)
+
+   Add this line where you want the local IP to appear:
+
+   ```conky
+   Local IP: ${addr wlp2s0}
+   ```
+
+   Replace `wlp2s0` with your actual interface name.
+
+3. **Save and reload Conky**
+   Either reboot or run:
+
+   ```bash
+   conky -c ~/.conkyrc
+   ```
+
+---
+
+### 💡 Example `.conkyrc` snippet
+
+```conky
+conky.config = {
+    use_xft = true,
+    update_interval = 1.0,
+    double_buffer = true,
+    own_window = true,
+    own_window_type = 'desktop',
+    alignment = 'top_left',
+    gap_x = 10,
+    gap_y = 10,
+};
+
+conky.text = [[
+${color white}Local IP: ${addr wlp2s0}
+]];
+```
+
+### Pour vérifier la vitesse du ventilateur CPU avec **Conky**, tu peux suivre ces étapes :
 
 ### 1. Vérifie si ton système possède les outils nécessaires
 
