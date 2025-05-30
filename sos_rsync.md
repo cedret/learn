@@ -33,37 +33,35 @@ sos_rsync.md
    29  sudo rsync -av /mnt/secu7test1 /media/secours/secu2505v1
    30  history 
 ````
-### Script v2 (ts253a)
+### Script v2 (ts253a+mba+listrsync)
 ```
 #!/bin/bash
 
-lsblk
-cd /mnt/secu2505v2
-ls -al
 pwd
-echo "Contenu de mnt/secu2505v2"
-
+echo "----- Montage secu7mni01"
+sudo mkdir -p /mnt/secu7mni01
+ls -al /mnt/secu7mni01
+echo "^^^^^ Contenu de mnt/secu7mni01"
 sleep 5
-cd /media/secours/secu2505v2
-ls -al
+
+mkdir /home/secours/Documents/ccc2505mni01
+ls -al /home/secours/Documents/ccc2505mni01
 pwd
-echo "Contenu de media/secours/secu2505v2"
-
-sleep 5
-# mkdir secu01test
-# sudo mkdir secu01test
-
+echo "^^^^^ Contenu de /home... mni01"
 sleep 5
 
 df -h
-echo "df-h"
+echo "^^^^^ df -h"
 sleep 5
-lsblk -f
-echo "lsblk -f"
 
+lsblk -f
+echo "^^^^^ lsblk -f"
 sleep 5
-sensors
-date
+
+date >> listrsync
+echo "test" >> listrsync 
+
+
 while true;
 do
 	echo "11 pour rsync depuis .207 -v1-"
@@ -71,7 +69,7 @@ do
 	echo "13 pour rsync depuis .207 -v2-"
 	echo "14 pour rsync depuis .207 -v3-"
 	echo "15 pour rsync depuis .207 -tri4ext- environ 3h"
-	echo "21 pour rsync depuis .207 -mni01- environ 15 min"
+	echo "22 pour rsync depuis .207 -mni01- vers MBA"
 
 	echo "99 Tout démonter"
 	echo " 0 pour quitter"
@@ -91,16 +89,19 @@ do
 		echo "terminé à"
 		date
 		;;
-	21)
-		sudo mkdir -p /mnt/secu7mni01
+	22)
+#		sudo mkdir -p /mnt/secu7mni01
+		date >> listrsync
+		echo "-Début copie mni01 vers mba" >> listrsync 
 		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/secu7mni01 -o username=accesr,password=difficiL3
-		cd /mnt/secu7mni01/
-		ls -al
+		sudo ls -al /mnt/secu7mni01/ccc2505mni01
 		pwd
-		echo "Contenu de secu7mni01"
-		sudo rsync -av /mnt/secu7mni01 /media/secours/secu2505v2
-		echo "sudo rsync -av /mnt/secu7mni01/ /media/secours/secu2505v2"
-		echo "terminé à"
+		echo "^^^^^ Contenu de mnt/secu7mni01/ccc2505... rsync imminent"
+		sleep 10
+		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
+		echo "sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Docyments..."
+		echo "-Fin copie mni01 vers mba" >> listrsync 
+		date >> listrsync
 		date
 		;;
 
