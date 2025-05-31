@@ -34,10 +34,11 @@ do
 	echo "14 rsync depuis .207 -v3-"
 	echo "15 rsync depuis .207 -tri4ext- environ 3h"
 	echo "16 rsync depuis .207 -mni01- vers MBA"
-  echo ""
   echo "===== SAUVEGARDES"
 	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?)"
 	echo "22 rsync depuis mba(zorin) vers ccc"
+echo "===== AUTRES"
+ 	echo "31 Monter diques qnap"
 	echo "91 voir listrsync"
 	echo "92 Vérifier montages"
 	echo "93 Démonter intelligent"
@@ -105,8 +106,13 @@ do
 		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
 		echo "----- Fin copie mba vers ccc/wifi" >> listrsync 
 		date >> listrsync
-
-# Add total data transferred
+	31)
+ 		sudo mkdir /media/secours/secu2505v1
+		sudo mount /dev/sda /media/secours/secu2505v1
+		sudo mkdir /media/secours/secu2505v2
+		sudo mount /dev/sdb /media/secours/secu2505v2
+		;;
+  # Add total data transferred
 #		Total Download: ${totaldown enp2s0} 
 #		Total Upload: ${totalup enp2s0}
 		;;
