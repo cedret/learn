@@ -36,7 +36,7 @@ do
 	echo "16 rsync depuis .207 -mni01- vers MBA"
   echo ""
   echo "===== SAUVEGARDES"
-	echo "21 rsync depuis mni(macos) vers ccc"
+	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?)"
 	echo "22 rsync depuis mba(zorin) vers ccc"
 	echo "91 voir listrsync"
 	echo "92 Vérifier montages"
