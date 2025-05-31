@@ -73,19 +73,19 @@ do
 		date
 		;;
  	21)
-		echo "----- A REFAIRE"
+		echo "----- A VERIFIER"
     		ifconfig
 		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
 		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls /Volumes/vsy21tri2int
 
-		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe/miraheze /Volumes/vsy21tri2int/ccc2505mni11test
-		echo "sudo rsync -av /Documents... /Volumes...-test-"
+		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/vsy21tri2int/ccc2505mni12test
+		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
-
 		echo "----- Fin copie mni01 vers ccc/eth" >> listrsync 
+		date >> listrsync
 		;;
 	22)
 		sudo mkdir -p /mnt/vsy21tri2int
@@ -104,6 +104,8 @@ do
 #		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/ /mnt/vsy21tri2int/ccc2505mba
 		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
 		echo "----- Fin copie mba vers ccc/wifi" >> listrsync 
+		date >> listrsync
+
 # Add total data transferred
 #		Total Download: ${totaldown enp2s0} 
 #		Total Upload: ${totalup enp2s0}
@@ -142,7 +144,6 @@ do
 		 break
 		;;
 	esac
-done
-date >> listrsync
 date
+done
 echo "Script terminé"
