@@ -44,7 +44,7 @@ do
 	case $choix in
 	15)
 		sudo mkdir -p /mnt/secu7test5
-		sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=accesr,password=difficiL3
+		sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=accesr,password=fastoche
 		cd /mnt/secu7test5/
 		ls -al
 		pwd
@@ -58,7 +58,7 @@ do
 #		sudo mkdir -p /mnt/secu7mni01
 		date >> listrsync
 		echo "-Début copie mni01 vers mba" >> listrsync 
-		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/secu7mni01 -o username=accesr,password=difficiL3
+		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/secu7mni01 -o username=accesr,password=fastoche
 		sudo ls -al /mnt/secu7mni01/ccc2505mni01
 		pwd
 		echo "^^^^^ Contenu de mnt/secu7mni01/ccc2505... rsync imminent"
@@ -70,16 +70,18 @@ do
 		date
 		;;
   21)
-    ifconfig
-    date >> listrsync
+		echo "----- A REFAIRE"
+		sleep 5
+    		ifconfig
+		date >> listrsync
 		echo "-Début copie mni01 vers ccc" >> listrsync 
-    sudo mkdir -p /Volumes/secu25dest207tri2
-    ls /Volumes/
-    sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/secu25dest207tri2/
-    sudo ls /Volumes/secu25dest207tri2
-    sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe/miraheze /Volumes/secu25dest207/test.rep/
-    sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
-    echo "sudo rsync -av /Documents... /Volumes..."
+		sudo mkdir -p /Volumes/secu25dest207tri2
+		ls /Volumes/
+		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/secu25dest207tri2/
+		sudo ls /Volumes/secu25dest207tri2
+		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe/miraheze /Volumes/secu25dest207/test.rep/
+		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
+		echo "sudo rsync -av /Documents... /Volumes..."
 		echo "-Fin copie mni01 vers ccc" >> listrsync 
 		date >> listrsync
 		date
@@ -103,4 +105,4 @@ do
 		;;
 	esac
 done
-echo "Script fini"
+echo "Script terminé"
