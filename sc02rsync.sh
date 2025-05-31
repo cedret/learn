@@ -1,4 +1,7 @@
 #!/bin/bash
+
+systemctl status smbd
+
 lsblk -f
 echo "----- lsblk -f /source"
 
