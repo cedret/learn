@@ -40,7 +40,8 @@ do
 	echo "16 rsync depuis .207 -mni01- vers MBA"
  	echo "===== SAUVEGARDES"
 	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?)"
-	echo "22 rsync depuis mba(zorin) vers ccc"
+ 	echo "22 Supprimer sauvegarde antérieure depuis macos"
+	echo "23 rsync depuis mba(zorin) vers ccc"
  	echo "29 Supprimer sauvegarde antérieure"
 	echo "===== AUTRES"
  	echo "31 Monter diques qnap"
@@ -61,6 +62,8 @@ do
 		ls -al
 		pwd
 		echo "Contenu de secu7test5"
+  		echo "==> Pause : appuyez sur une touche pour continuer."
+		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
 		echo "sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
 		echo "terminé à"
@@ -72,20 +75,22 @@ do
 		sudo ls -al /mnt/secu7mni01/ccc2505mni01
 		pwd
 		echo "^^^^^ Contenu de mnt/secu7mni01/ccc2505... rsync imminent"
-		sleep 10
+		echo "==> Pause : appuyez sur une touche pour continuer."
+		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
 		echo "sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
 		echo "-Fin copie mni01 vers mba" >> rsync.log 
 		date
 		;;
  	21)
-		echo "----- A VERIFIER"
+		echo "----- SAUVEGARDE"
     		ifconfig
 		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
 		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls /Volumes/vsy21tri2int
-
+		echo "==> Pause : appuyez sur une touche pour continuer."
+		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/vsy21tri2int/ccc2505mni12test
 		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
@@ -93,7 +98,24 @@ do
 		echo "----- Fin copie mni01 vers ccc/eth" >> rsync.log 
 		date >> rsync.log
 		;;
-	22)
+  	22)
+		echo "----- SUPPRESSION"
+    		ifconfig
+		sudo mkdir -p /Volumes/vsy21tri2int
+		ls /Volumes/
+		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
+		sudo ls /Volumes/vsy21tri2int
+		echo "==> Pause : appuyez sur une touche pour continuer."
+		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
+		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/vsy21tri2int/ccc2505mni12test
+		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
+#		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
+#		echo "sudo rsync -av /Documents... /Volumes..."
+		echo "----- Fin suppression depuis mni01 vers ccc" >> rsync.log 
+		date >> rsync.log
+		;;
+   
+	23)
 		sudo mkdir -p /mnt/vsy21tri2int
 #		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/vsy21tri2int -o username=access,password=illicO12
 		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/vsy21tri2int -o username=access
