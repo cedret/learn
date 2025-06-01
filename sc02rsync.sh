@@ -90,14 +90,16 @@ do
 		ls /Volumes/
 #		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls /Volumes/vsy21tri2int
-  		echo ">>>>> ATTENTION AU DEMONTAGE DU PROTOCOLE PRECEDENT !!!!!"
-		echo "===== Pause : appuyez sur une touche pour continuer ....."
+  		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
+		echo "===== Pause : appuyez sur une touche pour rsync en ssh ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-#  		rsync -av /home/user/tosave*/ /destination/ ----- FUSION !!!!!
+#--- FUSION  	rsync -av /home/user/tosave*/ /destination/
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
-		for dir in /Users/access/Documents/_MNI0*/;
+#--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
+		for dir in /Users/access/Documents/_MNI04*/;
   			do
-			rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
+			rsync -avh --progress -e ssh "$dir" access@192.168.1.207:/vsy21tri2int/ccc2506mni/
+#   			rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
 			done
   		echo "sudo rsync -av /Documents... /Volumes...-mni0*-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
