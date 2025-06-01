@@ -114,7 +114,7 @@ do
 		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
-		rsync --stats source/ destination/ > rsync.log
+		rsync --stats source/ destination/ >> rsync.log
 		echo "----- Fin suppression depuis mni vers ccc à:" >> rsync.log 
 		date >> rsync.log
 		;;
