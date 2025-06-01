@@ -85,13 +85,14 @@ do
 		date >> rsync.log
 		;;
  	21)
-		echo "----- SAUVEGARDE depuis MACOS -mni01//tri2/ccc2505"
+		echo "----- SAUVEGARDE depuis MACOS -mni01//tri2/ccc2506"
     		ifconfig
 		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
 		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls /Volumes/vsy21tri2int
-		echo "==> Pause : appuyez sur une touche pour continuer."
+  		echo ">>>>> ATTENTION AU DEMONTAGE DU PROTOCOLE PRECEDENT !!!!!"
+		echo "===== Pause : appuyez sur une touche pour continuer ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/vsy21tri2int/ccc2506mni
 		echo "sudo rsync -av /Documents... /Volumes...-mni01-"
