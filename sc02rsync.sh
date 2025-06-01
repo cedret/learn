@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo "===== DEBUT SCRIPT RSYNC"
 systemctl status smbd
 
 lsblk -f
@@ -23,7 +23,7 @@ pwd
 echo "^^^^^ Contenu source -test-"
 sleep 3
 
-echo "---------- IP : $(hostname -I)" >> listrsync
+echo "---------- IP : $(hostname -I)" >> rsync.log
 hostname >> rsync.log
 date >> rsync.log 
 
