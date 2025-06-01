@@ -44,7 +44,7 @@ do
 	echo "23 rsync depuis mba(zorin) vers ccc"
  	echo "29 Supprimer sauvegarde antérieure depuis debian"
 	echo "===== AUTRES"
- 	echo "31 Monter diques qnap"
+ 	echo "31 Monter disques qnap"
 	echo "91 voir rsync.log"
 	echo "92 Vérifier montages"
 	echo "93 Démonter intelligent"
@@ -56,6 +56,7 @@ do
 
 	case $choix in
 	15)
+ 		echo "----- SAUVEGARDE vers DEBIAN"
 		sudo mkdir -p /mnt/secu7test5
 		sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=accesr,password=fastoche
 		cd /mnt/secu7test5/
@@ -70,6 +71,7 @@ do
 		date
 		;;
 	16)
+		echo "----- SAUVEGARDE vers DEBIAN"
 #		sudo mkdir -p /mnt/secu7mni01
 		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/secu7mni01 -o username=accesr,password=difficiL3
 		sudo ls -al /mnt/secu7mni01/ccc2505mni01
@@ -116,6 +118,7 @@ do
 		;;
    
 	23)
+ 		echo "----- SAUVEGARDE depuis DEBIAN"
 		sudo mkdir -p /mnt/vsy21tri2int
 #		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/vsy21tri2int -o username=access,password=illicO12
 		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/vsy21tri2int -o username=access
@@ -135,6 +138,7 @@ do
 		date >> rsync.log
   		;;
 	31)
+	  	echo "31 Monter disques qnap"
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
 		sudo mkdir /media/secours/secu2505v2
