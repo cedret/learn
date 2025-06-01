@@ -133,6 +133,7 @@ do
 		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
 		echo "----- Fin copie mba vers ccc/wifi" >> rsync.log 
 		date >> rsync.log
+  		;;
 	31)
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
