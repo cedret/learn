@@ -107,7 +107,7 @@ do
 		sudo ls /Volumes/vsy21tri2int
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		sudo rm -r /Volumes/vsy21tri2int/ccc2505mni12test
+		sudo rm -r /Volumes/vsy21tri2int/ccc2505test
 		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
