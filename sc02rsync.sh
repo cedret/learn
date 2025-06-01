@@ -47,7 +47,8 @@ do
 	echo "92 Vérifier montages"
 	echo "93 Démonter intelligent"
 	echo "95 Supprimer /mnt///ccc2505mba"
-	echo "99 Tout démonter"
+	echo "98 Tout démonter"
+ 	echo "99 ajouter quantité de données dupliquées au .log"
 	echo " 0 pour quitter"
 
 	read choix
@@ -165,7 +166,7 @@ do
 		echo "sudo rm -r /mnt/vsy21tri2int/ccc2505mba/"
 		sudo rm -r /mnt/vsy21tri2int/ccc2505mba/
 		;;
-	98)
+	97)
 		sudo unmount /mnt/secu7test1
 		sudo unmount /mnt/secu7test2
 		sudo unmount /mnt/secu7test3
@@ -174,12 +175,16 @@ do
 		sudo unmount /mnt/vsy21tri2int
 
 		;;
-	99)
+	98)
 		sudo umount -lf /mnt/*
 		;;
-
-	0)
-		 break
+	99)
+ 		echo "Quantité de données dupliquées?"
+		read donnees
+  		$donness >> rsync.log
+ 		;;
+	 0)
+		break
 		;;
 	esac
 date
