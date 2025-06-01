@@ -93,9 +93,13 @@ do
   		echo ">>>>> ATTENTION AU DEMONTAGE DU PROTOCOLE PRECEDENT !!!!!"
 		echo "===== Pause : appuyez sur une touche pour continuer ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-#  		rsync -av /home/user/tosave*/ /destination/
-		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
-		echo "sudo rsync -av /Documents... /Volumes...-mni01-"
+#  		rsync -av /home/user/tosave*/ /destination/ ----- FUSION !!!!!
+#		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
+		for dir in /Users/access/Documents/_MNI0*/;
+  			do
+			rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
+			done
+  		echo "sudo rsync -av /Documents... /Volumes...-mni0*-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 		rsync --stats source/ destination/ > rsync.log
@@ -119,7 +123,6 @@ do
 		echo "----- Fin suppression depuis mni vers ccc à:" >> rsync.log 
 		date >> rsync.log
 		;;
-   
 	23)
  		echo "----- SAUVEGARDE depuis DEBIAN"
 		sudo mkdir -p /mnt/vsy21tri2int
@@ -173,7 +176,6 @@ do
 		sudo unmount /mnt/secu7test4
 		sudo unmount /mnt/secu7test5
 		sudo unmount /mnt/vsy21tri2int
-
 		;;
 	98)
 		sudo umount -lf /mnt/*
