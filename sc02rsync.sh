@@ -104,7 +104,7 @@ do
   		echo "sudo rsync -av /Documents... /Volumes...-mni0*-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
-		rsync --stats source/ destination/ > rsync.log
+		rsync --stats source/ destination/ >> rsync.log
 		echo "----- Fin copie mni01 vers ccc2506... /eth à:" >> rsync.log 
 		date >> rsync.log
 		;;
