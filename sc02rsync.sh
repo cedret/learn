@@ -83,6 +83,23 @@ do
 		echo "----- Fin copie mni01 vers mba à:" >> rsync.log 
 		date >> rsync.log
 		;;
+  	20)
+		# === Configuration ===
+		SOURCE_BASE="/chemin/local"                  # Dossier local contenant les tosave*
+		DEST_USER="remoteuser"                       # Nom d'utilisateur distant
+		DEST_HOST="remotehost"                       # IP ou hostname de la machine distante
+		DEST_PATH="/chemin/destination"              # Chemin sur la machine distante
+
+		# === Synchronisation ===
+		for dir in "$SOURCE_BASE"/tosave*/; do
+		    if [ -d "$dir" ]; then
+		        echo "Synchronisation de: $dir"
+		        rsync -av -e ssh "$dir" "${DEST_USER}@${DEST_HOST}:${DEST_PATH}/"
+		    else
+		        echo "Aucun dossier correspondant trouvé: $dir"
+		    fi
+		done
+		;;
  	21)
 		echo "----- SAUVEGARDE depuis MACOS -mni*//tri2/ccc2506-"
     		ifconfig
