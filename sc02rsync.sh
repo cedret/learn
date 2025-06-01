@@ -98,8 +98,8 @@ do
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
 		for dir in /Users/access/Documents/_MNI04*/;
   			do
-			rsync -avh --progress -e ssh "$dir" access@192.168.1.207:/vsy21tri2int/ccc2506mni/
-#   			rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
+#			rsync -avh --progress -e ssh "$dir" access@192.168.1.207:/vsy21tri2int/ccc2506mni/
+   			rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
 			done
   		echo "sudo rsync -av /Documents... /Volumes...-mni0*-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
