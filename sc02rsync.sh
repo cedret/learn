@@ -139,15 +139,13 @@ do
 		sudo mount /dev/sda /media/secours/secu2505v1
 		sudo mkdir /media/secours/secu2505v2
 		sudo mount /dev/sdb /media/secours/secu2505v2
-		;;
-  # Add total data transferred
+#		Add total data transferred
 #		Total Download: ${totaldown enp2s0} 
 #		Total Upload: ${totalup enp2s0}
 		;;
 	91)
 		cat rsync.log
 		;;
-
 	92)
 		mount | grep '^/mnt'
 		;;
