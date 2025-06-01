@@ -24,8 +24,8 @@ echo "^^^^^ Contenu source -test-"
 sleep 3
 
 echo "---------- IP : $(hostname -I)" >> listrsync
-hostname >> listrsync
-date >> listrsync 
+hostname >> rsync.log
+date >> rsync.log 
 
 while true;
 do
@@ -73,7 +73,7 @@ echo "===== AUTRES"
 		sleep 10
 		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
 		echo "sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
-		echo "-Fin copie mni01 vers mba" >> listrsync 
+		echo "-Fin copie mni01 vers mba" >> rsync.log 
 		date
 		;;
  	21)
@@ -88,8 +88,8 @@ echo "===== AUTRES"
 		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
-		echo "----- Fin copie mni01 vers ccc/eth" >> listrsync 
-		date >> listrsync
+		echo "----- Fin copie mni01 vers ccc/eth" >> rsync.log 
+		date >> rsync.log
 		;;
 	22)
 		sudo mkdir -p /mnt/vsy21tri2int
@@ -107,8 +107,8 @@ echo "===== AUTRES"
 		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/pop.sfr.fr/ /mnt/vsy21tri2int/ccc2505test
 #		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/ /mnt/vsy21tri2int/ccc2505mba
 		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
-		echo "----- Fin copie mba vers ccc/wifi" >> listrsync 
-		date >> listrsync
+		echo "----- Fin copie mba vers ccc/wifi" >> rsync.log 
+		date >> rsync.log
 	31)
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
@@ -120,7 +120,7 @@ echo "===== AUTRES"
 #		Total Upload: ${totalup enp2s0}
 		;;
 	91)
-		cat listrsync
+		cat rsync.log
 		;;
 
 	92)
