@@ -1,26 +1,24 @@
 #!/bin/bash
-echo "===== DEBUT SCRIPT RSYNC"
+echo "===== DEBUT SCRIPT RSYNC ====="
 systemctl status smbd
 
 lsblk -f
-echo "----- lsblk -f /source"
+echo "----- source// lsblk -f"
 
 df -h
-echo "----- df -h /source"
+echo "----- source// df -h"
 sleep 3
 
-pwd
-echo "----- Montage secu7mni01"
 # sudo mkdir -p /mnt/secu7mni01
 # ls -al /mnt/secu7mni01
 ls -al
-echo "^^^^^ Contenu destination -test-"
+pwd
+echo "----- Contenu actuel -test-"
 sleep 3
 
 # mkdir /home/secours/Documents/ccc2505mni01
-ls -al /home/secours/Documents/ccc2505mni01
-pwd
-echo "^^^^^ Contenu source -test-"
+ls -al /home/secours/Documents/
+echo "----- Contenu source -test-"
 sleep 3
 
 echo "---------- IP : $(hostname -I)" >> rsync.log
