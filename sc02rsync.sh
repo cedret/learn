@@ -83,16 +83,17 @@ do
 		date >> rsync.log
 		;;
  	21)
-		echo "----- SAUVEGARDE depuis MACOS -mni01//tri2/ccc2506"
+		echo "----- SAUVEGARDE depuis MACOS -mni*//tri2/ccc2506-"
     		ifconfig
-		sudo mkdir -p /Volumes/vsy21tri2int
+#		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
-		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
+#		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls /Volumes/vsy21tri2int
   		echo ">>>>> ATTENTION AU DEMONTAGE DU PROTOCOLE PRECEDENT !!!!!"
 		echo "===== Pause : appuyez sur une touche pour continuer ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/vsy21tri2int/ccc2506mni
+#  		rsync -av /home/user/tosave*/ /destination/
+		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 		echo "sudo rsync -av /Documents... /Volumes...-mni01-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
@@ -103,18 +104,18 @@ do
   	22)
 		echo "----- SUPPRESSION depuis MACOS"
     		ifconfig
-		sudo mkdir -p /Volumes/vsy21tri2int
+#		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
-		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
+#		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls /Volumes/vsy21tri2int
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		sudo rm -r /Volumes/vsy21tri2int/ccc2505test
+		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
 		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 		rsync --stats source/ destination/ > rsync.log
-		echo "----- Fin suppression depuis mni01 vers ccc à:" >> rsync.log 
+		echo "----- Fin suppression depuis mni vers ccc à:" >> rsync.log 
 		date >> rsync.log
 		;;
    
