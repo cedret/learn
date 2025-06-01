@@ -42,10 +42,10 @@ do
 	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?)"
  	echo "22 Supprimer sauvegarde antérieure depuis macos"
 	echo "23 rsync depuis mba(zorin) vers ccc"
- 	echo "29 Supprimer sauvegarde antérieure"
+ 	echo "29 Supprimer sauvegarde antérieure depuis debian"
 	echo "===== AUTRES"
  	echo "31 Monter diques qnap"
-	echo "91 voir listrsync"
+	echo "91 voir rsync.log"
 	echo "92 Vérifier montages"
 	echo "93 Démonter intelligent"
 	echo "95 Supprimer /mnt///ccc2505mba"
@@ -99,7 +99,7 @@ do
 		date >> rsync.log
 		;;
   	22)
-		echo "----- SUPPRESSION"
+		echo "----- SUPPRESSION depuis MACOS"
     		ifconfig
 		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
