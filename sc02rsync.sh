@@ -30,7 +30,7 @@ date >> rsync.log
 while true;
 do
 	echo ""
- 	echo "Mois de Juin"
+ 	echo "Mois de Juin 2025"
   	echo "===== RESTAURATIONS"
 	echo "11 rsync depuis .207 -v1-"
 	echo "12 rsync depuis .207 -v2-"
@@ -56,7 +56,7 @@ do
 
 	case $choix in
 	15)
- 		echo "----- SAUVEGARDE vers DEBIAN"
+ 		echo "----- RESTAURATION vers DEBIAN -.207v?-"
 		sudo mkdir -p /mnt/secu7test5
 		sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=accesr,password=fastoche
 		cd /mnt/secu7test5/
@@ -67,11 +67,11 @@ do
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
 		echo "sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
-		echo "terminé à"
-		date
+		echo "----- Fin copie test vers debian à:" >> rsync.log 
+		date >> rsync.log
 		;;
 	16)
-		echo "----- SAUVEGARDE vers DEBIAN"
+		echo "----- RESTAURATION vers DEBIAN -mni01-"
 #		sudo mkdir -p /mnt/secu7mni01
 		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/secu7mni01 -o username=accesr,password=difficiL3
 		sudo ls -al /mnt/secu7mni01/ccc2505mni01
@@ -81,11 +81,11 @@ do
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
 		echo "sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
-		echo "-Fin copie mni01 vers mba" >> rsync.log 
-		date
+		echo "----- Fin copie mni01 vers mba à:" >> rsync.log 
+		date >> rsync.log
 		;;
  	21)
-		echo "----- SAUVEGARDE depuis MACOS"
+		echo "----- SAUVEGARDE depuis MACOS -mni01//tri2/ccc2505"
     		ifconfig
 		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
@@ -93,11 +93,11 @@ do
 		sudo ls /Volumes/vsy21tri2int
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/vsy21tri2int/ccc2505mni12test
-		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
+		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/vsy21tri2int/ccc2506mni/ccc2506mni01/
+		echo "sudo rsync -av /Documents... /Volumes...-mni01-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
-		echo "----- Fin copie mni01 vers ccc/eth" >> rsync.log 
+		echo "----- Fin copie mni01 vers ccc2506... /eth à:" >> rsync.log 
 		date >> rsync.log
 		;;
   	22)
@@ -113,7 +113,7 @@ do
 		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
-		echo "----- Fin suppression depuis mni01 vers ccc" >> rsync.log 
+		echo "----- Fin suppression depuis mni01 vers ccc à:" >> rsync.log 
 		date >> rsync.log
 		;;
    
@@ -134,7 +134,7 @@ do
 		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/pop.sfr.fr/ /mnt/vsy21tri2int/ccc2505test
 #		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/ /mnt/vsy21tri2int/ccc2505mba
 		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
-		echo "----- Fin copie mba vers ccc/wifi" >> rsync.log 
+		echo "----- Fin copie mba vers ccc/wifi à:" >> rsync.log 
 		date >> rsync.log
   		;;
 	31)
