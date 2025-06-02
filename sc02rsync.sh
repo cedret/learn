@@ -69,11 +69,11 @@ do
 		cd /mnt/secu7test5/
 		ls -al
 		pwd
-		echo "Contenu de secu7test5"
+		echo "----- Contenu de secu7test5"
   		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
-		echo "sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
+		echo "----- sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
 		echo "----- Fin copie test vers debian à:" >> rsync.log 
 		date >> rsync.log
 		;;
@@ -87,7 +87,7 @@ do
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
-		echo "sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
+		echo "----- sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
 		echo "----- Fin copie mni01 vers mba à:" >> rsync.log 
 		date >> rsync.log
 		;;
@@ -98,7 +98,7 @@ do
 		        echo "Synchronisation de: $dir"
 		        rsync -av -e ssh "$dir" "${DEST_USER}@${DEST_HOST}:${DEST_PATH}/"
 		    else
-		        echo "Aucun dossier correspondant trouvé: $dir"
+		        echo "----- Aucun dossier correspondant trouvé: $dir"
 		    fi
 		done
 		;;
@@ -118,9 +118,9 @@ do
 		for dir in /Users/access/Documents/_MNI04*;
   			do
 #			rsync -avh --progress -e ssh "$dir" access@192.168.1.207:/vsy21tri2int/ccc2506mni/
-   			rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
+   			sudo rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
 			done
-  		echo "sudo rsync -av /Documents... /Volumes...-mni0*-"
+  		echo "----- sudo rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 #		rsync --stats source/ destination/ >> rsync.log
