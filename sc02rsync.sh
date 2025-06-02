@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# === Configuration ===
+SOURCE_BASE="/chemin/local"                  # Dossier local contenant les tosave*
+DEST_USER="remoteuser"                       # Nom d'utilisateur distant
+DEST_HOST="remotehost"                       # IP ou hostname de la machine distante
+DEST_PATH="/chemin/destination"              # Chemin sur la machine distante
+
 echo "===== DEBUT SCRIPT RSYNC ====="
 systemctl status smbd
 
@@ -36,9 +43,10 @@ do
 	echo "14 rsync depuis .207 -v3-"
 	echo "15 rsync depuis .207 -tri4ext- environ 3h"
 	echo "16 rsync depuis .207 -mni01- vers MBA"
- 	echo "===== SAUVEGARDES"
+	echo "19 rsync avec variables"
+	echo "===== SAUVEGARDES"
 	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?)"
- 	echo "22 Supprimer sauvegarde antérieure depuis macos"
+ 	echo "22 Supprimer sauvegarde antérieure depuis macos -ccc2506mni-"
 	echo "23 rsync depuis mba(zorin) vers ccc"
  	echo "29 Supprimer sauvegarde antérieure depuis debian"
 	echo "===== AUTRES"
@@ -83,13 +91,7 @@ do
 		echo "----- Fin copie mni01 vers mba à:" >> rsync.log 
 		date >> rsync.log
 		;;
-  	20)
-		# === Configuration ===
-		SOURCE_BASE="/chemin/local"                  # Dossier local contenant les tosave*
-		DEST_USER="remoteuser"                       # Nom d'utilisateur distant
-		DEST_HOST="remotehost"                       # IP ou hostname de la machine distante
-		DEST_PATH="/chemin/destination"              # Chemin sur la machine distante
-
+  	19)
 		# === Synchronisation ===
 		for dir in "$SOURCE_BASE"/tosave*/; do
 		    if [ -d "$dir" ]; then
@@ -113,7 +115,7 @@ do
 #--- FUSION  	rsync -av /home/user/tosave*/ /destination/
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
-		for dir in /Users/access/Documents/_MNI04*/;
+		for dir in /Users/access/Documents/_MNI04*;
   			do
 #			rsync -avh --progress -e ssh "$dir" access@192.168.1.207:/vsy21tri2int/ccc2506mni/
    			rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
@@ -132,10 +134,11 @@ do
 		ls /Volumes/
 #		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls /Volumes/vsy21tri2int
+    		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
-		echo "sudo rsync -av /Documents... /Volumes...-test-mni01-"
+		echo "sudo rm -r /Volumes/vsy21tri2int/ccc2506mni"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 		rsync --stats source/ destination/ >> rsync.log
