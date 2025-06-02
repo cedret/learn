@@ -104,7 +104,7 @@ do
 		;;
  	21)
 		echo "----- SAUVEGARDE depuis MACOS -mni*//tri2/ccc2506-"
-    		ifconfig
+#    		ifconfig
 #		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
 #		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
@@ -129,7 +129,7 @@ do
 		;;
   	22)
 		echo "----- SUPPRESSION depuis MACOS"
-    		ifconfig
+#    		ifconfig
 #		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
 #		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
