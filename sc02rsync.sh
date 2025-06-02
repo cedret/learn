@@ -101,6 +101,12 @@ do
 		        echo "----- Aucun dossier correspondant trouvé: $dir"
 		    fi
 		done
+
+  		for dir in /Users/access/Documents/_MNI04*;
+  			do
+#			rsync -avh --progress -e ssh "$dir" access@192.168.1.207:/vsy21tri2int/ccc2506mni/
+   			sudo rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
+			done
 		;;
  	21)
 		echo "----- SAUVEGARDE depuis MACOS -mni*//tri2/ccc2506-"
@@ -115,11 +121,7 @@ do
 #--- FUSION  	rsync -av /home/user/tosave*/ /destination/
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
-		for dir in /Users/access/Documents/_MNI04*;
-  			do
-#			rsync -avh --progress -e ssh "$dir" access@192.168.1.207:/vsy21tri2int/ccc2506mni/
-   			sudo rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
-			done
+		sudo rsync -avh --progress /Users/access/Documents/_MNI05 /Volumes/vsy21tri2int/ccc2506mni/
   		echo "----- sudo rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
