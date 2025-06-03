@@ -138,7 +138,7 @@ do
 		tail -n 5 rsync2output.log >> rsync.log
   		echo "--- rsync2"
 		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
-  ;;
+		;;
   	22)
 		echo "----- SUPPRESSION depuis MACOS"
 #    		ifconfig
