@@ -24,8 +24,8 @@ echo "----- Contenu actuel -test-"
 sleep 3
 
 # mkdir /home/secours/Documents/ccc2505mni01
-ls -al /home/secours/Documents/
-echo "----- Contenu source -test-"
+sudo ls /Volumes/vsy21tri2int
+echo "----- Contenu destination -vsy21tri2int-"
 sleep 3
 
 echo "---------- IP : $(hostname -I)" >> rsync.log
