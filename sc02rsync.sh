@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # === Configuration ===
-SOURCE_BASE="/chemin/local"                  # Dossier local contenant les tosave*
-DEST_USER="remoteuser"                       # Nom d'utilisateur distant
-DEST_HOST="remotehost"                       # IP ou hostname de la machine distante
-DEST_PATH="/chemin/destination"              # Chemin sur la machine distante
-
+SOURCE_BASE="/Users/access/Documents/_MNI0*"                  # Dossier local contenant les tosave*
+DEST_USER="access"                       # Nom d'utilisateur distant
+DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
+DEST_PATH="/Volumes/vsy21tri2int/ccc2506mni"              # Chemin sur la machine distante
+DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 echo "===== DEBUT SCRIPT RSYNC ====="
 systemctl status smbd
 
@@ -142,9 +142,10 @@ do
 #		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls /Volumes/vsy21tri2int
     		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
-		echo "==> Pause : appuyez sur une touche pour continuer."
+		echo "==> Pause : appuyez sur une touche pour supprimer: $DEST_SUPP"
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
+#		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
+  		sudo rm -r $DEST_SUPP
 		echo "sudo rm -r /Volumes/vsy21tri2int/ccc2506mni"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
