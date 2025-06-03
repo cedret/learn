@@ -134,7 +134,7 @@ do
 		tail -n 5 rsync0output.log >> rsync.log
 		tail -n 5 rsync1output.log >> rsync.log
   		tail -n 5 rsync2output.log >> rsync.log
-		echo "----- Fin copie mni01 vers ccc2506... /eth à:" >> rsync.log
+		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
   ;;
   	22)
 		echo "----- SUPPRESSION depuis MACOS"
