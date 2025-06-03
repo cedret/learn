@@ -126,7 +126,7 @@ do
 		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
   		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/ > rsync1output.log 2>&1
     		sudo rsync -avh --progress /Users/access/Documents/_MNI2* /Volumes/vsy21tri2int/ccc2506mni/ > rsync2output.log 2>&1
-  		echo "----- sudo rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/"
+  		echo "----- sudo rsync -avh --progress "what?" /Volumes/vsy21tri2int/ccc2506mni/"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 #		rsync --stats source/ destination/ >> rsync.log
@@ -152,7 +152,7 @@ do
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 #		rsync --stats source/ destination/ >> rsync.log
-		echo "----- Fin suppression depuis mni vers ccc à:" >> rsync.log 
+		echo "----- Fin suppression $DEST_SUPP:" >> rsync.log 
 		date >> rsync.log
 		;;
 	23)
