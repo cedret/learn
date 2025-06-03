@@ -28,6 +28,8 @@ sudo ls $DEST_PATH
 echo "----- Contenu destination -$DEST_PATH-"
 sleep 3
 
+echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
+
 echo "---------- IP : $(hostname -I)" >> rsync.log
 hostname >> rsync.log
 date >> rsync.log 
