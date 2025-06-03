@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # === Configuration ===
-SOURCE_BASE="/Users/access/Documents/_MNI0*"                  # Dossier local contenant les tosave*
+SOURCE_BASE="/Users/access/Documents/"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
 DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
-DEST_PATH="/Volumes/vsy21tri2int/ccc2506mni"              # Chemin sur la machine distante
+DEST_PATH="/Volumes/vsy21tri2int/"              # Chemin sur la machine distante
 DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 echo "===== DEBUT SCRIPT RSYNC ====="
 systemctl status smbd
@@ -18,14 +18,14 @@ sleep 3
 
 # sudo mkdir -p /mnt/secu7mni01
 # ls -al /mnt/secu7mni01
-ls -al
+ls -al $SOURCE_BASE
 pwd
-echo "----- Contenu actuel -test-"
+echo "----- Contenu source -$SOURCE_BASE-"
 sleep 3
 
 # mkdir /home/secours/Documents/ccc2505mni01
-sudo ls /Volumes/vsy21tri2int
-echo "----- Contenu destination -vsy21tri2int-"
+sudo ls $DEST_PATH
+echo "----- Contenu destination -$DEST_PATH-"
 sleep 3
 
 echo "---------- IP : $(hostname -I)" >> rsync.log
@@ -45,10 +45,10 @@ do
 	echo "16 rsync depuis .207 -mni01- vers MBA"
 	echo "19 rsync avec variables"
 	echo "===== SAUVEGARDES"
-	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?)"
- 	echo "22 Supprimer sauvegarde antérieure depuis macos -ccc2506mni-"
-	echo "23 rsync depuis mba(zorin) vers ccc"
- 	echo "29 Supprimer sauvegarde antérieure depuis debian"
+	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?) -$SOURCE_BASE-"
+ 	echo "22 Supprimer sauvegarde antérieure depuis macos -$DEST_SUPP-"
+	echo "23 rsync depuis mba(zorin) vers ccc -$SOURCE_BASE-"
+ 	echo "29 Supprimer sauvegarde antérieure depuis debian -$DEST_SUPP-"
 	echo "===== AUTRES"
  	echo "31 Monter disques qnap"
 	echo "91 voir rsync.log"
