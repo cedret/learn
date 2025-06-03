@@ -124,19 +124,19 @@ do
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
 		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
-  		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/ > rsync1output.log 2>&1
-    		sudo rsync -avh --progress /Users/access/Documents/_MNI2* /Volumes/vsy21tri2int/ccc2506mni/ > rsync2output.log 2>&1
-  		echo "----- sudo rsync -avh --progress "what?" /Volumes/vsy21tri2int/ccc2506mni/"
+#  		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/ > rsync1output.log 2>&1
+#    		sudo rsync -avh --progress /Users/access/Documents/_MNI2* /Volumes/vsy21tri2int/ccc2506mni/ > rsync2output.log 2>&1
+  		echo "----- sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 #		rsync --stats source/ destination/ >> rsync.log
 		date >> rsync.log 
 		tail -n 5 rsync0output.log >> rsync.log
-  		echo "--- rsync0"
+  		echo "--- tail5rsync0.log"
 		tail -n 5 rsync1output.log >> rsync.log
-  		echo "--- rsync1"
+  		echo "--- tail5rsync1.log"
 		tail -n 5 rsync2output.log >> rsync.log
-  		echo "--- rsync2"
+  		echo "--- tail5rsync2.log"
 		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
 		;;
   	22)
