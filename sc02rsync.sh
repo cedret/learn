@@ -121,16 +121,19 @@ do
 #--- FUSION  	rsync -av /home/user/tosave*/ /destination/
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
-		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/
-  		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/
-    		sudo rsync -avh --progress /Users/access/Documents/_MNI2* /Volumes/vsy21tri2int/ccc2506mni/
+		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
+  		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/ > rsync1output.log 2>&1
+    		sudo rsync -avh --progress /Users/access/Documents/_MNI2* /Volumes/vsy21tri2int/ccc2506mni/ > rsync2output.log 2>&1
   		echo "----- sudo rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 #		rsync --stats source/ destination/ >> rsync.log
-		echo "----- Fin copie mni01 vers ccc2506... /eth à:" >> rsync.log 
-		date >> rsync.log
-		;;
+		date >> rsync.log 
+		tail -n 5 rsync0output.log >> rsync.log
+		tail -n 5 rsync1output.log >> rsync.log
+  		tail -n 5 rsync2output.log >> rsync.log
+		echo "----- Fin copie mni01 vers ccc2506... /eth à:" >> rsync.log
+  ;;
   	22)
 		echo "----- SUPPRESSION depuis MACOS"
 #    		ifconfig
