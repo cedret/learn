@@ -51,8 +51,10 @@ do
  	echo "22 Supprimer sauvegarde antérieure depuis macos -$DEST_SUPP-"
 	echo "23 rsync depuis mba(zorin) vers ccc -$SOURCE_BASE-"
  	echo "29 Supprimer sauvegarde antérieure depuis debian -$DEST_SUPP-"
+  	echo "===== SUPPRESSIONS"
+   	echo "31 Par rsync"
 	echo "===== AUTRES"
- 	echo "31 Monter disques qnap"
+ 	echo "51 Monter disques qnap"
 	echo "91 voir rsync.log"
 	echo "92 Vérifier montages"
 	echo "93 Démonter intelligent"
@@ -179,7 +181,11 @@ do
 		date >> rsync.log
   		;;
 	31)
-	  	echo "31 Monter disques qnap"
+ 		mkdir empty_dir
+		rsync -a --delete --progress empty_dir/ target_dir/
+		;;
+  	51)
+	  	echo "51 Monter disques qnap"
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
 		sudo mkdir /media/secours/secu2505v2
