@@ -132,8 +132,11 @@ do
 #		rsync --stats source/ destination/ >> rsync.log
 		date >> rsync.log 
 		tail -n 5 rsync0output.log >> rsync.log
+  		echo "--- rsync0"
 		tail -n 5 rsync1output.log >> rsync.log
-  		tail -n 5 rsync2output.log >> rsync.log
+  		echo "--- rsync1"
+		tail -n 5 rsync2output.log >> rsync.log
+  		echo "--- rsync2"
 		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
   ;;
   	22)
