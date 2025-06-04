@@ -7,31 +7,8 @@ DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine d
 DEST_PATH="/Volumes/vsy21tri2int/"              # Chemin sur la machine distante
 DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 echo "===== DEBUT SCRIPT RSYNC ====="
-systemctl status smbd
-
-lsblk -f
-echo "----- source// lsblk -f"
-
-df -h
-echo "----- source// df -h"
-sleep 3
-
-# sudo mkdir -p /mnt/secu7mni01
-# ls -al /mnt/secu7mni01
-ls -al $SOURCE_BASE
-du -sh $SOURCE_BASE
-pwd
-echo "----- Contenu source -$SOURCE_BASE-"
-sleep 3
-
-# mkdir /home/secours/Documents/ccc2505mni01
-sudo ls $DEST_PATH
-echo "----- Contenu destination -$DEST_PATH-"
-sleep 3
-
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
-
-echo "---------- IP : $(hostname -I)" >> rsync.log
+# echo "---------- IP : $(hostname -I)" >> rsync.log
 hostname >> rsync.log
 date >> rsync.log 
 
@@ -39,7 +16,8 @@ while true;
 do
 	echo ""
  	echo "Mois de Juin 2025"
-  	echo "===== RESTAURATIONS"
+  	echo "1 Informations"
+   	echo "===== RESTAURATIONS"
 	echo "11 rsync depuis .207 -v1-"
 	echo "12 rsync depuis .207 -v2-"
 	echo "13 rsync depuis .207 -v2-"
@@ -72,6 +50,25 @@ do
 	read choix
 
 	case $choix in
+	1)
+		systemctl status smbd
+		lsblk -f
+		echo "----- source// lsblk -f"
+		df -h
+		echo "----- source// df -h"
+		sleep 1
+		# sudo mkdir -p /mnt/secu7mni01
+		# ls -al /mnt/secu7mni01
+		ls -al $SOURCE_BASE
+		du -sh $SOURCE_BASE
+		pwd
+		echo "----- Contenu source -$SOURCE_BASE-"
+		sleep 1
+		# mkdir /home/secours/Documents/ccc2505mni01
+		sudo ls $DEST_PATH
+		echo "----- Contenu destination -$DEST_PATH-"
+		sleep 1
+		;;
 	15)
  		echo "----- RESTAURATION vers DEBIAN -.207v?-"
 		sudo mkdir -p /mnt/secu7test5
