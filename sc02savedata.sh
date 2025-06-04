@@ -183,8 +183,8 @@ do
 		date >> rsync.log
   		;;
     	31)
-		echo "----- SUPPRESSION depuis MACOS"
-		sudo ls $$DEST_SUPP
+		echo "----- SUPPRESSION depuis MACOS/Debian"
+		sudo ls $DEST_SUPP
 #		ls -al $DEST_SUPP
 		du -sh $DEST_SUPP
     		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
