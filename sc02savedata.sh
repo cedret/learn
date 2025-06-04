@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # === Configuration ===
-SOURCE_BASE="/Users/access/Documents/_MNI06_Dox_Fam"                  # Dossier local contenant les tosave*
+SOURCE_BASE="/Users/access/Documents/_MNI07_Dox_Tech"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
 DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
 DEST_PATH="/Volumes/vsy21tri2int/"           # Chemin sur la machine distante
@@ -171,8 +171,8 @@ do
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour scp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_SCP
-  		echo "===== scp -v -r =$SOURCE_BASE =$DEST_HOST:$DEST_SCP" >> savedata.log
+		scp -v -r -p $SOURCE_BASE $DEST_HOST:$DEST_SCP
+  		echo "===== scp -v -r -p =$SOURCE_BASE =$DEST_HOST:$DEST_SCP" >> savedata.log
    		du -sh $SOURCE_BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
