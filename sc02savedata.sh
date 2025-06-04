@@ -69,6 +69,7 @@ do
 		sudo ls $DEST_PATH
 		echo "----- Contenu destination -$DEST_PATH-"
 		sleep 1
+		du -hs *
 		;;
 	15)
  		echo "----- RESTAURATION vers DEBIAN -.207v?-"
