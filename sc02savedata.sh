@@ -7,6 +7,7 @@ DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine d
 DEST_PATH="/Volumes/vsy21tri2int/"           # Chemin sur la machine distante
 DEST_SCP="/volume2/vsy21tri2int"
 DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
+PSWD=""
 echo "===== DEBUT SCRIPT RSYNC ====="
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
@@ -30,8 +31,9 @@ do
 	echo "22 rsync depuis mba(zorin) -$SOURCE_BASE- vers -"
  	echo "23 scp depuis mni(macos) -$SOURCE_BASE- vers -"
   	echo "24 scp depuis mba(zorin) -$SOURCE_BASE- vers -"
- 	echo "25 smbclient depuis mni(macos) -$SOURCE_BASE- vers -"
+ 	echo "25 smbclient depuis mni(macos) -$SOURCE_BASE- vers - !!!!!!!!!!!"
   	echo "26 smbclient depuis mba(zorin) -$SOURCE_BASE- vers -"
+    	echo "27 lftp depuis mni(macos) -$SOURCE_BASE- vers -"
 	echo "===== SUPPRESSIONS"
  	echo "31 Supprimer depuis macos/debian cible -$DEST_SUPP-"
  	echo "33 Supprimer depuis debian cible -$DEST_SUPP-"
@@ -188,6 +190,20 @@ do
   		date >> savedata.log
 		smbclient //$DEST_HOST/$DEST_PATH -U $DEST_USER
 #		scp -v -r -p $SOURCE_BASE $DEST_HOST:$DEST_SCP
+  		echo "===== smbclient //$DEST_HOST/$DEST_PATH -U $DEST_USER" >> savedata.log
+   		du -sh $SOURCE_BASE >> savedata.log
+		echo "===== Fin à:" >> savedata.log && date >> savedata.log
+  		;;
+	27)
+	    	echo "27 lftp depuis mni(macos) -$SOURCE_BASE- vers -"
+  		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
+		echo "===== Pause : appuyez sur une touche pour lftp ....."
+		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
+  		date >> savedata.log
+		lftp -u "$DEST_USER","$PSWD" "$DEST_HOST" <<EOF
+		mirror -R "$SOURCE_BASE" "$DEST_PATH"
+		bye
+EOF
   		echo "===== smbclient //$DEST_HOST/$DEST_PATH -U $DEST_USER" >> savedata.log
    		du -sh $SOURCE_BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
