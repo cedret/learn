@@ -184,10 +184,6 @@ do
   		;;
     	31)
 		echo "----- SUPPRESSION depuis MACOS"
-#    		ifconfig
-#		sudo mkdir -p /Volumes/vsy21tri2int
-		ls /Volumes/
-#		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls $$DEST_SUPP
 #		ls -al $DEST_SUPP
 		du -sh $DEST_SUPP
@@ -197,10 +193,7 @@ do
 #		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
   		sudo rm -rf $DEST_SUPP
 #    		sudo rmdir $DEST_SUPP
-		echo "sudo rm -r /Volumes/vsy21tri2int/ccc2506mni"
-#		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
-#		echo "sudo rsync -av /Documents... /Volumes..."
-#		rsync --stats source/ destination/ >> rsync.log
+		echo "sudo rm -rf $DEST_SUPP"
 		echo "----- Fin suppression $DEST_SUPP:" >> rsync.log 
 		date >> rsync.log
 		;;
