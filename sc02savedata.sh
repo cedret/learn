@@ -35,10 +35,13 @@ do
  	echo "25 smbclient depuis mni(macos) -$SOURCE_BASE- vers - !!!!!!!!!!!"
   	echo "26 smbclient depuis mba(zorin) -$SOURCE_BASE- vers -"
     	echo "27 lftp depuis mni(macos) -$SOURCE_BASE- vers -"
-	echo "===== SUPPRESSIONS"
- 	echo "31 Supprimer depuis macos/debian cible -$DEST_SUPP-"
- 	echo "33 Supprimer depuis debian cible -$DEST_SUPP-"
-   	echo "39 Par rsync"
+	echo "===== COMPARAISONS"
+ 	echo "31 simple"
+  	echo "32 avec hash"
+ 	echo "===== SUPPRESSIONS"
+ 	echo "41 Supprimer depuis macos/debian cible -$DEST_SUPP-"
+ 	echo "43 Supprimer depuis debian cible -$DEST_SUPP-"
+   	echo "49 Par rsync"
 	echo "===== LOGS"
 	echo "51 voir rsync.log"
 	echo "===== AUTRES"
@@ -210,6 +213,31 @@ EOF
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
     	31)
+		# Répertoires à comparer
+		LOCAL_DIR="/Users/ton_utilisateur/Documents/dossier_local"
+		SMB_DIR="/Volumes/partage_smb/dossier_distant"
+
+		# Vérifie si le répertoire SMB est monté
+		if [ ! -d "$SMB_DIR" ]; then
+		  echo "⚠️ Le dossier SMB '$SMB_DIR' n'est pas monté. Monte-le d'abord."
+		  exit 1
+		fi
+
+		# Log de sortie
+		LOG_FILE="rapport_diff_$(date +%Y%m%d_%H%M%S).log"
+
+		# Comparaison récursive silencieuse avec résumé
+		echo "Comparaison de :"
+		echo "Local : $LOCAL_DIR"
+		echo "SMB   : $SMB_DIR"
+		echo "---------------------------------------------"
+
+		diff -qr "$LOCAL_DIR" "$SMB_DIR" | tee "$LOG_FILE"
+
+		echo ""
+		echo "Comparaison terminée. Rapport enregistré dans : $LOG_FILE"
+		;;
+    	41)
 		echo "----- SUPPRESSION depuis MACOS/Debian"
 		sudo ls $DEST_SUPP
 #		ls -al $DEST_SUPP
