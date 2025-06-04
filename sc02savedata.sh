@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # === Configuration ===
-SOURCE_BASE="/Users/access/Documents/MNI04*"                  # Dossier local contenant les tosave*
+SOURCE_BASE="/Users/access/Documents/_MNI04_Dox_Crea"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
 DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
 DEST_PATH="/Volumes/vsy21tri2int/"              # Chemin sur la machine distante
@@ -9,8 +9,8 @@ DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 echo "===== DEBUT SCRIPT RSYNC ====="
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
-hostname >> rsync.log
-date >> rsync.log 
+hostname >> savedata.log
+date >> savedata.log 
 
 while true;
 do
@@ -81,8 +81,8 @@ do
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
 		echo "----- sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
-		echo "----- Fin copie test vers debian à:" >> rsync.log 
-		date >> rsync.log
+		echo "----- Fin copie test vers debian à:" >> savedata.log 
+		date >> savedata.log
 		;;
 	16)
 		echo "----- RESTAURATION vers DEBIAN -mni01-"
@@ -95,8 +95,8 @@ do
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
 		echo "----- sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
-		echo "----- Fin copie mni01 vers mba à:" >> rsync.log 
-		date >> rsync.log
+		echo "----- Fin copie mni01 vers mba à:" >> savedata.log 
+		date >> savedata.log
 		;;
   	19)
 		# === Synchronisation ===
@@ -135,14 +135,14 @@ do
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 #		rsync --stats source/ destination/ >> rsync.log
-		tail -n 5 rsync0output.log >> rsync.log
+		tail -n 5 rsync0output.log >> savedata.log
   		echo "--- tail5rsync0.log"
-		tail -n 5 rsync1output.log >> rsync.log
+		tail -n 5 rsync1output.log >> savedata.log
   		echo "--- tail5rsync1.log"
-		tail -n 5 rsync2output.log >> rsync.log
+		tail -n 5 rsync2output.log >> savedata.log
   		echo "--- tail5rsync2.log"
-		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
-		date >> rsync.log
+		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> savedata.log
+		date >> savedata.log
   		;;
 	22)
 		echo "22 rsync depuis mba(zorin) vers ccc -$SOURCE_BASE-"
@@ -161,23 +161,23 @@ do
 		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/pop.sfr.fr/ /mnt/vsy21tri2int/ccc2505test
 #		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/ /mnt/vsy21tri2int/ccc2505mba
 		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
-		echo "----- Fin copie mba vers ccc/wifi à:" >> rsync.log 
-		date >> rsync.log
+		echo "----- Fin copie mba vers ccc/wifi à:" >> savedata.log 
+		date >> savedata.log
   		;;
 	23)
-	 	echo "23 scp depuis mni(macos) vers ccc -$SOURCE_BASE-"
+	 	echo "23 scp depuis mni(macos) -$SOURCE_BASE- vers"
 		ls /Volumes/
 		sudo ls $DEST_PATH
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
-		echo "===== Pause : appuyez sur une touche pour scp -0 -r ....."
+		echo "===== Pause : appuyez sur une touche pour scp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_PATH
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
-  		echo "----- scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_PATH" >> rsync.log
+  		echo "----- scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_PATH" >> savedata.log
 #		tail -n 5 rsync0output.log >> rsync.log
 #  		echo "--- tail5rsync0.log"
-		echo "----- Fin à:" >> rsync.log
-		date >> rsync.log
+		echo "----- Fin à:" >> savedata.log
+		date >> savedata.log
   		;;
     	31)
 		echo "----- SUPPRESSION depuis MACOS/Debian"
@@ -191,15 +191,15 @@ do
   		sudo rm -rf $DEST_SUPP
 #    		sudo rmdir $DEST_SUPP
 		echo "sudo rm -rf $DEST_SUPP"
-		echo "----- Fin suppression $DEST_SUPP:" >> rsync.log 
-		date >> rsync.log
+		echo "----- Fin suppression $DEST_SUPP:" >> savedata.log 
+		date >> savedata.log
 		;;
 	39)
  		mkdir empty_dir
 		rsync -a --delete --progress empty_dir/ target_dir/
 		;;
 	51)
-		cat rsync.log
+		cat savedata.log
 		;;
 
 	91)
@@ -239,7 +239,7 @@ do
 	99)
  		echo "Quantité de données dupliquées?"
 		read donnees
-  		$donness >> rsync.log
+  		$donness >> savedata.log
  		;;
 	 0)
 		break
