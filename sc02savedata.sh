@@ -36,8 +36,11 @@ do
   	echo "26 smbclient depuis mba(zorin) -$SOURCE_BASE- vers -"
     	echo "27 lftp depuis mni(macos) -$SOURCE_BASE- vers -"
 	echo "===== COMPARAISONS"
- 	echo "31 simple"
-  	echo "32 avec hash"
+	echo "31 par rsync"
+ 	echo "32 par diff"
+  	echo "33 par checksum"
+  	echo "34 simple"
+  	echo "35 avec hash"
  	echo "===== SUPPRESSIONS"
  	echo "41 Supprimer depuis macos/debian cible -$DEST_SUPP-"
  	echo "43 Supprimer depuis debian cible -$DEST_SUPP-"
@@ -213,6 +216,20 @@ EOF
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
     	31)
+     		rsync -avnc --delete /Users/ton_utilisateur/Documents/dossier_local/ /Volumes/partage_smb/dossier_distant/
+		;;
+  	32)
+   		diff -qr /Users/ton_utilisateur/Documents/dossier_local /Volumes/partage_smb/dossier_distant
+		;;
+  	33)
+   		# Générer des listes de fichiers avec hash
+		find /Users/ton_utilisateur/Documents/dossier_local -type f -exec shasum {} \; | sort > local_hashes.txt
+		find /Volumes/partage_smb/dossier_distant -type f -exec shasum {} \; | sort > distant_hashes.txt
+
+		# Comparer les deux fichiers
+		diff local_hashes.txt distant_hashes.txt
+		;;
+    	34)
 		# Répertoires à comparer
 		LOCAL_DIR="/Users/ton_utilisateur/Documents/dossier_local"
 		SMB_DIR="/Volumes/partage_smb/dossier_distant"
@@ -236,6 +253,29 @@ EOF
 
 		echo ""
 		echo "Comparaison terminée. Rapport enregistré dans : $LOG_FILE"
+		;;
+  	35)
+LOCAL_DIR="/Users/ton_utilisateur/Documents/dossier_local"
+SMB_DIR="/Volumes/partage_smb/dossier_distant"
+TMP1=$(mktemp)
+TMP2=$(mktemp)
+
+echo "🔧 Génération des checksums SHA-1..."
+
+find "$LOCAL_DIR" -type f -exec shasum {} \; | sed "s|$LOCAL_DIR/||" | sort > "$TMP1"
+find "$SMB_DIR" -type f -exec shasum {} \; | sed "s|$SMB_DIR/||" | sort > "$TMP2"
+
+echo "🔍 Comparaison des checksums..."
+diff "$TMP1" "$TMP2" > comparaison_hashes.log
+
+if [ $? -eq 0 ]; then
+  echo "Tous les fichiers sont identiques !"
+else
+  echo "Des différences ont été trouvées. Voir : comparaison_hashes.log"
+fi
+
+# Nettoyage
+rm "$TMP1" "$TMP2"
 		;;
     	41)
 		echo "----- SUPPRESSION depuis MACOS/Debian"
