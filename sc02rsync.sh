@@ -48,11 +48,11 @@ do
 	echo "19 rsync avec variables"
 	echo "===== SAUVEGARDES"
 	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?) -$SOURCE_BASE-"
- 	echo "22 Supprimer sauvegarde antérieure depuis macos -$DEST_SUPP-"
 	echo "23 rsync depuis mba(zorin) vers ccc -$SOURCE_BASE-"
- 	echo "29 Supprimer sauvegarde antérieure depuis debian -$DEST_SUPP-"
   	echo "===== SUPPRESSIONS"
-   	echo "31 Par rsync"
+ 	echo "31 Supprimer sauvegarde antérieure depuis macos -$DEST_SUPP-"
+ 	echo "33 Supprimer sauvegarde antérieure depuis debian -$DEST_SUPP-"
+   	echo "39 Par rsync"
 	echo "===== AUTRES"
  	echo "51 Monter disques qnap"
 	echo "91 voir rsync.log"
@@ -132,7 +132,6 @@ do
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
 #		rsync --stats source/ destination/ >> rsync.log
-		date >> rsync.log 
 		tail -n 5 rsync0output.log >> rsync.log
   		echo "--- tail5rsync0.log"
 		tail -n 5 rsync1output.log >> rsync.log
@@ -140,26 +139,8 @@ do
 		tail -n 5 rsync2output.log >> rsync.log
   		echo "--- tail5rsync2.log"
 		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
-		;;
-  	22)
-		echo "----- SUPPRESSION depuis MACOS"
-#    		ifconfig
-#		sudo mkdir -p /Volumes/vsy21tri2int
-		ls /Volumes/
-#		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
-		sudo ls /Volumes/vsy21tri2int
-    		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
-		echo "==> Pause : appuyez sur une touche pour supprimer: $DEST_SUPP"
-		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-#		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
-  		sudo rm -r $DEST_SUPP
-		echo "sudo rm -r /Volumes/vsy21tri2int/ccc2506mni"
-#		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
-#		echo "sudo rsync -av /Documents... /Volumes..."
-#		rsync --stats source/ destination/ >> rsync.log
-		echo "----- Fin suppression $DEST_SUPP:" >> rsync.log 
 		date >> rsync.log
-		;;
+  		;;
 	23)
  		echo "----- SAUVEGARDE depuis DEBIAN"
 		sudo mkdir -p /mnt/vsy21tri2int
@@ -180,7 +161,26 @@ do
 		echo "----- Fin copie mba vers ccc/wifi à:" >> rsync.log 
 		date >> rsync.log
   		;;
-	31)
+      	31)
+		echo "----- SUPPRESSION depuis MACOS"
+#    		ifconfig
+#		sudo mkdir -p /Volumes/vsy21tri2int
+		ls /Volumes/
+#		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
+		sudo ls /Volumes/vsy21tri2int
+    		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
+		echo "==> Pause : appuyez sur une touche pour supprimer: $DEST_SUPP"
+		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
+#		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
+  		sudo rm -r $DEST_SUPP
+		echo "sudo rm -r /Volumes/vsy21tri2int/ccc2506mni"
+#		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
+#		echo "sudo rsync -av /Documents... /Volumes..."
+#		rsync --stats source/ destination/ >> rsync.log
+		echo "----- Fin suppression $DEST_SUPP:" >> rsync.log 
+		date >> rsync.log
+		;;
+	39)
  		mkdir empty_dir
 		rsync -a --delete --progress empty_dir/ target_dir/
 		;;
@@ -230,6 +230,6 @@ do
 		break
 		;;
 	esac
-date
 done
-echo "Script terminé"
+echo "Script terminé à:"
+date
