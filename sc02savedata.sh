@@ -55,8 +55,8 @@ do
  	echo "25 smbclient depuis mba(zorin) vers ccc -$SOURCE_BASE-"
   	echo "26 smbclient depuis mba(zorin) vers ccc -$SOURCE_BASE-"
 	echo "===== SUPPRESSIONS"
- 	echo "31 Supprimer sauvegarde antérieure depuis macos -$DEST_SUPP-"
- 	echo "33 Supprimer sauvegarde antérieure depuis debian -$DEST_SUPP-"
+ 	echo "31 Supprimer depuis macos/debian cible -$DEST_SUPP-"
+ 	echo "33 Supprimer depuis debian cible -$DEST_SUPP-"
    	echo "39 Par rsync"
 	echo "===== LOGS"
 	echo "51 voir rsync.log"
@@ -188,7 +188,9 @@ do
 #		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
 #		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
-		sudo ls /Volumes/vsy21tri2int
+		sudo ls $$DEST_SUPP
+#		ls -al $DEST_SUPP
+		du -sh $DEST_SUPP
     		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "==> Pause : appuyez sur une touche pour suppression forcée: $DEST_SUPP"
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
