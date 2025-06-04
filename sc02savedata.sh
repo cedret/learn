@@ -173,10 +173,10 @@ do
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_PATH
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
-  		echo "----- sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/"
-		tail -n 5 rsync0output.log >> rsync.log
-  		echo "--- tail5rsync0.log"
-		echo "----- Fin 23 scp depuis mni(macos) -$SOURCE_BASE- vers $DEST_PATH /eth à:" >> rsync.log
+  		echo "----- scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_PATH" >> rsync.log
+#		tail -n 5 rsync0output.log >> rsync.log
+#  		echo "--- tail5rsync0.log"
+		echo "----- Fin à:" >> rsync.log
 		date >> rsync.log
   		;;
     	31)
