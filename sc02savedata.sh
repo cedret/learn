@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # === Configuration ===
-SOURCE_BASE="/Users/access/Documents/_MNI04_Dox_Crea"                  # Dossier local contenant les tosave*
+SOURCE_BASE="/Users/access/Documents/_MNI05_Dox_Per"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
 DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
 DEST_PATH="/Volumes/vsy21tri2int/"           # Chemin sur la machine distante
@@ -167,7 +167,7 @@ do
   		;;
 	23)
 	 	echo "23 scp depuis mni(macos) -$SOURCE_BASE- vers"
-   		du -sh $SOURCE_BASE
+   		du -sh $SOURCE_BASE >> savedata.log
 #		ls /Volumes/
 #		sudo ls $DEST_SCP
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
