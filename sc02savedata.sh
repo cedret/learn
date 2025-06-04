@@ -166,7 +166,7 @@ do
 		date >> savedata.log
   		;;
 	23)
-	 	echo "23 scp depuis mni(macos) -$SOURCE_BASE- vers"
+	 	echo "23 scp depuis mni(macos) =$SOURCE_BASE= vers =$DEST_SCP="
    		du -sh $SOURCE_BASE >> savedata.log
 #		ls /Volumes/
 #		sudo ls $DEST_SCP
@@ -175,10 +175,10 @@ do
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 		scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_SCP
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
-  		echo "----- scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_SCP" >> savedata.log
+  		echo "===== scp -v -r =$SOURCE_BASE =$DEST_HOST:$DEST_SCP" >> savedata.log
 #		tail -n 5 rsync0output.log >> rsync.log
 #  		echo "--- tail5rsync0.log"
-		echo "----- Fin à:" >> savedata.log
+		echo "===== Fin à:" >> savedata.log
 		date >> savedata.log
   		;;
     	31)
