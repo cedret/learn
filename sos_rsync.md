@@ -1,9 +1,18 @@
 sos_rsync.md
+
+- https://www.ionos.fr/digitalguide/serveur/configuration/commande-scp-de-linux/
+
+### rsync
 - https://blog.stephane-robert.info/docs/admin-serveurs/linux/rsync/
 - https://pierrehirel.info/blog/?p=108
 - https://www.malekal.com/foxclone-cloner-ssd-disque/
 
+### AUtres
 
+- https://www.geeksforgeeks.org/scp-command-in-linux-with-examples/
+- https://phoenixnap.com/kb/linux-scp-command
+- https://www.hypexr.org/linux_scp_help.php
+- https://builtin.com/articles/scp-command
 
 ### Script v1 (ts253a)
 
