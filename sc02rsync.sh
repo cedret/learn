@@ -48,8 +48,12 @@ do
 	echo "19 rsync avec variables"
 	echo "===== SAUVEGARDES"
 	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?) -$SOURCE_BASE-"
-	echo "23 rsync depuis mba(zorin) vers ccc -$SOURCE_BASE-"
-  	echo "===== SUPPRESSIONS"
+	echo "22 rsync depuis mba(zorin) vers ccc -$SOURCE_BASE-"
+ 	echo "23 scp depuis mba(zorin) vers ccc -$SOURCE_BASE-"
+  	echo "24 scp depuis mba(zorin) vers ccc -$SOURCE_BASE-"
+ 	echo "25 smbclient depuis mba(zorin) vers ccc -$SOURCE_BASE-"
+  	echo "26 smbclient depuis mba(zorin) vers ccc -$SOURCE_BASE-"
+	echo "===== SUPPRESSIONS"
  	echo "31 Supprimer sauvegarde antérieure depuis macos -$DEST_SUPP-"
  	echo "33 Supprimer sauvegarde antérieure depuis debian -$DEST_SUPP-"
    	echo "39 Par rsync"
@@ -141,7 +145,7 @@ do
 		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
 		date >> rsync.log
   		;;
-	23)
+	22)
  		echo "----- SAUVEGARDE depuis DEBIAN"
 		sudo mkdir -p /mnt/vsy21tri2int
 #		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/vsy21tri2int -o username=access,password=illicO12
@@ -161,7 +165,22 @@ do
 		echo "----- Fin copie mba vers ccc/wifi à:" >> rsync.log 
 		date >> rsync.log
   		;;
-      	31)
+	23)
+		echo "----- SAUVEGARDE depuis MACOS -mni*//tri2/ccc2506-"
+		ls /Volumes/
+		sudo ls /Volumes/vsy21tri2int
+  		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
+		echo "===== Pause : appuyez sur une touche pour rsync en ssh ....."
+		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
+		scp -0 -r dossier user@host:/tmp/ ???
+#		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
+  		echo "----- sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/"
+		tail -n 5 rsync0output.log >> rsync.log
+  		echo "--- tail5rsync0.log"
+		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
+		date >> rsync.log
+  		;;
+    		31)
 		echo "----- SUPPRESSION depuis MACOS"
 #    		ifconfig
 #		sudo mkdir -p /Volumes/vsy21tri2int
