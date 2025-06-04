@@ -19,6 +19,7 @@ sleep 3
 # sudo mkdir -p /mnt/secu7mni01
 # ls -al /mnt/secu7mni01
 ls -al $SOURCE_BASE
+du -sh $SOURCE_BASE
 pwd
 echo "----- Contenu source -$SOURCE_BASE-"
 sleep 3
@@ -57,9 +58,10 @@ do
  	echo "31 Supprimer sauvegarde antérieure depuis macos -$DEST_SUPP-"
  	echo "33 Supprimer sauvegarde antérieure depuis debian -$DEST_SUPP-"
    	echo "39 Par rsync"
+	echo "===== LOGS"
+	echo "51 voir rsync.log"
 	echo "===== AUTRES"
- 	echo "51 Monter disques qnap"
-	echo "91 voir rsync.log"
+	echo "91 Monter disques qnap"
 	echo "92 Vérifier montages"
 	echo "93 Démonter intelligent"
 	echo "95 Supprimer /mnt///ccc2505mba"
@@ -204,7 +206,11 @@ do
  		mkdir empty_dir
 		rsync -a --delete --progress empty_dir/ target_dir/
 		;;
-  	51)
+	51)
+		cat rsync.log
+		;;
+
+	91)
 	  	echo "51 Monter disques qnap"
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
@@ -213,9 +219,6 @@ do
 #		Add total data transferred
 #		Total Download: ${totaldown enp2s0} 
 #		Total Upload: ${totalup enp2s0}
-		;;
-	91)
-		cat rsync.log
 		;;
 	92)
 		mount | grep '^/mnt'
