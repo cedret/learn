@@ -11,7 +11,6 @@ echo "===== DEBUT SCRIPT RSYNC ====="
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
 hostname >> savedata.log
-date >> savedata.log 
 
 while true;
 do
@@ -81,6 +80,7 @@ do
 		echo "----- Contenu de secu7test5"
   		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
+  		date >> savedata.log
 		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
 		echo "----- sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
 		echo "----- Fin copie test vers debian à:" >> savedata.log 
@@ -95,6 +95,7 @@ do
 		echo "^^^^^ Contenu de mnt/secu7mni01/ccc2505... rsync imminent"
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
+		date >> savedata.log
 		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
 		echo "----- sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
 		echo "----- Fin copie mni01 vers mba à:" >> savedata.log 
@@ -130,6 +131,7 @@ do
 #--- FUSION  	rsync -av /home/user/tosave*/ /destination/
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
+		date >> savedata.log
 		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
 #  		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/ > rsync1output.log 2>&1
 #    		sudo rsync -avh --progress /Users/access/Documents/_MNI2* /Volumes/vsy21tri2int/ccc2506mni/ > rsync2output.log 2>&1
@@ -160,6 +162,7 @@ do
 		echo ""
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
+  		date >> savedata.log
 		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/pop.sfr.fr/ /mnt/vsy21tri2int/ccc2505test
 #		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/ /mnt/vsy21tri2int/ccc2505mba
 		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
@@ -171,6 +174,7 @@ do
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour scp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
+  		date >> savedata.log
 		scp -v -r -p $SOURCE_BASE $DEST_HOST:$DEST_SCP
   		echo "===== scp -v -r -p =$SOURCE_BASE =$DEST_HOST:$DEST_SCP" >> savedata.log
    		du -sh $SOURCE_BASE >> savedata.log
