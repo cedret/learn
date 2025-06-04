@@ -1,6 +1,7 @@
 sos_rsync.md
 
 - https://www.ionos.fr/digitalguide/serveur/configuration/commande-scp-de-linux/
+- https://linuxblog.io/btop-the-htop-alternative/
 
 ### rsync
 - https://blog.stephane-robert.info/docs/admin-serveurs/linux/rsync/
