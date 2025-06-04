@@ -4,7 +4,8 @@
 SOURCE_BASE="/Users/access/Documents/_MNI04_Dox_Crea"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
 DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
-DEST_PATH="/Volumes/vsy21tri2int/"              # Chemin sur la machine distante
+DEST_PATH="/Volumes/vsy21tri2int/"           # Chemin sur la machine distante
+DEST_SCP="/volume2/vsy21tri2int"
 DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 echo "===== DEBUT SCRIPT RSYNC ====="
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
@@ -26,12 +27,12 @@ do
 	echo "16 rsync depuis .207 -mni01- vers MBA"
 	echo "19 rsync avec variables"
 	echo "===== SAUVEGARDES"
-	echo "21 rsync depuis mni(macos) vers ccc (eth=60Go/h?) -$SOURCE_BASE-"
-	echo "22 rsync depuis mba(zorin) vers ccc -$SOURCE_BASE-"
- 	echo "23 scp depuis mni(macos) vers ccc -$SOURCE_BASE-"
-  	echo "24 scp depuis mba(zorin) vers ccc -$SOURCE_BASE-"
- 	echo "25 smbclient depuis mni(macos) vers ccc -$SOURCE_BASE-"
-  	echo "26 smbclient depuis mba(zorin) vers ccc -$SOURCE_BASE-"
+	echo "21 rsync depuis mni(macos) -$SOURCE_BASE- vers -"
+	echo "22 rsync depuis mba(zorin) -$SOURCE_BASE- vers -"
+ 	echo "23 scp depuis mni(macos) -$SOURCE_BASE- vers -"
+  	echo "24 scp depuis mba(zorin) -$SOURCE_BASE- vers -"
+ 	echo "25 smbclient depuis mni(macos) -$SOURCE_BASE- vers -"
+  	echo "26 smbclient depuis mba(zorin) -$SOURCE_BASE- vers -"
 	echo "===== SUPPRESSIONS"
  	echo "31 Supprimer depuis macos/debian cible -$DEST_SUPP-"
  	echo "33 Supprimer depuis debian cible -$DEST_SUPP-"
@@ -166,14 +167,15 @@ do
   		;;
 	23)
 	 	echo "23 scp depuis mni(macos) -$SOURCE_BASE- vers"
-		ls /Volumes/
-		sudo ls $DEST_PATH
+   		du -sh $SOURCE_BASE
+#		ls /Volumes/
+#		sudo ls $DEST_SCP
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour scp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_PATH
+		scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_SCP
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
-  		echo "----- scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_PATH" >> savedata.log
+  		echo "----- scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_SCP" >> savedata.log
 #		tail -n 5 rsync0output.log >> rsync.log
 #  		echo "--- tail5rsync0.log"
 		echo "----- Fin à:" >> savedata.log
