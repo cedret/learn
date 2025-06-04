@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # === Configuration ===
-SOURCE_BASE="/Users/access/Documents/_MNI07_Dox_Tech"                  # Dossier local contenant les tosave*
+SOURCE_BASE="/Users/access/Documents/_MNI08_Sante_coll"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
 DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
 DEST_PATH="/Volumes/vsy21tri2int/"           # Chemin sur la machine distante
 DEST_SCP="/volume2/vsy21tri2int"
+DEST_LFTP="/vsy21tri2int/"
 DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
 echo "===== DEBUT SCRIPT RSYNC ====="
@@ -204,7 +205,7 @@ do
 		mirror -R "$SOURCE_BASE" "$DEST_PATH"
 		bye
 EOF
-  		echo "===== smbclient //$DEST_HOST/$DEST_PATH -U $DEST_USER" >> savedata.log
+  		echo "===== smbclient //$DEST_HOST/$DEST_LFTP -U $DEST_USER" >> savedata.log
    		du -sh $SOURCE_BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
