@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # === Configuration ===
-SOURCE_BASE="/Users/access/Documents/"                  # Dossier local contenant les tosave*
+SOURCE_BASE="/Users/access/Documents/MNI01"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
 DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
 DEST_PATH="/Volumes/vsy21tri2int/"              # Chemin sur la machine distante
@@ -171,12 +171,12 @@ do
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour scp -0 -r ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		scp -v -r $SOURCE_BASE/MNI0* $DEST_HOST:$DEST_PATH
+		scp -v -r $SOURCE_BASE $DEST_HOST:$DEST_PATH
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
   		echo "----- sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/"
 		tail -n 5 rsync0output.log >> rsync.log
   		echo "--- tail5rsync0.log"
-		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
+		echo "----- Fin 23 scp depuis mni(macos) -$SOURCE_BASE- vers $DEST_PATH /eth à:" >> rsync.log
 		date >> rsync.log
   		;;
     	31)
