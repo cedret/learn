@@ -168,13 +168,13 @@ do
 		date >> rsync.log
   		;;
 	23)
-		echo "----- SAUVEGARDE depuis MACOS -mni*//tri2/ccc2506-"
+		echo "----- SAUVEGARDE depuis MACOS -$DEST_PATH-"
 		ls /Volumes/
-		sudo ls /Volumes/vsy21tri2int
+		sudo ls $DEST_PATH
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
-		echo "===== Pause : appuyez sur une touche pour rsync en ssh ....."
+		echo "===== Pause : appuyez sur une touche pour scp -0 -r ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		scp -0 -r $SOURCE_BASE $DEST_HOST:$DEST_PATH
+		scp -0 -r $SOURCE_BASE/MNI0* $DEST_HOST:$DEST_PATH
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
   		echo "----- sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/"
 		tail -n 5 rsync0output.log >> rsync.log
