@@ -1,4 +1,9 @@
 sos_rsync.md
+- https://blog.stephane-robert.info/docs/admin-serveurs/linux/rsync/
+- https://pierrehirel.info/blog/?p=108
+- https://www.malekal.com/foxclone-cloner-ssd-disque/
+
+
 
 ### Script v1 (ts253a)
 
