@@ -180,6 +180,18 @@ do
    		du -sh $SOURCE_BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
+	25)
+	  	echo "25 smbclient depuis mni(macos) =$SOURCE_BASE= vers -"
+  		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
+		echo "===== Pause : appuyez sur une touche pour scp ....."
+		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
+  		date >> savedata.log
+		smbclient //$DEST_HOST/$DEST_PATH -U $DEST_USER
+#		scp -v -r -p $SOURCE_BASE $DEST_HOST:$DEST_SCP
+  		echo "===== smbclient //$DEST_HOST/$DEST_PATH -U $DEST_USER" >> savedata.log
+   		du -sh $SOURCE_BASE >> savedata.log
+		echo "===== Fin à:" >> savedata.log && date >> savedata.log
+  		;;
     	31)
 		echo "----- SUPPRESSION depuis MACOS/Debian"
 		sudo ls $DEST_SUPP
