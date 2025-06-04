@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # === Configuration ===
-SOURCE_BASE="/Users/access/Documents/MNI0*"                  # Dossier local contenant les tosave*
+SOURCE_BASE="/Users/access/Documents/"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
 DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
 DEST_PATH="/Volumes/vsy21tri2int/"              # Chemin sur la machine distante
