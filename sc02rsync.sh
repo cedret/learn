@@ -180,7 +180,7 @@ do
 		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> rsync.log
 		date >> rsync.log
   		;;
-    		31)
+    	31)
 		echo "----- SUPPRESSION depuis MACOS"
 #    		ifconfig
 #		sudo mkdir -p /Volumes/vsy21tri2int
@@ -188,10 +188,11 @@ do
 #		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls /Volumes/vsy21tri2int
     		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
-		echo "==> Pause : appuyez sur une touche pour supprimer: $DEST_SUPP"
+		echo "==> Pause : appuyez sur une touche pour suppression forcée: $DEST_SUPP"
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 #		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
-  		sudo rm -r $DEST_SUPP
+  		sudo rm -rf $DEST_SUPP
+#    		sudo rmdir $DEST_SUPP
 		echo "sudo rm -r /Volumes/vsy21tri2int/ccc2506mni"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
 #		echo "sudo rsync -av /Documents... /Volumes..."
