@@ -3,12 +3,13 @@
 # === Configuration ===
 SOURCE_BASE="/Users/access/Documents/_MNI08_Sante_coll"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
-DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
+DEST1HOST="192.168.1.207"                       # IP ou hostname de la machine distante
 DEST_RSNC="/Volumes/vsy21tri2int/"           # Chemin sur la machine distante
 DEST_SCP="/volume2/vsy21tri2int/scp2505mni"
 DEST_LFTP="/vsy21tri2int/"
 DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
+MNT1NFS="/private/nfs207tri2"
 echo "===== DEBUT SCRIPT RSYNC ====="
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
@@ -19,7 +20,7 @@ do
 	echo ""
  	echo "Mois de Juin 2025"
   	echo "===== PREPARATION"
-  	echo "-----1 Informations -----3 -----5 Montage NFS (MacOs) -----7 Monter disques qnap -----9 "
+  	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 "
 	echo "===== RESTAURATIONS"
 	echo "11 rsync depuis .207 -v1-"
 	echo "12 rsync depuis .207 -v2-"
@@ -81,10 +82,11 @@ do
 		du -hs *
 		;;
   	5)
-   		showmount -e 192.168.1.207
-     		sudo mkdir /private/nfs207
-		sudo mount -o rw -t nfs 192.168.1.207://volume2/vsy21tri2int /private/nfs207tri2
+   		showmount -e $DEST1HOST
+     		sudo mkdir -p $MNT1NFS
+		sudo mount -o rw -t nfs $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
        		df -H
+#exemple 	mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
 #  		sudo umount /nfs/home
 		;;
   	7)
@@ -133,7 +135,7 @@ do
 		for dir in "$SOURCE_BASE"/tosave*/; do
 		    if [ -d "$dir" ]; then
 		        echo "Synchronisation de: $dir"
-		        rsync -av -e ssh "$dir" "${DEST_USER}@${DEST_HOST}:${DEST_RSNC}/"
+		        rsync -av -e ssh "$dir" "${DEST_USER}@${DEST1HOST}:${DEST_RSNC}/"
 		    else
 		        echo "----- Aucun dossier correspondant trouvé: $dir"
 		    fi
@@ -202,8 +204,8 @@ do
 		echo "===== Pause : appuyez sur une touche pour scp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
   		date >> savedata.log
-		scp -v -r -p $SOURCE_BASE $DEST_HOST:$DEST_SCP
-  		echo "===== scp -v -r -p =$SOURCE_BASE =$DEST_HOST:$DEST_SCP" >> savedata.log
+		scp -v -r -p $SOURCE_BASE $DEST1HOST:$DEST_SCP
+  		echo "===== scp -v -r -p =$SOURCE_BASE =$DEST1HOST:$DEST_SCP" >> savedata.log
    		du -sh $SOURCE_BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
@@ -213,9 +215,9 @@ do
 		echo "===== Pause : appuyez sur une touche pour scp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
   		date >> savedata.log
-		smbclient //$DEST_HOST/$DEST_RSNC -U $DEST_USER
+		smbclient //$DEST1HOST/$DEST_RSNC -U $DEST_USER
 #		scp -v -r -p $SOURCE_BASE $DEST_HOST:$DEST_SCP
-  		echo "===== smbclient //$DEST_HOST/$DEST_RSNC -U $DEST_USER" >> savedata.log
+  		echo "===== smbclient //$DEST1HOST/$DEST_RSNC -U $DEST_USER" >> savedata.log
    		du -sh $SOURCE_BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
@@ -229,7 +231,7 @@ do
 		mirror -R "$SOURCE_BASE" "$DEST_PATH"
 		bye
 EOF
-  		echo "===== smbclient //$DEST_HOST/$DEST_LFTP -U $DEST_USER" >> savedata.log
+  		echo "===== smbclient //$DEST1HOST/$DEST_LFTP -U $DEST_USER" >> savedata.log
    		du -sh $SOURCE_BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
