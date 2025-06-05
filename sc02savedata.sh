@@ -54,9 +54,10 @@ do
 	echo "92 Vérifier montages"
 	echo "93 Démonter intelligent"
 	echo "95 Supprimer /mnt///ccc2505mba"
-	echo "98 Tout démonter"
- 	echo "99 ajouter quantité de données dupliquées au .log"
-	echo " 0 pour quitter"
+	echo "97 Tout démonter"
+ 	echo "98 ajouter quantité de données dupliquées au .log"
+	echo "99 Remplacer ce script"
+ 	echo " 0 pour quitter"
 
 	read choix
 
@@ -334,7 +335,7 @@ rm "$TMP1" "$TMP2"
 		echo "sudo rm -r /mnt/vsy21tri2int/ccc2505mba/"
 		sudo rm -r /mnt/vsy21tri2int/ccc2505mba/
 		;;
-	97)
+	96)
 		sudo unmount /mnt/secu7test1
 		sudo unmount /mnt/secu7test2
 		sudo unmount /mnt/secu7test3
@@ -342,15 +343,18 @@ rm "$TMP1" "$TMP2"
 		sudo unmount /mnt/secu7test5
 		sudo unmount /mnt/vsy21tri2int
 		;;
-	98)
+	97)
 		sudo umount -lf /mnt/*
 		;;
-	99)
+	98)
  		echo "Quantité de données dupliquées?"
 		read donnees
   		$donness >> savedata.log
  		;;
-	 0)
+	99)
+ 		cp Downloads/sc02savedata.sh . && rm Downloads/sc02savedata.sh
+   		;;
+  	0)
 		break
 		;;
 	esac
