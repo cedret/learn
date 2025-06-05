@@ -1,6 +1,8 @@
 sos01cli01macos.md
 
-``
+https://www.cyberciti.biz/faq/apple-mac-osx-nfs-mount-command-tutorial/
+
+```
 echo "monter réseau pour copie thunderbird"
   258  mkdir -p /Volumes/secu25dest207
   259  sudo mkdir -p /Volumes/secu25dest207
