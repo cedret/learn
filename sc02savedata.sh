@@ -94,7 +94,7 @@ do
 		sudo mount -t nfs -o resvport,rw $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
   		echo "----- df -H"
 	 	df -H
-		echo "----- montage nfs -test-" >> savedata.log
+		echo "----- Montage nfs -$MNT1NFS-" >> savedata.log
   		date >> savedata.log
 # --exemples--
 #		sudo mount -o rw -t nfs $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
@@ -104,6 +104,7 @@ do
 		;;
   	6)
    		sudo umount $MNT1NFS
+     		echo "----- Démontage nfs -$MNT1NFS-" >> savedata.log
      		;;
   	7)
 	  	echo "7- Monter disques qnap"
