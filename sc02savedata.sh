@@ -172,27 +172,27 @@ do
 #		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
 		sudo ls $DST2RSNC
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
-		echo "===== Pause : appuyez sur une touche pour rsync en ssh ....."
+		echo "===== Pause : appuyez sur une touche pour rsync ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 #--- FUSION  	rsync -av /home/user/tosave*/ /destination/
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
-   		du -sh $SRC0BASE >> savedata.log
 		date >> savedata.log
 		sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 # -memoire-	rsync -a --no-owner --no-group source/ /private/nfs207tri2/rsy2506mni/
 #		> rsync0output.log 2>&1
 #  		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/ > rsync1output.log 2>&1
 #    		sudo rsync -avh --progress /Users/access/Documents/_MNI2* /Volumes/vsy21tri2int/ccc2506mni/ > rsync2output.log 2>&1
-  		echo "----- sudo rsync -avh --progress $SRC0BASE $DST2RSNC"
+#  		echo "----- sudo rsync -avh --progress $SRC0BASE $DST2RSNC"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
-		tail -n 5 rsync0output.log >> savedata.log
-  		echo "--- tail5rsync0.log"
-		tail -n 5 rsync1output.log >> savedata.log
-  		echo "--- tail5rsync1.log"
-		tail -n 5 rsync2output.log >> savedata.log
-  		echo "--- tail5rsync2.log"
-		echo "----- Fin copie $SRC0BASE vers $DST2RSNC /eth à:" >> savedata.log
+#		tail -n 5 rsync0output.log >> savedata.log
+# 		echo "--- tail5rsync0.log"
+#		tail -n 5 rsync1output.log >> savedata.log
+# 		echo "--- tail5rsync1.log"
+#		tail -n 5 rsync2output.log >> savedata.log
+# 		echo "--- tail5rsync2.log"
+		echo "----- Fin sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC" >> savedata.log
+     		du -sh $SRC0BASE >> savedata.log
 		date >> savedata.log
   		;;
 	22)
