@@ -2,7 +2,8 @@
 
 # === Configuration ===
 SRC8BASE="/Users/access/Documents/_MNI08_Sante_coll"                  # Dossier local contenant les tosave*
-SRC0BASE="/Users/access/Documents/_MNI0*"
+SRC0BASE=$SRC8BASE
+SRC1BASE="/Users/access/Documents/_MNI0*"
 DST_USER="access"                       # Nom d'utilisateur distant
 DST1HOST="192.168.1.207"                       # IP ou hostname de la machine distante
 DST_RSNC="/Volumes/vsy21tri2int/rsy2506mni"
