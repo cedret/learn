@@ -9,7 +9,7 @@ DEST_SCP="/volume2/vsy21tri2int/scp2505mni"
 DEST_LFTP="/vsy21tri2int/"
 DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
-MNT1NFS="/private/nfs207tri2"
+MNT1NFS="/private/nfs207tri2/"
 echo "===== DEBUT SCRIPT RSYNC ====="
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
@@ -86,7 +86,7 @@ do
 		echo "----- showmount -e $DEST1HOST"
      		showmount -e $DEST1HOST
      		sudo mkdir -p $MNT1NFS
-		sudo mount -t nfs -o resvport,rw $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
+		sudo mount -t nfs4 -o resvport,rw $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
   		echo "----- df -H"
 	 	df -H
 # --exemples--
