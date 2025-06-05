@@ -5,7 +5,7 @@ SRC8BASE="/Users/access/Documents/_MNI08_Sante_coll"                  # Dossier 
 SRC0BASE="/Users/access/Documents/_MNI0*"
 DST_USER="access"                       # Nom d'utilisateur distant
 DST1HOST="192.168.1.207"                       # IP ou hostname de la machine distante
-DST_RSNC="/Volumes/vsy21tri2int/"
+DST_RSNC="/Volumes/vsy21tri2int/rsy2506mni"
 # Chemin sur la machine distante
 DST_SCP="/volume2/vsy21tri2int/scp2505mni"
 DST_LFTP="/vsy21tri2int/"
@@ -158,12 +158,12 @@ do
 			done
 		;;
  	21)
-		echo "----- SAUVEGARDE depuis MACOS -mni*//tri2/ccc2506-"
+		echo "21 rsync depuis mni(macos) -$SRC0BASE- vers -$DST_RSNC-"
 #    		ifconfig
 #		sudo mkdir -p /Volumes/vsy21tri2int
 		ls /Volumes/
 #		sudo mount_smbfs //access@192.168.1.207/vsy21tri2int /Volumes/vsy21tri2int
-		sudo ls /Volumes/vsy21tri2int
+		sudo ls $DST_RSNC
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour rsync en ssh ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
@@ -171,13 +171,12 @@ do
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
 		date >> savedata.log
-		sudo rsync -avh --progress $SRC0BASE /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
+		sudo rsync -avh --progress $SRC0BASE $DST_RSNC
+#		> rsync0output.log 2>&1
 #  		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/ > rsync1output.log 2>&1
 #    		sudo rsync -avh --progress /Users/access/Documents/_MNI2* /Volumes/vsy21tri2int/ccc2506mni/ > rsync2output.log 2>&1
-  		echo "----- sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/"
+  		echo "----- sudo rsync -avh --progress $SRC0BASE $DST_RSNC"
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI01_Fixe /Volumes/secu25dest207/mni01ccc2505/
-#		echo "sudo rsync -av /Documents... /Volumes..."
-#		rsync --stats source/ destination/ >> rsync.log
 		tail -n 5 rsync0output.log >> savedata.log
   		echo "--- tail5rsync0.log"
 		tail -n 5 rsync1output.log >> savedata.log
