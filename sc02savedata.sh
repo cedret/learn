@@ -25,7 +25,7 @@ do
  	echo "Mois de Juin 2025"
   	echo "===== PREPARATION"
   	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 "
-   	echo "---2              ---4 ---6 Démontage           ---8                     ---10"
+   	echo "---2 Suite        ---4 ---6 Démontage           ---8                     ---10"
 	echo "===== RESTAURATIONS"
 	echo "11 rsync depuis .207 -v1-"
 	echo "12 rsync depuis .207 -v2-"
@@ -87,6 +87,10 @@ do
 		sleep 1
 		du -hs *
 		;;
+  	2)
+   		ls -n /volume2/vsy21tri2int/rsy2506mni/
+     		ls -ld /volume2/vsy21tri2int/rsy2506mni/
+       		;;
   	5)
 		echo "----- showmount -e $DST1HOST"
      		showmount -e $DST1HOST
