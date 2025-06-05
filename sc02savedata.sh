@@ -86,10 +86,13 @@ do
 		echo "----- showmount -e $DEST1HOST"
      		showmount -e $DEST1HOST
      		sudo mkdir -p $MNT1NFS
-		sudo mount -o rw -t nfs $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
-		echo "----- df -H"
+		sudo mount -t nfs -o resvport,rw $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
+  		echo "----- df -H"
 	 	df -H
-#exemple 	mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
+# --exemples--
+#		sudo mount -o rw -t nfs $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
+#		sudo mount -t nfs -o resvport,rw
+#		mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
 #  		sudo umount /nfs/home
 		;;
   	7)
