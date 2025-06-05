@@ -179,6 +179,7 @@ do
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
 		date >> savedata.log
 		sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
+# -A TESTER-	sudo rsync -ah --info=stats source/ destination/
 # -memoire-	rsync -a --no-owner --no-group source/ /private/nfs207tri2/rsy2506mni/
 #		> rsync0output.log 2>&1
 #  		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/ > rsync1output.log 2>&1
