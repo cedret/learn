@@ -24,6 +24,7 @@ do
  	echo "Mois de Juin 2025"
   	echo "===== PREPARATION"
   	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 "
+   	echo "---2              ---4 ---6 Démontage           ---8                     ---10"
 	echo "===== RESTAURATIONS"
 	echo "11 rsync depuis .207 -v1-"
 	echo "12 rsync depuis .207 -v2-"
@@ -100,6 +101,9 @@ do
 #		mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
 #  		sudo umount /nfs/home
 		;;
+  	6)
+   		sudo umount $MNT1NFS
+     		;;
   	7)
 	  	echo "7- Monter disques qnap"
  		sudo mkdir /media/secours/secu2505v1
