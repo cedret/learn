@@ -86,9 +86,11 @@ do
 		echo "----- showmount -e $DEST1HOST"
      		showmount -e $DEST1HOST
      		sudo mkdir -p $MNT1NFS
-		sudo mount -t nfs4 -o resvport,rw $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
+		sudo mount -t nfs -o resvport,rw $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
   		echo "----- df -H"
 	 	df -H
+		echo "----- montage nfs -test-" >> savedata.log
+  		date >> savedata.log
 # --exemples--
 #		sudo mount -o rw -t nfs $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
 #		sudo mount -t nfs -o resvport,rw
