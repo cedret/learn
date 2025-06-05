@@ -175,6 +175,7 @@ do
 #--- FUSION  	rsync -av /home/user/tosave*/ /destination/
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
+   		du -sh $SRC0BASE >> savedata.log
 		date >> savedata.log
 		sudo rsync -avh --progress $SRC0BASE $DST2RSNC
 #		> rsync0output.log 2>&1
