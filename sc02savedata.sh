@@ -31,7 +31,7 @@ do
 	echo "===== SAUVEGARDES"
 	echo "21 rsync depuis mni(macos) -$SOURCE_BASE- vers -"
 	echo "22 rsync depuis mba(zorin) -$SOURCE_BASE- vers -"
- 	echo "23 scp depuis mni(macos) -$SOURCE_BASE- vers -"
+ 	echo "23 scp depuis mni(macos) =$SOURCE_BASE= vers =$DEST_SCP="
   	echo "24 scp depuis mba(zorin) -$SOURCE_BASE- vers -"
  	echo "25 smbclient depuis mni(macos) -$SOURCE_BASE- vers - !!!!!!!!!!!"
   	echo "26 smbclient depuis mba(zorin) -$SOURCE_BASE- vers -"
