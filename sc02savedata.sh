@@ -4,8 +4,8 @@
 SOURCE_BASE="/Users/access/Documents/_MNI08_Sante_coll"                  # Dossier local contenant les tosave*
 DEST_USER="access"                       # Nom d'utilisateur distant
 DEST_HOST="192.168.1.207"                       # IP ou hostname de la machine distante
-DEST_PATH="/Volumes/vsy21tri2int/"           # Chemin sur la machine distante
-DEST_SCP="/volume2/vsy21tri2int"
+DEST_RSNC="/Volumes/vsy21tri2int/"           # Chemin sur la machine distante
+DEST_SCP="/volume2/vsy21tri2int/scp2505mni"
 DEST_LFTP="/vsy21tri2int/"
 DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
@@ -18,8 +18,9 @@ while true;
 do
 	echo ""
  	echo "Mois de Juin 2025"
-  	echo "1 Informations"
-   	echo "===== RESTAURATIONS"
+  	echo "===== PREPARATION"
+  	echo "-----1 Informations -----3 -----5 Montage NFS (MacOs) -----7 Monter disques qnap -----9 "
+	echo "===== RESTAURATIONS"
 	echo "11 rsync depuis .207 -v1-"
 	echo "12 rsync depuis .207 -v2-"
 	echo "13 rsync depuis .207 -v2-"
@@ -46,7 +47,7 @@ do
  	echo "43 Supprimer depuis debian cible -$DEST_SUPP-"
    	echo "49 Par rsync"
 	echo "===== LOGS"
-	echo "51 voir rsync.log"
+	echo "51 voir savedata.log"
 	echo "===== AUTRES"
 	echo "91 Monter disques qnap"
 	echo "92 Vérifier montages"
@@ -74,10 +75,20 @@ do
 		echo "----- Contenu source -$SOURCE_BASE-"
 		sleep 1
 		# mkdir /home/secours/Documents/ccc2505mni01
-		sudo ls $DEST_PATH
-		echo "----- Contenu destination -$DEST_PATH-"
+		sudo ls $DEST_RSNC
+		echo "----- Contenu destination -$DEST_RSNC-"
 		sleep 1
 		du -hs *
+		;;
+  	7)
+	  	echo "7- Monter disques qnap"
+ 		sudo mkdir /media/secours/secu2505v1
+		sudo mount /dev/sda /media/secours/secu2505v1
+		sudo mkdir /media/secours/secu2505v2
+		sudo mount /dev/sdb /media/secours/secu2505v2
+#		Add total data transferred
+#		Total Download: ${totaldown enp2s0} 
+#		Total Upload: ${totalup enp2s0}
 		;;
 	15)
  		echo "----- RESTAURATION vers DEBIAN -.207v?-"
@@ -115,7 +126,7 @@ do
 		for dir in "$SOURCE_BASE"/tosave*/; do
 		    if [ -d "$dir" ]; then
 		        echo "Synchronisation de: $dir"
-		        rsync -av -e ssh "$dir" "${DEST_USER}@${DEST_HOST}:${DEST_PATH}/"
+		        rsync -av -e ssh "$dir" "${DEST_USER}@${DEST_HOST}:${DEST_RSNC}/"
 		    else
 		        echo "----- Aucun dossier correspondant trouvé: $dir"
 		    fi
@@ -154,7 +165,7 @@ do
   		echo "--- tail5rsync1.log"
 		tail -n 5 rsync2output.log >> savedata.log
   		echo "--- tail5rsync2.log"
-		echo "----- Fin copie $SOURCE_BASE vers $DEST_PATH /eth à:" >> savedata.log
+		echo "----- Fin copie $SOURCE_BASE vers $DEST_RSNC /eth à:" >> savedata.log
 		date >> savedata.log
   		;;
 	22)
@@ -195,9 +206,9 @@ do
 		echo "===== Pause : appuyez sur une touche pour scp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
   		date >> savedata.log
-		smbclient //$DEST_HOST/$DEST_PATH -U $DEST_USER
+		smbclient //$DEST_HOST/$DEST_RSNC -U $DEST_USER
 #		scp -v -r -p $SOURCE_BASE $DEST_HOST:$DEST_SCP
-  		echo "===== smbclient //$DEST_HOST/$DEST_PATH -U $DEST_USER" >> savedata.log
+  		echo "===== smbclient //$DEST_HOST/$DEST_RSNC -U $DEST_USER" >> savedata.log
    		du -sh $SOURCE_BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
@@ -236,7 +247,7 @@ EOF
 
 		# Vérifie si le répertoire SMB est monté
 		if [ ! -d "$SMB_DIR" ]; then
-		  echo "⚠️ Le dossier SMB '$SMB_DIR' n'est pas monté. Monte-le d'abord."
+		  echo "Le dossier SMB '$SMB_DIR' n'est pas monté. Monte-le d'abord."
 		  exit 1
 		fi
 
@@ -298,17 +309,6 @@ rm "$TMP1" "$TMP2"
 		;;
 	51)
 		cat savedata.log
-		;;
-
-	91)
-	  	echo "51 Monter disques qnap"
- 		sudo mkdir /media/secours/secu2505v1
-		sudo mount /dev/sda /media/secours/secu2505v1
-		sudo mkdir /media/secours/secu2505v2
-		sudo mount /dev/sdb /media/secours/secu2505v2
-#		Add total data transferred
-#		Total Download: ${totaldown enp2s0} 
-#		Total Upload: ${totalup enp2s0}
 		;;
 	92)
 		mount | grep '^/mnt'
