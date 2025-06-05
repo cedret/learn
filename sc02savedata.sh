@@ -80,6 +80,13 @@ do
 		sleep 1
 		du -hs *
 		;;
+  	5)
+   		showmount -e 192.168.1.207
+     		sudo mkdir /private/nfs207
+		sudo mount -o rw -t nfs 192.168.1.207:/volume2 /private/nfs207
+       		df -H
+#  		sudo umount /nfs/home
+		;;
   	7)
 	  	echo "7- Monter disques qnap"
  		sudo mkdir /media/secours/secu2505v1
