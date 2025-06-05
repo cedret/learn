@@ -1,13 +1,15 @@
 #!/bin/bash
 
 # === Configuration ===
-SOURCE_BASE="/Users/access/Documents/_MNI08_Sante_coll"                  # Dossier local contenant les tosave*
-DEST_USER="access"                       # Nom d'utilisateur distant
-DEST1HOST="192.168.1.207"                       # IP ou hostname de la machine distante
-DEST_RSNC="/Volumes/vsy21tri2int/"           # Chemin sur la machine distante
-DEST_SCP="/volume2/vsy21tri2int/scp2505mni"
-DEST_LFTP="/vsy21tri2int/"
-DEST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
+SRC8BASE="/Users/access/Documents/_MNI08_Sante_coll"                  # Dossier local contenant les tosave*
+SRC0BASE="/Users/access/Documents/_MNI0*"
+DST_USER="access"                       # Nom d'utilisateur distant
+DST1HOST="192.168.1.207"                       # IP ou hostname de la machine distante
+DST_RSNC="/Volumes/vsy21tri2int/"
+# Chemin sur la machine distante
+DST_SCP="/volume2/vsy21tri2int/scp2505mni"
+DST_LFTP="/vsy21tri2int/"
+DST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
 MNT1NFS="/private/nfs207tri2/"
 echo "===== DEBUT SCRIPT RSYNC ====="
@@ -30,13 +32,13 @@ do
 	echo "16 rsync depuis .207 -mni01- vers MBA"
 	echo "19 rsync avec variables"
 	echo "===== SAUVEGARDES"
-	echo "21 rsync depuis mni(macos) -$SOURCE_BASE- vers -"
-	echo "22 rsync depuis mba(zorin) -$SOURCE_BASE- vers -"
- 	echo "23 scp depuis mni(macos) =$SOURCE_BASE= vers =$DEST_SCP="
-  	echo "24 scp depuis mba(zorin) -$SOURCE_BASE- vers -"
- 	echo "25 smbclient depuis mni(macos) -$SOURCE_BASE- vers - !!!!!!!!!!!"
-  	echo "26 smbclient depuis mba(zorin) -$SOURCE_BASE- vers -"
-    	echo "27 lftp depuis mni(macos) -$SOURCE_BASE- vers -"
+	echo "21 rsync depuis mni(macos) -$SRC0BASE- vers -$DST_RSNC-"
+	echo "22 rsync depuis mba(zorin) -$SRC0BASE- vers -$DST_RSNC-"
+ 	echo "23 scp depuis mni(macos) =$SRC0BASE= vers =$DST_SCP="
+  	echo "24 scp depuis mba(zorin) -$SRC0BASE- vers -"
+ 	echo "25 smbclient depuis mni(macos) -$SRC0BASE- vers - !!!!!!!!!!!"
+  	echo "26 smbclient depuis mba(zorin) -$SRC0BASE- vers -"
+    	echo "27 lftp depuis mni(macos) -$SRC0BASE- vers -"
 	echo "===== COMPARAISONS"
 	echo "31 par rsync"
  	echo "32 par diff"
@@ -44,8 +46,8 @@ do
   	echo "34 simple"
   	echo "35 avec hash"
  	echo "===== SUPPRESSIONS"
- 	echo "41 Supprimer depuis macos/debian cible -$DEST_SUPP-"
- 	echo "43 Supprimer depuis debian cible -$DEST_SUPP-"
+ 	echo "41 Supprimer depuis macos/debian cible -$DST_SUPP-"
+ 	echo "43 Supprimer depuis debian cible -$DST_SUPP-"
    	echo "49 Par rsync"
 	echo "===== LOGS"
 	echo "51 voir savedata.log"
@@ -71,22 +73,22 @@ do
 		sleep 1
 		# sudo mkdir -p /mnt/secu7mni01
 		# ls -al /mnt/secu7mni01
-		ls -al $SOURCE_BASE
-		du -sh $SOURCE_BASE
+		ls -al $SRC0BASE
+		du -sh $SRC0BASE
 		pwd
-		echo "----- Contenu source -$SOURCE_BASE-"
+		echo "----- Contenu source -$SRC0BASE-"
 		sleep 1
 		# mkdir /home/secours/Documents/ccc2505mni01
-		sudo ls $DEST_RSNC
-		echo "----- Contenu destination -$DEST_RSNC-"
+		sudo ls $DST_RSNC
+		echo "----- Contenu destination -$DST_RSNC-"
 		sleep 1
 		du -hs *
 		;;
   	5)
-		echo "----- showmount -e $DEST1HOST"
-     		showmount -e $DEST1HOST
+		echo "----- showmount -e $DST1HOST"
+     		showmount -e $DST1HOST
      		sudo mkdir -p $MNT1NFS
-		sudo mount -t nfs -o resvport,rw $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
+		sudo mount -t nfs -o resvport,rw $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
   		echo "----- df -H"
 	 	df -H
 		echo "----- montage nfs -test-" >> savedata.log
@@ -140,10 +142,10 @@ do
 		;;
   	19)
 		# === Synchronisation ===
-		for dir in "$SOURCE_BASE"/tosave*/; do
+		for dir in "$SRC0BASE"/tosave*/; do
 		    if [ -d "$dir" ]; then
 		        echo "Synchronisation de: $dir"
-		        rsync -av -e ssh "$dir" "${DEST_USER}@${DEST1HOST}:${DEST_RSNC}/"
+		        rsync -av -e ssh "$dir" "${DST_USER}@${DST1HOST}:${DST_RSNC}/"
 		    else
 		        echo "----- Aucun dossier correspondant trouvé: $dir"
 		    fi
@@ -169,7 +171,7 @@ do
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
 		date >> savedata.log
-		sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
+		sudo rsync -avh --progress $SRC0BASE /Volumes/vsy21tri2int/ccc2506mni/ > rsync0output.log 2>&1
 #  		sudo rsync -avh --progress /Users/access/Documents/_MNI1* /Volumes/vsy21tri2int/ccc2506mni/ > rsync1output.log 2>&1
 #    		sudo rsync -avh --progress /Users/access/Documents/_MNI2* /Volumes/vsy21tri2int/ccc2506mni/ > rsync2output.log 2>&1
   		echo "----- sudo rsync -avh --progress /Users/access/Documents/_MNI0* /Volumes/vsy21tri2int/ccc2506mni/"
@@ -182,11 +184,11 @@ do
   		echo "--- tail5rsync1.log"
 		tail -n 5 rsync2output.log >> savedata.log
   		echo "--- tail5rsync2.log"
-		echo "----- Fin copie $SOURCE_BASE vers $DEST_RSNC /eth à:" >> savedata.log
+		echo "----- Fin copie $SRC0BASE vers $DST_RSNC /eth à:" >> savedata.log
 		date >> savedata.log
   		;;
 	22)
-		echo "22 rsync depuis mba(zorin) vers ccc -$SOURCE_BASE-"
+		echo "22 rsync depuis mba(zorin) vers ccc -$SRC0BASE-"
 		sudo mkdir -p /mnt/vsy21tri2int
 #		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/vsy21tri2int -o username=access,password=illicO12
 		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/vsy21tri2int -o username=access
@@ -207,40 +209,40 @@ do
 		date >> savedata.log
   		;;
 	23)
-	 	echo "23 scp depuis mni(macos) =$SOURCE_BASE= vers =$DEST_SCP="
+	 	echo "23 scp depuis mni(macos) =$SRC0BASE= vers =$DST_SCP="
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour scp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
   		date >> savedata.log
-		scp -v -r -p $SOURCE_BASE $DEST1HOST:$DEST_SCP
-  		echo "===== scp -v -r -p =$SOURCE_BASE =$DEST1HOST:$DEST_SCP" >> savedata.log
-   		du -sh $SOURCE_BASE >> savedata.log
+		scp -v -r -p $SRC0BASE $DST1HOST:$DST_SCP
+  		echo "===== scp -v -r -p =$SRC0BASE =$DST1HOST:$DST_SCP" >> savedata.log
+   		du -sh $SRC0BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
 	25)
-	  	echo "25 smbclient depuis mni(macos) =$SOURCE_BASE= vers -"
+	  	echo "25 smbclient depuis mni(macos) =$SRC0BASE= vers -"
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour scp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
   		date >> savedata.log
-		smbclient //$DEST1HOST/$DEST_RSNC -U $DEST_USER
+		smbclient //$DST1HOST/$DST_RSNC -U $DST_USER
 #		scp -v -r -p $SOURCE_BASE $DEST_HOST:$DEST_SCP
-  		echo "===== smbclient //$DEST1HOST/$DEST_RSNC -U $DEST_USER" >> savedata.log
-   		du -sh $SOURCE_BASE >> savedata.log
+  		echo "===== smbclient //$DST1HOST/$DST_RSNC -U $DST_USER" >> savedata.log
+   		du -sh $SRC0BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
 	27)
-	    	echo "27 lftp depuis mni(macos) -$SOURCE_BASE- vers -"
+	    	echo "27 lftp depuis mni(macos) -$SRC0BASE- vers -"
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour lftp ....."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
   		date >> savedata.log
-		lftp -u "$DEST_USER","$PSWD" "$DEST_HOST" <<EOF
+		lftp -u "$DST_USER","$PSWD" "$DST_HOST" <<EOF
 		mirror -R "$SOURCE_BASE" "$DEST_PATH"
 		bye
 EOF
-  		echo "===== smbclient //$DEST1HOST/$DEST_LFTP -U $DEST_USER" >> savedata.log
-   		du -sh $SOURCE_BASE >> savedata.log
+  		echo "===== smbclient //$DST1HOST/$DST_LFTP -U $DST_USER" >> savedata.log
+   		du -sh $SRC0BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
   		;;
     	31)
@@ -307,17 +309,17 @@ rm "$TMP1" "$TMP2"
 		;;
     	41)
 		echo "----- SUPPRESSION depuis MACOS/Debian"
-		sudo ls $DEST_SUPP
+		sudo ls $DST_SUPP
 #		ls -al $DEST_SUPP
-		du -sh $DEST_SUPP
+		du -sh $DST_SUPP
     		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
-		echo "==> Pause : appuyez sur une touche pour suppression forcée: $DEST_SUPP"
+		echo "==> Pause : appuyez sur une touche pour suppression forcée: $DST_SUPP"
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 #		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
-  		sudo rm -rf $DEST_SUPP
+  		sudo rm -rf $DST_SUPP
 #    		sudo rmdir $DEST_SUPP
-		echo "sudo rm -rf $DEST_SUPP"
-		echo "----- Fin suppression $DEST_SUPP:" >> savedata.log 
+		echo "sudo rm -rf $DST_SUPP"
+		echo "----- Fin suppression $DST_SUPP:" >> savedata.log 
 		date >> savedata.log
 		;;
 	39)
