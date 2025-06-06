@@ -1,14 +1,15 @@
 #!/bin/bash
 
 # === Configuration ===
-SRC8BASE="/Users/access/Documents/_MNI08_Sante_coll"                  # Dossier local contenant les tosave*
-SRC0BASE=$SRC8BASE
+# Dossier local contenant les sources
+SRC0BASE="/Users/access/Documents"
 SRC1BASE="/Users/access/Documents/_MNI0*"
+SRC8BASE="/Users/access/Documents/_MNI08_Sante_coll"
 DST_USER="access"                       # Nom d'utilisateur distant
 DST1HOST="192.168.1.207"                       # IP ou hostname de la machine distante
+# Chemin sur la machine distante
 DST_RSNC="/Volumes/vsy21tri2int/rsy2506mni"
 DST2RSNC="/private/nfs207tri2/rsy2506mni"
-# Chemin sur la machine distante
 DST_SCP="/volume2/vsy21tri2int/scp2505mni"
 DST_LFTP="/vsy21tri2int/"
 DST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
@@ -24,7 +25,7 @@ do
 	echo ""
  	echo "Mois de Juin 2025"
   	echo "===== PREPARATION"
-  	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 "
+  	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir source(s)"
    	echo "---2 Suite        ---4 ---6 Démontage           ---8                     ---10"
 	echo "===== RESTAURATIONS"
 	echo "11 rsync depuis .207 -v1-"
@@ -92,13 +93,14 @@ do
      		ls -ld /volume2/vsy21tri2int/rsy2506mni/
        		;;
   	5)
-		echo "----- showmount -e $DST1HOST"
+   		echo "---5 Montage NFS (MacOs)"
+		echo "--- showmount -e $DST1HOST"
      		showmount -e $DST1HOST
      		sudo mkdir -p $MNT1NFS
 		sudo mount -t nfs -o resvport,rw $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
-  		echo "----- df -H"
+  		echo "--- df -H"
 	 	df -H
-		echo "----- Montage nfs -$MNT1NFS-" >> savedata.log
+		echo "--- Montage nfs -$MNT1NFS-" >> savedata.log
   		date >> savedata.log
 # --exemples--
 #		sudo mount -o rw -t nfs $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
@@ -108,10 +110,10 @@ do
 		;;
   	6)
    		sudo umount $MNT1NFS
-     		echo "----- Démontage nfs -$MNT1NFS-" >> savedata.log
+     		echo "--- Démontage nfs -$MNT1NFS-" >> savedata.log
      		;;
   	7)
-	  	echo "7- Monter disques qnap"
+	  	echo "9- Monter disques qnap -smb-"
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
 		sudo mkdir /media/secours/secu2505v2
@@ -120,7 +122,57 @@ do
 #		Total Download: ${totaldown enp2s0} 
 #		Total Upload: ${totalup enp2s0}
 		;;
-	15)
+	9)
+#		SOURCE_BASE="$HOME"
+		DESTINATION=$DST2RSNC
+
+		# Vérifie que rsync est installé
+		if ! command -v rsync &> /dev/null; then
+		    echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync"
+		    exit 1
+		fi
+
+		# Lister les répertoires dans $HOME
+		echo "Recherche des répertoires dans $SRC0BASE..."
+		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
+
+		if [ ${#DIRS[@]} -eq 0 ]; then
+		  echo "Aucun répertoire trouvé dans $SRC0BASE."
+		  exit 1
+		fi
+
+		# Affichage numéroté
+		echo "Répertoires disponibles :"
+		for i in "${!DIRS[@]}"; do
+		  echo "[$i] ${DIRS[$i]##*/}"
+		done
+
+		# Demander plusieurs choix
+		echo -ne "\n Entrez les numéros des répertoires à copier (ex: 0 2 4) : "
+		read -r input
+
+		input=$(echo "$input" | tr ',' ' ')
+		indices=($input)
+
+		# Créer le dossier de destination
+		mkdir -p "$DESTINATION"
+
+		# Copier les répertoires sélectionnés avec rsync
+		echo -e "\n Copie des répertoires sélectionnés avec rsync..."
+
+		for index in "${indices[@]}"; do
+		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
+		    src="${DIRS[$index]}"
+		    dest="$DESTINATION/$(basename "$src")"
+		    echo -e "\n Copie de '$src' vers '$dest'..."
+		    rsync -a --progress "$src/" "$dest/"
+		  else
+		    echo " Index invalide : $index (ignoré)"
+		  fi
+		done
+		echo -e "\n Copie terminée avec rsync."
+		;;
+ 	15)
  		echo "----- RESTAURATION vers DEBIAN -.207v?-"
 		sudo mkdir -p /mnt/secu7test5
 		sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=accesr,password=fastoche
