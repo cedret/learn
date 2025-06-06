@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# La fonction 9 est la plus complète à ce jour
+
 # === Configuration ===
 # Dossier local contenant les sources
 SRC0BASE="/Users/access/Documents"
@@ -157,7 +159,7 @@ do
 		mkdir -p "$DESTINATION"
 
 		# Copier les répertoires sélectionnés avec rsync
-		echo -e "---9 Copie des répertoires sélectionnés avec rsync..."
+		echo "---9 Copie des répertoires sélectionnés avec rsync..." | tee -a "$LOGFILE"
 		date >> $LOGFILE
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
