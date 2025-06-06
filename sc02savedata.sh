@@ -365,27 +365,27 @@ EOF
 		echo "Comparaison terminée. Rapport enregistré dans : $LOG_FILE"
 		;;
   	35)
-LOCAL_DIR="/Users/ton_utilisateur/Documents/dossier_local"
-SMB_DIR="/Volumes/partage_smb/dossier_distant"
-TMP1=$(mktemp)
-TMP2=$(mktemp)
+		LOCAL_DIR="/Users/ton_utilisateur/Documents/dossier_local"
+		SMB_DIR="/Volumes/partage_smb/dossier_distant"
+		TMP1=$(mktemp)
+		TMP2=$(mktemp)
 
-echo "🔧 Génération des checksums SHA-1..."
+		echo "Génération des checksums SHA-1..."
 
-find "$LOCAL_DIR" -type f -exec shasum {} \; | sed "s|$LOCAL_DIR/||" | sort > "$TMP1"
-find "$SMB_DIR" -type f -exec shasum {} \; | sed "s|$SMB_DIR/||" | sort > "$TMP2"
+		find "$LOCAL_DIR" -type f -exec shasum {} \; | sed "s|$LOCAL_DIR/||" | sort > "$TMP1"
+		find "$SMB_DIR" -type f -exec shasum {} \; | sed "s|$SMB_DIR/||" | sort > "$TMP2"
 
-echo "🔍 Comparaison des checksums..."
-diff "$TMP1" "$TMP2" > comparaison_hashes.log
+		echo "Comparaison des checksums..."
+		diff "$TMP1" "$TMP2" > comparaison_hashes.log
 
-if [ $? -eq 0 ]; then
-  echo "Tous les fichiers sont identiques !"
-else
-  echo "Des différences ont été trouvées. Voir : comparaison_hashes.log"
-fi
+		if [ $? -eq 0 ]; then
+		  echo "Tous les fichiers sont identiques !"
+		else
+		  echo "Des différences ont été trouvées. Voir : comparaison_hashes.log"
+		fi
 
-# Nettoyage
-rm "$TMP1" "$TMP2"
+		# Nettoyage
+		rm "$TMP1" "$TMP2"
 		;;
     	41)
 		echo "----- SUPPRESSION depuis MACOS/Debian"
@@ -408,6 +408,7 @@ rm "$TMP1" "$TMP2"
 		;;
 	51)
 		cat $LOGFILE
+  		ls $HOME/logs
 		;;
 	92)
 		mount | grep '^/mnt'
