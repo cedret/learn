@@ -22,6 +22,7 @@ echo "===== DEBUT SCRIPT RSYNC ====="
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
+echo "" >> $LOGFILE
 hostname >> $LOGFILE
 uname -a
 while true;
@@ -170,7 +171,7 @@ do
 		mkdir -p "$DESTINATION"
 
 		# Copier les répertoires sélectionnés avec rsync
-		echo -e "\n Copie des répertoires sélectionnés avec rsync..."
+		echo -e "---9 Copie des répertoires sélectionnés avec rsync..."
 		date >> $LOGFILE
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
@@ -400,13 +401,14 @@ EOF
 #    		sudo rmdir $DEST_SUPP
 		echo "sudo rm -rf $DST_SUPP"
 		echo "----- Fin suppression $DST_SUPP:" >> savedata.log 
-		date >> savedata.log
+		date >> $LOGFILE
 		;;
 	39)
  		mkdir empty_dir
 		rsync -a --delete --progress empty_dir/ target_dir/
 		;;
 	51)
+ 		echo -e "\n ---51 Logs"
 		cat $LOGFILE
   		ls $HOME/logs
 		;;
