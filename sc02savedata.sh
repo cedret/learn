@@ -95,14 +95,14 @@ do
        		;;
   	5)
    		echo "---5 Montage NFS (MacOs)"
-		echo "--- showmount -e $DST1HOST"
+		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFILE"
      		showmount -e $DST1HOST
      		sudo mkdir -p $MNT1NFS
 		sudo mount -t nfs -o resvport,rw $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
   		echo "--- df -H"
 	 	df -H
-		echo "--- Montage nfs -$MNT1NFS-" >> savedata.log
-  		date >> savedata.log
+		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFILE"
+  		date >> $LOGFILE
 # --exemples--
 #		sudo mount -o rw -t nfs $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
 #		sudo mount -t nfs -o resvport,rw
@@ -111,10 +111,10 @@ do
 		;;
   	6)
    		sudo umount $MNT1NFS
-     		echo "--- Démontage nfs -$MNT1NFS-" >> savedata.log
+     		echo "--- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFILE"
      		;;
   	7)
-	  	echo "9- Monter disques qnap -smb-"
+	  	echo "9- Monter disques qnap -smb-" | tee -a "$LOGFILE"
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
 		sudo mkdir /media/secours/secu2505v2
@@ -129,7 +129,7 @@ do
 
 		# Vérifie que rsync est installé
 		if ! command -v rsync &> /dev/null; then
-		    echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync"
+		    echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync" | tee -a "$LOGFILE"
 		    exit 1
 		fi
 
@@ -138,7 +138,7 @@ do
 		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
 		if [ ${#DIRS[@]} -eq 0 ]; then
-		  echo "Aucun répertoire trouvé dans $SRC0BASE."
+		  echo "Aucun répertoire trouvé dans $SRC0BASE." | tee -a "$LOGFILE"
 		  exit 1
 		fi
 
@@ -159,7 +159,7 @@ do
 		read -r confirm
 
 		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
-		  echo "Copie annulée."
+		  echo "Copie annulée." | tee -a "$LOGFILE"
 		  exit 0
 		fi
 
@@ -178,13 +178,13 @@ do
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		echo "----- Fin copie mba vers ccc/wifi à:" | tee -a "$LOGFILE" 
 		  else
-		    echo " Index invalide : $index (ignoré)"
+		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFILE"
 		  fi
 		done
 
   		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
 
-		date >> savedata.log
+		date >> $LOGFILE
 		echo -e "\n Copie terminée avec rsync."
 		;;
  	15)
@@ -201,7 +201,7 @@ do
 		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
 		echo "----- sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
 		echo "----- Fin copie test vers debian à:" >> savedata.log 
-		date >> savedata.log
+		date >> $LOGFILE
 		;;
 	16)
 		echo "----- RESTAURATION vers DEBIAN -mni01-"
@@ -212,11 +212,11 @@ do
 		echo "^^^^^ Contenu de mnt/secu7mni01/ccc2505... rsync imminent"
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		date >> savedata.log
+		date >> $LOGFILE
 		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
 		echo "----- sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
 		echo "----- Fin copie mni01 vers mba à:" >> savedata.log 
-		date >> savedata.log
+		date >> $LOGFILE
 		;;
   	19)
 		# === Synchronisation ===
@@ -248,7 +248,7 @@ do
 #--- FUSION  	rsync -av /home/user/tosave*/ /destination/
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
-		date >> savedata.log
+		date >> $LOGFILE
 		sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 # -A TESTER-	sudo rsync -ah --info=stats source/ destination/
 # -memoire-	rsync -a --no-owner --no-group source/ /private/nfs207tri2/rsy2506mni/
@@ -265,7 +265,7 @@ do
 # 		echo "--- tail5rsync2.log"
 		echo "----- Fin sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC" >> savedata.log
      		du -sh $SRC0BASE >> savedata.log
-		date >> savedata.log
+		date >> $LOGFILE
   		;;
 	22)
 		echo "22 rsync depuis mba(zorin) vers ccc -$SRC0BASE-"
@@ -281,12 +281,12 @@ do
 		echo ""
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-  		date >> savedata.log
+  		date >> $LOGFILE
 		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/pop.sfr.fr/ /mnt/vsy21tri2int/ccc2505test
 #		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/ /mnt/vsy21tri2int/ccc2505mba
 		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
 		echo "----- Fin copie mba vers ccc/wifi à:" >> savedata.log 
-		date >> savedata.log
+		date >> $LOGFILE
   		;;
 	23)
 	 	echo "23 scp depuis mni(macos) =$SRC0BASE= vers =$DST_SCP="
