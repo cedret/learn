@@ -24,6 +24,11 @@ echo "===== DEBUT SCRIPT RSYNC ====="
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
+# Vérifie que rsync est installé
+if ! command -v rsync &> /dev/null; then
+    echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync" | tee -a "$LOGFILE"
+    exit 1
+fi
 echo "----- ----- ----- -----" >> $LOGFILE
 hostname >> $LOGFILE
 uname -a
@@ -119,11 +124,9 @@ do
 #		SOURCE_BASE="$HOME"
 		DESTINATION=$DST2RSNC
 
-		# Vérifie que rsync est installé
-		if ! command -v rsync &> /dev/null; then
-		    echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync" | tee -a "$LOGFILE"
-		    exit 1
-		fi
+		# Lister les répertoires dans $HOME
+		echo "Recherche des répertoires dans $SRC0BASE..."
+		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
 		# Lister les répertoires dans $HOME
 		echo "Recherche des répertoires dans $SRC0BASE..."
