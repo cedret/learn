@@ -163,7 +163,7 @@ do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 		    src="${DIRS[$index]}"
 		    dest="$DESTINATION/$(basename "$src")"
-		    echo -e "\n Copie de '$src' vers '$dest'..." | tee -a "$LOGFILE" 
+		    echo -e "Rsync de '$src' vers '$dest'..." | tee -a "$LOGFILE" 
 		    rsync -a --no-owner --no-group --progress "$src/" "$dest/"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		    du -sh $src >> $LOGFILE
