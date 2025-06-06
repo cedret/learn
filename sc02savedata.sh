@@ -22,7 +22,7 @@ echo "===== DEBUT SCRIPT RSYNC ====="
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
-echo "" >> $LOGFILE
+echo "----- ----- ----- -----" >> $LOGFILE
 hostname >> $LOGFILE
 uname -a
 df -H
@@ -163,10 +163,10 @@ do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 		    src="${DIRS[$index]}"
 		    dest="$DESTINATION/$(basename "$src")"
-		    echo -e "Rsync de '$src' vers '$dest'..." | tee -a "$LOGFILE" 
+		    du -sh $src >> $LOGFILE
+		    echo -e "Rsync vers '$dest' fini à:" | tee -a "$LOGFILE" 
 		    rsync -a --no-owner --no-group --progress "$src/" "$dest/"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
-		    du -sh $src >> $LOGFILE
 		  else
 		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFILE"
 		  fi
