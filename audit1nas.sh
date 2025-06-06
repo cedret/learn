@@ -8,28 +8,8 @@ do
 	echo ""
  	echo "Mois de Juin 2025"
   	echo "===== PREPARATION"
-  	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir source(s) + rsync"
-   	echo "---2 Suite        ---4 ---6 Démontage NFS       ---8                     ---10 Incrémenter savedata.log"
-	echo "===== RESTAURATIONS"
-  	echo "---11 ---13              ---15           ---17 ---19 Choisir sauvegarde(s) + rsync"
-	echo "---12 ---14 rsync/debian ---16 rsync/MBA ---18 rsync/variables"
-	echo "===== SAUVEGARDES -$SRC0BASE- vers -$DST_RSNC- ou =$DST_SCP="
-	echo "---21 rsync < mni(macos) ---23 scp < mni(macos) ---25 smbclient < mni(macos) ---27 lftp < mni(macos)-"
-	echo "---22 rsync < mba(zorin) ---24 scp < mba(zorin) ---26 smbclient < mba(zorin) ---28"
- 	echo "===== COMPARAISONS"
-	echo "---31 par rsync ---32 par diff   ---33 par checksum"
-  	echo "---34 simple    ---35 avec hash"
- 	echo "===== SUPPRESSIONS"
- 	echo "---41 Supprimer avec macos/debian cible -$DST_SUPP-"
- 	echo "---43 Supprimer avec debian cible -$DST_SUPP-"
-   	echo "---49 Par rsync"
-	echo "===== LOGS"
-	echo "---51 voir savedata.log"
-	echo "===== AUTRES"
-	echo "---91 Monter disques qnap ---92 Vérifier montages ---93 Démonter intelligent"
-	echo "95 Supprimer /mnt///ccc2505mba"
-	echo "97 Tout démonter"
- 	echo "98 ajouter quantité de données dupliquées au .log"
+  	echo "---1 OS           ---3 Disques ---5 T° disques ---7         ---9 Volumes"
+   	echo "---2 Mémoire CPU  ---4         ---6 Réseau     ---8 Disques ---10"
 	echo "99 Remplacer ce script"
  	echo " 0 pour quitter"
 
@@ -54,8 +34,7 @@ top -bn1 | head -n 10
 # 📦 Disques
 echo -e "\n💽 Espace disque :"
 df -hT | grep -v tmpfs
-        ;;
-    4)
+
 echo -e "\n🧪 Santé des disques (SMART) :"
 for disk in /dev/sd?; do
     echo "→ $disk :"
