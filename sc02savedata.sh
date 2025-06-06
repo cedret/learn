@@ -124,9 +124,9 @@ do
 #		SOURCE_BASE="$HOME"
 		DESTINATION=$DST2RSNC
 
-		# Lister les répertoires dans $HOME
-		echo "Recherche des répertoires dans $SRC0BASE..."
-		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
+		# Lister les répertoires déjà dans destination
+		echo "Recherche des répertoires dans $DESTINATION..."
+		sudo ls $DESTINATION
 
 		# Lister les répertoires dans $HOME
 		echo "Recherche des répertoires dans $SRC0BASE..."
