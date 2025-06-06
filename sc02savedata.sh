@@ -15,6 +15,7 @@ DST_LFTP="/vsy21tri2int"
 DST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
 MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
+LOGFILE="savedata.log"
 echo "===== DEBUT SCRIPT RSYNC ====="
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
@@ -26,7 +27,7 @@ do
  	echo "Mois de Juin 2025"
   	echo "===== PREPARATION"
   	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir source(s) + rsync"
-   	echo "---2 Suite        ---4 ---6 Démontage NFS       ---8                     ---10"
+   	echo "---2 Suite        ---4 ---6 Démontage NFS       ---8                     ---10 Incrémenter savedata.log"
 	echo "===== RESTAURATIONS"
 	echo "11 rsync depuis .207 -v1-"
 	echo "12 rsync depuis .207 -v2-"
@@ -154,12 +155,20 @@ do
 		input=$(echo "$input" | tr ',' ' ')
 		indices=($input)
 
+		echo -ne "\n Confirmer la copie ? (o/n) : "
+		read -r confirm
+
+		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
+		  echo "Copie annulée."
+		  exit 0
+		fi
+
 		# Créer le dossier de destination
 		mkdir -p "$DESTINATION"
 
 		# Copier les répertoires sélectionnés avec rsync
 		echo -e "\n Copie des répertoires sélectionnés avec rsync..."
-
+		date >> savedata.log
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 		    src="${DIRS[$index]}"
@@ -167,10 +176,15 @@ do
 		    echo -e "\n Copie de '$src' vers '$dest'..."
 		    rsync -a --progress "$src/" "$dest/"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
+		echo "----- Fin copie mba vers ccc/wifi à:" | tee -a "$LOGFILE" 
 		  else
 		    echo " Index invalide : $index (ignoré)"
 		  fi
 		done
+
+  		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
+
+		date >> savedata.log
 		echo -e "\n Copie terminée avec rsync."
 		;;
  	15)
