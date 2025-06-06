@@ -19,7 +19,7 @@ LOGFILE="savedata.log"
 echo "===== DEBUT SCRIPT RSYNC ====="
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
-hostname >> savedata.log
+hostname >> $LOGFILE
 
 while true;
 do
@@ -168,22 +168,19 @@ do
 
 		# Copier les répertoires sélectionnés avec rsync
 		echo -e "\n Copie des répertoires sélectionnés avec rsync..."
-		date >> savedata.log
+		date >> $LOGFILE
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 		    src="${DIRS[$index]}"
 		    dest="$DESTINATION/$(basename "$src")"
-		    echo -e "\n Copie de '$src' vers '$dest'..."
-		    rsync -a --progress "$src/" "$dest/"
+		    echo -e "\n Copie de '$src' vers '$dest'..." | tee -a "$LOGFILE" 
+		    rsync -a --no-owner --no-group --progress "$src/" "$dest/"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
-		echo "----- Fin copie mba vers ccc/wifi à:" | tee -a "$LOGFILE" 
+		    du -sh $src >> $LOGFILE
 		  else
 		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFILE"
 		  fi
 		done
-
-  		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
-
 		date >> $LOGFILE
 		echo -e "\n Copie terminée avec rsync."
 		;;
@@ -264,7 +261,7 @@ do
 #		tail -n 5 rsync2output.log >> savedata.log
 # 		echo "--- tail5rsync2.log"
 		echo "----- Fin sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC" >> savedata.log
-     		du -sh $SRC0BASE >> savedata.log
+     		du -sh $SRC0BASE >> $LOGFILE
 		date >> $LOGFILE
   		;;
 	22)
