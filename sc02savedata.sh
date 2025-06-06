@@ -23,7 +23,7 @@ mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
 hostname >> $LOGFILE
-
+uname -a
 while true;
 do
 	echo ""
@@ -68,7 +68,7 @@ do
  	echo "98 ajouter quantité de données dupliquées au .log"
 	echo "99 Remplacer ce script"
  	echo " 0 pour quitter"
-
+	df -H
 	read choix
 
 	case $choix in
@@ -76,8 +76,8 @@ do
 		systemctl status smbd
 		lsblk -f
 		echo "----- source// lsblk -f"
-		df -h
-		echo "----- source// df -h"
+#		df -h
+#		echo "----- source// df -h"
 		sleep 1
 		# sudo mkdir -p /mnt/secu7mni01
 		# ls -al /mnt/secu7mni01
