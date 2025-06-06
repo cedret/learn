@@ -34,28 +34,22 @@ do
   	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir source(s) + rsync"
    	echo "---2 Suite        ---4 ---6 Démontage NFS       ---8                     ---10 Incrémenter savedata.log"
 	echo "===== RESTAURATIONS"
-  	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir sauvegarde(s) + rsync"
-	echo "---14 rsync depuis .207 -v3-"
-	echo "---15 rsync depuis .207 -tri4ext- environ 3h"
-	echo "---16 rsync depuis .207 -mni01- vers MBA"
-	echo "---19 rsync avec variables"
+  	echo "---11 ---13              ---15           ---17 ---19 Choisir sauvegarde(s) + rsync"
+	echo "---12 ---14 rsync/debian ---16 rsync/MBA ---18 rsync/variables"
 	echo "===== SAUVEGARDES -$SRC0BASE- vers -$DST_RSNC- ou =$DST_SCP="
-	echo "---21 rsync depuis mni(macos) ---23 scp depuis mni(macos) ---25 smbclient depuis mni(macos)"
-	echo "---22 rsync depuis mba(zorin) ---24 scp depuis mba(zorin) ---26 smbclient depuis mba(zorin)"
-    	echo "---27 lftp depuis mni(macos)-"
-	echo "===== COMPARAISONS"
-	echo "---31 par rsync ---32 par diff ---33 par checksum"
+	echo "---21 rsync depuis mni(macos) ---23 scp depuis mni(macos) ---25 smbclient depuis mni(macos) ---27 lftp depuis mni(macos)-"
+	echo "---22 rsync depuis mba(zorin) ---24 scp depuis mba(zorin) ---26 smbclient depuis mba(zorin) ---28"
+ 	echo "===== COMPARAISONS"
+	echo "---31 par rsync ---32 par diff   ---33 par checksum"
   	echo "---34 simple    ---35 avec hash"
  	echo "===== SUPPRESSIONS"
- 	echo "41 Supprimer depuis macos/debian cible -$DST_SUPP-"
- 	echo "43 Supprimer depuis debian cible -$DST_SUPP-"
-   	echo "49 Par rsync"
+ 	echo "---41 Supprimer depuis macos/debian cible -$DST_SUPP-"
+ 	echo "---43 Supprimer depuis debian cible -$DST_SUPP-"
+   	echo "---49 Par rsync"
 	echo "===== LOGS"
-	echo "51 voir savedata.log"
+	echo "---51 voir savedata.log"
 	echo "===== AUTRES"
-	echo "91 Monter disques qnap"
-	echo "92 Vérifier montages"
-	echo "93 Démonter intelligent"
+	echo "---91 Monter disques qnap ---92 Vérifier montages ---93 Démonter intelligent"
 	echo "95 Supprimer /mnt///ccc2505mba"
 	echo "97 Tout démonter"
  	echo "98 ajouter quantité de données dupliquées au .log"
@@ -180,7 +174,7 @@ do
 		date >> $LOGFILE
 		echo -e "\n Copie terminée avec rsync."
 		;;
- 	15)
+ 	14)
  		echo "----- RESTAURATION vers DEBIAN -.207v?-"
 		sudo mkdir -p /mnt/secu7test5
 		sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=accesr,password=fastoche
@@ -190,10 +184,10 @@ do
 		echo "----- Contenu de secu7test5"
   		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-  		date >> savedata.log
+  		date >> $LOGFILE
 		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
 		echo "----- sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
-		echo "----- Fin copie test vers debian à:" >> savedata.log 
+		echo "----- Fin copie test vers debian à:" >> $LOGFILE
 		date >> $LOGFILE
 		;;
 	16)
@@ -208,10 +202,10 @@ do
 		date >> $LOGFILE
 		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
 		echo "----- sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
-		echo "----- Fin copie mni01 vers mba à:" >> savedata.log 
+		echo "----- Fin copie mni01 vers mba à:" >> $LOGFILE
 		date >> $LOGFILE
 		;;
-  	19)
+  	18)
 		# === Synchronisation ===
 		for dir in "$SRC0BASE"/tosave*/; do
 		    if [ -d "$dir" ]; then
