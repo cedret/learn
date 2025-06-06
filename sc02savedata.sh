@@ -15,8 +15,11 @@ DST_LFTP="/vsy21tri2int"
 DST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
 MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
-LOGFILE="savedata.log"
+LOGFILE="$HOME/logs/savedata$(date +%YS%V).log"
+# LOGFILE="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
+# LOGFILE="savedata.log"
 echo "===== DEBUT SCRIPT RSYNC ====="
+mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
 hostname >> $LOGFILE
