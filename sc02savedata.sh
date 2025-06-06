@@ -407,7 +407,7 @@ rm "$TMP1" "$TMP2"
 		rsync -a --delete --progress empty_dir/ target_dir/
 		;;
 	51)
-		cat $logfile
+		cat $LOGFILE
 		;;
 	92)
 		mount | grep '^/mnt'
