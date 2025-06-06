@@ -15,7 +15,7 @@ DST_LFTP="/vsy21tri2int"
 DST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
 MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
-LOGFILE="$HOME/logs/savedata$(date +%YS%V).log"
+LOGFILE="$HOME/logs/savedata$(date +%Ys%V).log"
 # LOGFILE="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
 # LOGFILE="savedata.log"
 echo "===== DEBUT SCRIPT RSYNC ====="
