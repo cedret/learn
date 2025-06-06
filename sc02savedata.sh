@@ -25,6 +25,7 @@ echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/inte
 echo "" >> $LOGFILE
 hostname >> $LOGFILE
 uname -a
+df -H
 while true;
 do
 	echo ""
@@ -33,27 +34,18 @@ do
   	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir source(s) + rsync"
    	echo "---2 Suite        ---4 ---6 Démontage NFS       ---8                     ---10 Incrémenter savedata.log"
 	echo "===== RESTAURATIONS"
-	echo "11 rsync depuis .207 -v1-"
-	echo "12 rsync depuis .207 -v2-"
-	echo "13 rsync depuis .207 -v2-"
-	echo "14 rsync depuis .207 -v3-"
-	echo "15 rsync depuis .207 -tri4ext- environ 3h"
-	echo "16 rsync depuis .207 -mni01- vers MBA"
-	echo "19 rsync avec variables"
-	echo "===== SAUVEGARDES"
-	echo "21 rsync depuis mni(macos) -$SRC0BASE- vers -$DST_RSNC-"
-	echo "22 rsync depuis mba(zorin) -$SRC0BASE- vers -$DST_RSNC-"
- 	echo "23 scp depuis mni(macos) =$SRC0BASE= vers =$DST_SCP="
-  	echo "24 scp depuis mba(zorin) -$SRC0BASE- vers -"
- 	echo "25 smbclient depuis mni(macos) -$SRC0BASE- vers - !!!!!!!!!!!"
-  	echo "26 smbclient depuis mba(zorin) -$SRC0BASE- vers -"
-    	echo "27 lftp depuis mni(macos) -$SRC0BASE- vers -"
+  	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir sauvegarde(s) + rsync"
+	echo "---14 rsync depuis .207 -v3-"
+	echo "---15 rsync depuis .207 -tri4ext- environ 3h"
+	echo "---16 rsync depuis .207 -mni01- vers MBA"
+	echo "---19 rsync avec variables"
+	echo "===== SAUVEGARDES -$SRC0BASE- vers -$DST_RSNC- ou =$DST_SCP="
+	echo "---21 rsync depuis mni(macos) ---23 scp depuis mni(macos) ---25 smbclient depuis mni(macos)"
+	echo "---22 rsync depuis mba(zorin) ---24 scp depuis mba(zorin) ---26 smbclient depuis mba(zorin)"
+    	echo "---27 lftp depuis mni(macos)-"
 	echo "===== COMPARAISONS"
-	echo "31 par rsync"
- 	echo "32 par diff"
-  	echo "33 par checksum"
-  	echo "34 simple"
-  	echo "35 avec hash"
+	echo "---31 par rsync ---32 par diff ---33 par checksum"
+  	echo "---34 simple    ---35 avec hash"
  	echo "===== SUPPRESSIONS"
  	echo "41 Supprimer depuis macos/debian cible -$DST_SUPP-"
  	echo "43 Supprimer depuis debian cible -$DST_SUPP-"
@@ -69,7 +61,7 @@ do
  	echo "98 ajouter quantité de données dupliquées au .log"
 	echo "99 Remplacer ce script"
  	echo " 0 pour quitter"
-	df -H
+
 	read choix
 
 	case $choix in
