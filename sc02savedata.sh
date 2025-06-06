@@ -157,7 +157,7 @@ do
 
 		input=$(echo "$input" | tr ',' ' ')
 		indices=($input)
-
+	 	df -H
 		echo -ne "\n Confirmer la copie ? (o/n) : "
 		read -r confirm
 
