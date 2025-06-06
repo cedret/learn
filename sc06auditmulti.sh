@@ -8,7 +8,7 @@ NAS_LIST=(
     "access@192.168.1.213"
 )
 
-SCRIPT_LOCAL="audit1nas.sh"
+SCRIPT_LOCAL="sc04auditnas.sh"
 LOG_DIR="$HOME/logs/audit_nas"
 mkdir -p "$LOG_DIR"
 
