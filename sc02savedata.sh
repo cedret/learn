@@ -6,15 +6,15 @@ SRC0BASE="/Users/access/Documents"
 SRC1BASE="/Users/access/Documents/_MNI0*"
 SRC8BASE="/Users/access/Documents/_MNI08_Sante_coll"
 DST_USER="access"                       # Nom d'utilisateur distant
-DST1HOST="192.168.1.207"                       # IP ou hostname de la machine distante
+DST1HOST="192.168.1.207"                # IP ou hostname de la machine distante
 # Chemin sur la machine distante
 DST_RSNC="/Volumes/vsy21tri2int/rsy2506mni"
-DST2RSNC="/private/nfs207tri2/rsy2506mni"
+DST2RSNC="/private/nfs207tri2/rsy2506test"
 DST_SCP="/volume2/vsy21tri2int/scp2505mni"
-DST_LFTP="/vsy21tri2int/"
+DST_LFTP="/vsy21tri2int"
 DST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
-MNT1NFS="/private/nfs207tri2/"
+MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
 echo "===== DEBUT SCRIPT RSYNC ====="
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
@@ -25,8 +25,8 @@ do
 	echo ""
  	echo "Mois de Juin 2025"
   	echo "===== PREPARATION"
-  	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir source(s)"
-   	echo "---2 Suite        ---4 ---6 Démontage           ---8                     ---10"
+  	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir source(s) + rsync"
+   	echo "---2 Suite        ---4 ---6 Démontage NFS       ---8                     ---10"
 	echo "===== RESTAURATIONS"
 	echo "11 rsync depuis .207 -v1-"
 	echo "12 rsync depuis .207 -v2-"
@@ -166,6 +166,7 @@ do
 		    dest="$DESTINATION/$(basename "$src")"
 		    echo -e "\n Copie de '$src' vers '$dest'..."
 		    rsync -a --progress "$src/" "$dest/"
+#		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
 		    echo " Index invalide : $index (ignoré)"
 		  fi
