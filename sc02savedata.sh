@@ -39,7 +39,7 @@ do
   	echo "===== ===== PREPARATION"
   	echo "---1 Informations ---4 Montage NFS (MacOs) ---7 Choisir source(s) + rsync"
    	echo "---2 Suite        ---5 Démontage NFS       ---8 Archiver savedata.log ???"
-    	echo "---3              ---6 Montage Qnap        ---9 Consulter log
+    	echo "---3              ---6 Montage Qnap        ---9 Consulter log"
 	echo "===== ===== RESTAURATIONS"
   	echo "---11 ---13              ---15           ---17 ---19 Choisir sauvegarde(s) + rsync"
 	echo "---12 ---14 rsync/debian ---16 rsync/MBA ---18 rsync/variables"
