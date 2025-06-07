@@ -159,7 +159,8 @@ do
 
 		# Créer le dossier de destination
 		mkdir -p "$DESTINATION"
-		date >> $LOGFILE
+#		date >> $LOGFILE
+  		DATE0=date
 		# Copier les répertoires sélectionnés avec rsync
 		echo "---9 Sélection de répertoires" | tee -a "$LOGFILE"
 		
@@ -169,8 +170,10 @@ do
 		    dest="$DESTINATION/$(basename "$src")"
       		    du -sh $src | tee -a "$LOGFILE"
 		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/"
-		    echo -e "Rsync vers '$dest' fini à:" | tee -a "$LOGFILE" 
-		    date >> $LOGFILE
+		    STATUS="Rsync vers '$dest' fini à:" 
+#		    date >> $LOGFILE
+		    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+		    echo "$DATE0 | $STATUS [$TIMESTAMP]" >> "$LOGFILE"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
 		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFILE"
