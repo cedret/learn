@@ -320,7 +320,7 @@ ${execpi 5 ~/.conky/monitor_nas_snmp.sh}
 
 Souhaites-tu que je t’écrive un **script complet avec ouverture automatique d’une fenêtre + affichage live** sur Linux ou macOS ?
 
-## Voici un **script complet pour Linux** qui :
+## C-Voici un **script complet pour Linux** qui :
 
 ✅ Affiche les mesures SNMP de ton NAS
 ✅ Ouvre automatiquement une **nouvelle fenêtre de terminal**
