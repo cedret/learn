@@ -5,6 +5,10 @@ NAS_IP="192.168.1.107"       # IP de ton NAS
 COMMUNITY="maison"           # Communauté SNMP
 SNMPV="2c"            # Version SNMP
 
+OID_IDLE=".1.3.6.1.4.1.2021.11.9.0"
+OID_USER=".1.3.6.1.4.1.2021.11.11.0"
+OID_SYSTEM=".1.3.6.1.4.1.2021.11.10.0"
+
 # Contrôle des débits réseau (interface 1 par défaut — à adapter si nécessaire)
 IF_INDEX=1
 OID_IN="1.3.6.1.2.1.2.2.1.10.${IF_INDEX}"
@@ -20,10 +24,11 @@ echo "Mesures SNMP $SNMPV de $NAS_IP"
 while true;
 do
 	date
-	# Lire les octets à t0
+
+ 	# Lire les octets à t0
 	IN1=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
 	OUT1=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_OUT -Ovq)
-	
+ 
  	# Nom d'hôte
         HOSTNAME=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.1.5.0 -Ovq)
         display "Nom de l'hôte" "$HOSTNAME"
@@ -50,20 +55,17 @@ do
 #        display "Espaces disques détectés" "$DISKS"
 #        display "Utilisation de l’espace disque" "$USAGES"
 
-# sleep 1
-# Pause écart temps réseau
 # --- Utilisation CPU (en %) ---
-OID_IDLE=".1.3.6.1.4.1.2021.11.9.0"
-OID_USER=".1.3.6.1.4.1.2021.11.11.0"
-OID_SYSTEM=".1.3.6.1.4.1.2021.11.10.0"
 
-CPU_IDLE=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_IDLE -Ovq)
-CPU_USER=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_USER -Ovq)
-CPU_SYSTEM=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_SYSTEM -Ovq)
+CPU_IDLE=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_IDLE -Ovq)
+CPU_USER=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_USER -Ovq)
+CPU_SYSTEM=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_SYSTEM -Ovq)
 
 CPU_USED=$((100 - CPU_IDLE))
 display "Utilisation CPU" "🧠 User: ${CPU_USER}% | System: ${CPU_SYSTEM}% | Total: ${CPU_USED}%"
 
+# sleep 1
+# Pause écart temps réseau
 
 # Lire les octets à t1
 IN2=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
