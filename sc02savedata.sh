@@ -20,7 +20,7 @@ MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
 LOGFILE="$HOME/logs/savedata$(date +%Ys%V).log"
 # LOGFILE="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
 # LOGFILE="savedata.log"
-echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!!" 
+echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
@@ -36,7 +36,6 @@ df -H
 while true;
 do
 	echo ""
- 	echo "Mois de Juin 2025"
   	echo "===== ===== PREPARATION"
   	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir source(s) + rsync"
    	echo "---2 Suite        ---4 ---6 Démontage NFS       ---8                     ---10 Incrémenter savedata.log"
@@ -149,7 +148,7 @@ do
 		indices=($input)
 	 	df -H
 
-		echo -ne "\n Confirmer la copie ? (o/n) : "
+		echo -ne "\n Confirmer la copie ? (o/n):"
 		read -r confirm
 
 		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
