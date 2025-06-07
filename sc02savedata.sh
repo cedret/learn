@@ -48,7 +48,7 @@ do
 	echo "---22 rsync < mba(zorin) ---24 scp < mba(zorin) ---26 smbclient < mba(zorin) ---28"
  	echo "===== COMPARAISONS"
 	echo "---31 par rsync ---32 par diff   ---33 par checksum"
-  	echo "---34 simple    ---35 avec hash"
+  	echo "---34 simple    ---35 avec hash  ---36"
  	echo "===== SUPPRESSIONS"
  	echo "---41 Supprimer avec macos/debian cible -$DST_SUPP-"
  	echo "---43 Supprimer avec debian cible -$DST_SUPP-"
@@ -57,10 +57,8 @@ do
 	echo "---51 voir savedata.log"
 	echo "===== AUTRES"
 	echo "---91 Monter disques qnap ---92 Vérifier montages ---93 Démonter intelligent"
-	echo "95 Supprimer /mnt///ccc2505mba"
-	echo "97 Tout démonter"
- 	echo "98 ajouter quantité de données dupliquées au .log"
-	echo "99 Remplacer ce script"
+	echo "---94                     ---95 Supprimer /mnt//  ---96"
+	echo "---97 Tout démonter       ---98 Ajouter dans .log ---99 Remplacer ce script"
  	echo " 0 pour quitter"
 
 	read choix
@@ -161,10 +159,10 @@ do
 
 		# Créer le dossier de destination
 		mkdir -p "$DESTINATION"
-
-		# Copier les répertoires sélectionnés avec rsync
-		echo "---9 Copie des répertoires sélectionnés avec rsync..." | tee -a "$LOGFILE"
 		date >> $LOGFILE
+		# Copier les répertoires sélectionnés avec rsync
+		echo "---9 Sélection de répertoires" | tee -a "$LOGFILE"
+		
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 		    src="${DIRS[$index]}"
@@ -392,7 +390,7 @@ EOF
   		sudo rm -rf $DST_SUPP
 #    		sudo rmdir $DEST_SUPP
 		echo "sudo rm -rf $DST_SUPP"
-		echo "----- Fin suppression $DST_SUPP:" >> savedata.log 
+		echo "----- Fin suppression $DST_SUPP:" >> $LOGFILE
 		date >> $LOGFILE
 		;;
 	39)
@@ -429,9 +427,9 @@ EOF
 		sudo umount -lf /mnt/*
 		;;
 	98)
- 		echo "Quantité de données dupliquées?"
+ 		echo "Quantité de données dupliquées ou information?"
 		read donnees
-  		$donness >> savedata.log
+  		$donness >> $LOGFILE
  		;;
 	99)
  		cp Downloads/sc02savedata.sh . && rm Downloads/sc02savedata.sh
