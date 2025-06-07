@@ -37,8 +37,9 @@ while true;
 do
 	echo ""
   	echo "===== ===== PREPARATION"
-  	echo "---1 Informations ---3 ---5 Montage NFS (MacOs) ---7 Monter disques qnap ---9 Choisir source(s) + rsync"
-   	echo "---2 Suite        ---4 ---6 Démontage NFS       ---8                     ---10 Incrémenter savedata.log"
+  	echo "---1 Informations ---4 Montage NFS (MacOs) ---7 Choisir source(s) + rsync"
+   	echo "---2 Suite        ---5 Démontage NFS       ---8 Archiver savedata.log ???"
+    	echo "---3              ---6 Montage Qnap        ---9 Consulter log
 	echo "===== ===== RESTAURATIONS"
   	echo "---11 ---13              ---15           ---17 ---19 Choisir sauvegarde(s) + rsync"
 	echo "---12 ---14 rsync/debian ---16 rsync/MBA ---18 rsync/variables"
@@ -87,7 +88,7 @@ do
    		ls -n /volume2/vsy21tri2int/rsy2506mni/
      		ls -ld /volume2/vsy21tri2int/rsy2506mni/
        		;;
-  	5)
+  	4)
    		echo "---5 Montage NFS (MacOs)"
 		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFILE"
      		showmount -e $DST1HOST
@@ -103,11 +104,11 @@ do
 #		mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
 #  		sudo umount /nfs/home
 		;;
-  	6)
+  	5)
    		sudo umount $MNT1NFS
      		echo "--- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFILE"
      		;;
-  	7)
+  	6)
 	  	echo "9- Monter disques qnap -smb-" | tee -a "$LOGFILE"
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
@@ -117,7 +118,7 @@ do
 #		Total Download: ${totaldown enp2s0} 
 #		Total Upload: ${totalup enp2s0}
 		;;
-	9)
+	7)
 #		SOURCE_BASE="$HOME"
 		DESTINATION=$DST2RSNC
 
@@ -177,7 +178,12 @@ do
 		date >> $LOGFILE
 		echo -e "\n Copie terminée avec rsync."
 		;;
- 	14)
+  	9)
+ 		echo -e "\n ---51 Logs"
+		cat $LOGFILE
+  		ls $HOME/logs
+		;;
+  	14)
  		echo "----- RESTAURATION vers DEBIAN -.207v?-"
 		sudo mkdir -p /mnt/secu7test5
 		sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=accesr,password=fastoche
@@ -395,11 +401,6 @@ EOF
 	39)
  		mkdir empty_dir
 		rsync -a --delete --progress empty_dir/ target_dir/
-		;;
-	51)
- 		echo -e "\n ---51 Logs"
-		cat $LOGFILE
-  		ls $HOME/logs
 		;;
 	92)
 		mount | grep '^/mnt'
