@@ -211,3 +211,9 @@ Et que le **NAS autorise les connexions SNMP** depuis ton PC (via son interface 
 * Ajout d’un **crontab** pour surveiller régulièrement.
 
 Souhaite-tu que je t’aide à ajouter l’un de ces éléments ?
+
+
+```bash
+
+```
+
