@@ -34,8 +34,8 @@ do
         # Espace disque (UCD-SNMP-MIB hrStorage)
         DISKS=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.25.2.3.1.3)
         USAGES=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.25.2.3.1.6)
-        display "Espaces disques détectés" "$DISKS"
-        display "Utilisation de l’espace disque" "$USAGES"
+#        display "Espaces disques détectés" "$DISKS"
+#        display "Utilisation de l’espace disque" "$USAGES"
 
 	read -t 1 -n 1 key
 	if [[ $? == 0 ]]; then
