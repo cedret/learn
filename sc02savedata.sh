@@ -168,14 +168,14 @@ do
 		    src="${DIRS[$index]}"
 		    dest="$DESTINATION/$(basename "$src")"
       		    du -sh $src | tee -a "$LOGFILE"
-		    echo -e "Rsync vers '$dest' fini à:" | tee -a "$LOGFILE" 
 		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/"
+		    echo -e "Rsync vers '$dest' fini à:" | tee -a "$LOGFILE" 
+		    date >> $LOGFILE
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
 		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFILE"
 		  fi
 		done
-		date >> $LOGFILE
 		echo -e "\n Copie terminée avec rsync."
 		;;
   	9)
