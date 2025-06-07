@@ -20,7 +20,7 @@ MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
 LOGFILE="$HOME/logs/savedata$(date +%Ys%V).log"
 # LOGFILE="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
 # LOGFILE="savedata.log"
-echo "===== DEBUT SCRIPT RSYNC ====="
+echo "===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!!" 
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
@@ -142,7 +142,7 @@ do
 		for i in "${!DIRS[@]}"; do
 		  echo "[$i] ${DIRS[$i]##*/}"
 		done
-
+		echo "===== Ajouter tailles ici ====="
 		# Demander plusieurs choix
 		echo -ne "\n Entrez les numéros des répertoires à copier (ex: 0 2 4) : "
 		read -r input
@@ -150,6 +150,7 @@ do
 		input=$(echo "$input" | tr ',' ' ')
 		indices=($input)
 	 	df -H
+
 		echo -ne "\n Confirmer la copie ? (o/n) : "
 		read -r confirm
 
@@ -168,7 +169,7 @@ do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 		    src="${DIRS[$index]}"
 		    dest="$DESTINATION/$(basename "$src")"
-		    du -sh $src >> $LOGFILE
+      		    du -sh $src | tee -a "$LOGFILE"
 		    echo -e "Rsync vers '$dest' fini à:" | tee -a "$LOGFILE" 
 		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
