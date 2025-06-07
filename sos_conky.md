@@ -3,7 +3,7 @@
 - https://www.linuxtricks.fr/wiki/conky-des-variables-systeme-sur-le-bureau
 - 
 
-### First step
+## First step
 
 ```
     1  sudo apt update
@@ -36,7 +36,7 @@ X-GNOME-Autostart-Delay=0
     6  sudo apt-get install lm-sensors
     7  sudo sensors-detect
 ```
-### Second step
+## Second step
 
 secours@secours-Macmini:~$ cat /etc/conky/conky.conf
 ```
@@ -174,7 +174,7 @@ ${color white}Local IP: ${addr wlp2s0}
 ]];
 ```
 
-### Pour vérifier la vitesse du ventilateur CPU avec **Conky**, tu peux suivre ces étapes :
+## Pour vérifier la vitesse du ventilateur CPU avec **Conky**, tu peux suivre ces étapes :
 
 ### 1. Vérifie si ton système possède les outils nécessaires
 
@@ -493,3 +493,117 @@ CpuTmp: ${execi 10 sensors | grep 'Core0' | awk '{print $2}'}
 #Core 3:       +47.0°C  (high = +90.0°C, crit = +90.0°C)
 ]]
 ```
+## Alerte coupure réseau
+
+Très bonne idée d’utiliser **Conky** pour surveiller une **coupure réseau** sous macOS ou Linux. Même si Conky est plutôt utilisé pour l'affichage graphique, **on peut l’utiliser comme un indicateur visuel d'état réseau**, voire simuler une **alerte visuelle** si le réseau tombe.
+
+---
+
+## 🎯 Objectif :
+
+Afficher **un message ou une icône** dans Conky quand **le réseau est coupé**, par exemple :
+
+* ✅ "Réseau OK"
+* ❌ "⚠️ Réseau indisponible"
+
+---
+
+## 🛠️ Étapes avec Conky :
+
+### 1. ✅ **Créer une fonction de test réseau dans Conky**
+
+On utilise `if_existing` ou `execpi` pour exécuter une commande shell toutes les X secondes.
+
+### 2. ✅ **Pinger une IP fiable** (ex. : `8.8.8.8` ou ta box)
+
+---
+
+### 🧪 Exemple de config dans ton `~/.conkyrc` ou fichier de config Conky :
+
+```lua
+conky.config = {
+    update_interval = 2,
+    out_to_console = false,
+    background = true,
+    double_buffer = true,
+    no_buffers = true,
+    cpu_avg_samples = 2,
+    net_avg_samples = 2,
+    use_xft = true,
+    font = 'DejaVu Sans:size=10',
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    alignment = 'top_right',
+    gap_x = 20,
+    gap_y = 40,
+};
+
+conky.text = [[
+${execpi 5 ~/.conky/network_check.sh}
+]];
+```
+
+---
+
+### 🖥️ Script Bash `~/.conky/network_check.sh`
+
+```bash
+#!/bin/bash
+
+# IP à tester (peut être ton routeur ou une IP externe comme 8.8.8.8)
+PING_IP="8.8.8.8"
+
+# Ping une fois avec délai court
+if ping -c 1 -W 1 $PING_IP &> /dev/null; then
+    echo "\${color green}✅ Réseau OK"
+else
+    echo "\${color red}❌ Coupure réseau détectée"
+fi
+```
+
+> ✅ N'oublie pas de rendre ce script exécutable :
+
+```bash
+chmod +x ~/.conky/network_check.sh
+```
+
+---
+
+### 🧪 Résultat dans Conky :
+
+* 🟢 Affiche en vert : `✅ Réseau OK`
+* 🔴 Affiche en rouge : `❌ Coupure réseau détectée`
+
+---
+
+## 🔔 Bonus : Pour une vraie alerte (popup, son, etc.)
+
+Tu peux coupler ça à un script externe déclenché depuis Conky ou cron :
+
+```bash
+if ! ping -c 1 -W 1 8.8.8.8 &> /dev/null; then
+    osascript -e 'display notification "Coupure réseau détectée" with title "ALERTE Réseau"'  # macOS
+fi
+```
+
+Ou sur Linux :
+
+```bash
+notify-send "ALERTE Réseau" "Coupure détectée"
+```
+
+---
+
+## ✅ En résumé :
+
+| Élément         | Méthode                      |
+| --------------- | ---------------------------- |
+| Détection       | `ping` via script Conky      |
+| Affichage Conky | `execpi` toutes X secondes   |
+| Alerte visuelle | Couleurs, emojis, texte      |
+| Alerte externe  | `notify-send` ou `osascript` |
+
+---
+
+Souhaites-tu que je t’aide à intégrer ça **dans un thème Conky existant** ou que je t’ajoute un **son ou une action automatique** en cas de coupure ?
