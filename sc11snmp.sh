@@ -62,9 +62,9 @@ CPU_USER=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_USER -Ovq)
 CPU_SYSTEM=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_SYSTEM -Ovq)
 
 CPU_USED=$((100 - CPU_IDLE))
-display "Utilisation CPU" "🧠 User: ${CPU_USER}% | System: ${CPU_SYSTEM}% | Total: ${CPU_USED}%"
+display "Utilisation CPU" "User: ${CPU_USER}% | System: ${CPU_SYSTEM}% | Total: ${CPU_USED}%"
 
-sleep 1
+sleep 2
 # Pause écart temps réseau
 
 # Lire les octets à t1
