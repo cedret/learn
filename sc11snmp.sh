@@ -3,7 +3,7 @@
 # Configuration
 NAS_IP="192.168.1.107"       # IP de ton NAS
 COMMUNITY="maison"           # Communauté SNMP
-SNMP_VERSION="2c"            # Version SNMP
+SNMPV="2c"            # Version SNMP
 
 # Fonction d'affichage
 function display {
@@ -11,28 +11,28 @@ function display {
     echo "$2"
     echo
 }
-
+echo "Mesures SNMP $SNMPV de $NAS_IP"
 while true;
 do
 	date
         # Nom d'hôte
-        HOSTNAME=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.1.5.0 -Ovq)
+        HOSTNAME=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.1.5.0 -Ovq)
         display "Nom de l'hôte" "$HOSTNAME"
 
-	NET_FACE=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.2.2.1.2 -Ovq)
+	NET_FACE=$(snmpwalk -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.2.2.1.2 -Ovq)
         display "Interface" "$NET_FACE"
 	
         # Uptime
-        UPTIME=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.1.3.0 -Ovq)
+        UPTIME=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.1.3.0 -Ovq)
         display "Uptime" "$UPTIME"
 
         # Charge CPU (si disponible)
-        CPU_LOAD=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.4.1 | grep -i 'cpu' | head -n 5)
+        CPU_LOAD=$(snmpwalk -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.4.1 | grep -i 'cpu' | head -n 5)
         display "Utilisation CPU (approx.)" "$CPU_LOAD"
 
         # Mémoire totale et libre (exemple avec UCD-SNMP-MIB)
-        MEM_TOTAL=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.4.1.2021.4.5.0 -Ovq)
-        MEM_FREE=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.4.1.2021.4.6.0 -Ovq)
+        MEM_TOTAL=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.4.1.2021.4.5.0 -Ovq)
+        MEM_FREE=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.4.1.2021.4.6.0 -Ovq)
         display "Mémoire (kB)" "Total: $MEM_TOTAL kB - Libre: $MEM_FREE kB"
 
         # Espace disque (UCD-SNMP-MIB hrStorage)
@@ -47,12 +47,12 @@ OID_IN="1.3.6.1.2.1.2.2.1.10.${IF_INDEX}"
 OID_OUT="1.3.6.1.2.1.2.2.1.16.${IF_INDEX}"
 
 # Lire les octets à t0
-IN1=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
-OUT1=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_OUT -Ovq)
+IN1=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
+OUT1=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_OUT -Ovq)
 sleep 1
 # Lire les octets à t1
-IN2=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
-OUT2=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_OUT -Ovq)
+IN2=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
+OUT2=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_OUT -Ovq)
 
 # Calcul des débits (octets/sec), puis conversion en kilobits/sec (Kb/s)
 DELTA_IN=$((IN2 - IN1))
