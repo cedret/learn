@@ -3,6 +3,9 @@ sos_snmp.md
 - https://www.tech2tech.fr/monitoring-5-supervision-dun-nas-synology-via-snmp/
 - https://shape.host/resources/installation-de-librenms-optimisation-de-la-surveillance-reseau-sous-ubuntu-22-04-avec-nginx
 
+vérification cpu par snmp
+``snmpwalk -v2c -c public 192.168.1.100 .1.3.6.1.4.1.2021.11``
+
 
 ## Surveiller un NAS via **SNMP** de manière **légère et efficace** depuis un système Linux
 
