@@ -131,7 +131,7 @@ Parfait ! Voici un **script Bash simple** pour surveiller un **NAS via SNMP**, a
 
 # Configuration
 NAS_IP="192.168.1.100"       # IP de ton NAS
-COMMUNITY="public"           # Communauté SNMP
+COMMUNITY="maison"           # Communauté SNMP
 SNMP_VERSION="2c"            # Version SNMP
 
 # Fonction d'affichage
