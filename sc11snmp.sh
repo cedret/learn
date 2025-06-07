@@ -15,9 +15,9 @@ function display {
 while true;
 do
 
-# Nom d'hôte
-HOSTNAME=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.1.5.0 -Ovq)
-display "Nom de l'hôte" "$HOSTNAME"
+        # Nom d'hôte
+        HOSTNAME=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.1.5.0 -Ovq)
+        display "Nom de l'hôte" "$HOSTNAME"
 
 # Uptime
 UPTIME=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.1.3.0 -Ovq)
@@ -37,4 +37,6 @@ DISKS=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.25.2.3.1.3)
 USAGES=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.25.2.3.1.6)
 display "Espaces disques détectés" "$DISKS"
 display "Utilisation de l’espace disque" "$USAGES"
+
+
 done
