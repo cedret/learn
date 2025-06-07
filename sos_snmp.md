@@ -212,7 +212,7 @@ Et que le **NAS autorise les connexions SNMP** depuis ton PC (via son interface 
 * Sortie **JSON ou CSV** pour exploitation par Prometheus, Telegraf, etc.
 * Ajout d’un **crontab** pour surveiller régulièrement.
 
-### Afficher en continu des mesures SNMP dans une fenêtre distincte
+## C- Afficher en continu des mesures SNMP dans une fenêtre distincte
 En utilisant des outils très simples et efficaces sous Linux/macOS.
 
 Voici plusieurs méthodes possibles selon le degré de simplicité ou d’interface que tu souhaites.
@@ -320,7 +320,7 @@ ${execpi 5 ~/.conky/monitor_nas_snmp.sh}
 
 Souhaites-tu que je t’écrive un **script complet avec ouverture automatique d’une fenêtre + affichage live** sur Linux ou macOS ?
 
-## C-Voici un **script complet pour Linux** qui :
+## D-Voici un **script complet pour Linux** qui :
 
 ✅ Affiche les mesures SNMP de ton NAS
 ✅ Ouvre automatiquement une **nouvelle fenêtre de terminal**
@@ -434,4 +434,227 @@ Mis à jour toutes les 5 secondes.
 
 Souhaites-tu maintenant ajouter un **seuil d’alerte (ex. CPU > 90%)** avec couleur ou notification système (`notify-send`) ?
 
+## E-Afficher en continu des mesures SNMP dans une fenêtre distincte
 
+, en utilisant des outils très simples et efficaces sous Linux/macOS.
+
+Voici plusieurs méthodes possibles selon le degré de simplicité ou d’interface que tu souhaites.
+
+---
+
+## ✅ **Méthode 1 : `watch` dans un terminal séparé (minimaliste)**
+
+### 🧪 Commande :
+
+```bash
+watch -n 2 ./monitor_nas_snmp.sh
+```
+
+* Ouvre un **deuxième terminal**.
+* Affiche la sortie du script toutes les **2 secondes**.
+* Très simple, aucun ajout nécessaire au script.
+
+> 💡 `watch` est installé par défaut sur la plupart des distributions Linux. Sur macOS :
+
+```bash
+brew install watch
+```
+
+---
+
+## ✅ **Méthode 2 : lancer une fenêtre terminal séparée depuis un script**
+
+Tu peux **automatiser l'ouverture d'une fenêtre de terminal** pour afficher la sortie en continu :
+
+### ▶️ Sous **macOS** :
+
+```bash
+osascript -e 'tell application "Terminal"
+    do script "watch -n 2 ~/monitor_nas_snmp.sh"
+end tell'
+```
+
+### ▶️ Sous **Linux (Gnome Terminal)** :
+
+```bash
+gnome-terminal -- bash -c "watch -n 2 ~/monitor_nas_snmp.sh"
+```
+
+Ou avec `xterm` :
+
+```bash
+xterm -e "watch -n 2 ~/monitor_nas_snmp.sh" &
+```
+
+> 🔧 Adapte le chemin du script si besoin.
+
+---
+
+## ✅ **Méthode 3 : fenêtre graphique avec Zenity ou Yad (GUI légère)**
+
+Si tu veux **une fenêtre graphique mise à jour dynamiquement** :
+
+### Avec `zenity` (simple fenêtre texte mise à jour) :
+
+```bash
+while true; do
+  ./monitor_nas_snmp.sh > /tmp/snmp_monitor.txt
+  zenity --text-info --filename=/tmp/snmp_monitor.txt --width=400 --height=300 --title="SNMP Monitor" &
+  sleep 5
+  pkill zenity
+done
+```
+
+> 📦 Installe `zenity` avec :
+
+```bash
+sudo apt install zenity  # ou brew install zenity
+```
+
+---
+
+## ✅ **Méthode 4 : Conky (si tu veux une vraie intégration bureau)**
+
+Tu peux intégrer ton script dans une fenêtre **Conky** transparente en fond d’écran :
+
+```lua
+conky.config = {
+  update_interval = 5,
+  ...
+};
+
+conky.text = [[
+${execpi 5 ~/.conky/monitor_nas_snmp.sh}
+]];
+```
+
+---
+
+## 🧠 Résumé
+
+| Méthode                    | Interface       | Facilité      | Rafraîchissement  |
+| -------------------------- | --------------- | ------------- | ----------------- |
+| `watch`                    | Terminal        | ✅ Très simple | Oui (`-n X`)      |
+| `gnome-terminal` / `xterm` | Terminal pop-up | ✅ Simple      | Oui (via script)  |
+| `zenity` / `yad`           | Fenêtre GUI     | 🟨 Moyen      | Oui (manual loop) |
+| Conky                      | Bureau          | 🟥 Avancé     | Automatique       |
+
+---
+
+Souhaites-tu que je t’écrive un **script complet avec ouverture automatique d’une fenêtre + affichage live** sur Linux ou macOS ?
+
+## F-Script complet pour Linux qui :
+
+✅ Affiche les mesures SNMP de ton NAS
+✅ Ouvre automatiquement une **nouvelle fenêtre de terminal**
+✅ Met à jour l'affichage en continu (toutes les X secondes)
+
+---
+
+## 🖥️ **Script 1 : `monitor_nas_snmp.sh`** (à placer dans `~/monitor_nas_snmp.sh` par exemple)
+
+```bash
+#!/bin/bash
+
+# Configuration SNMP
+NAS_IP="192.168.1.100"      # Adresse IP du NAS
+COMMUNITY="public"
+SNMP_VERSION="2c"
+
+# OIDs pour CPU
+OID_IDLE=".1.3.6.1.4.1.2021.11.9.0"
+OID_USER=".1.3.6.1.4.1.2021.11.11.0"
+OID_SYSTEM=".1.3.6.1.4.1.2021.11.10.0"
+
+# OIDs pour débit réseau (interface 1 à adapter si besoin)
+IF_INDEX=1
+OID_IN="1.3.6.1.2.1.2.2.1.10.${IF_INDEX}"
+OID_OUT="1.3.6.1.2.1.2.2.1.16.${IF_INDEX}"
+
+# Lecture CPU
+CPU_IDLE=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_IDLE -Ovq)
+CPU_USER=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_USER -Ovq)
+CPU_SYSTEM=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_SYSTEM -Ovq)
+CPU_USED=$((100 - CPU_IDLE))
+
+# Lecture débit réseau
+IN1=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
+OUT1=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_OUT -Ovq)
+sleep 1
+IN2=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
+OUT2=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_OUT -Ovq)
+
+DELTA_IN=$((IN2 - IN1))
+DELTA_OUT=$((OUT2 - OUT1))
+SPEED_IN_KBPS=$((DELTA_IN * 8 / 1024))
+SPEED_OUT_KBPS=$((DELTA_OUT * 8 / 1024))
+
+# Affichage formaté
+clear
+echo "🖧 SNMP Monitoring - $(date '+%Y-%m-%d %H:%M:%S')"
+echo "-----------------------------"
+echo "🧠 CPU Utilisation : ${CPU_USED}% (user: ${CPU_USER}%, system: ${CPU_SYSTEM}%)"
+echo "📥 Réseau entrant : ${SPEED_IN_KBPS} Kb/s"
+echo "📤 Réseau sortant : ${SPEED_OUT_KBPS} Kb/s"
+```
+
+> ✅ N'oublie pas :
+
+```bash
+chmod +x ~/monitor_nas_snmp.sh
+```
+
+---
+
+## 🪟 **Script 2 : `launch_snmp_monitor.sh`** pour **ouvrir un terminal distinct avec rafraîchissement continu**
+
+```bash
+#!/bin/bash
+
+# Rafraîchissement toutes les 5 secondes
+gnome-terminal -- bash -c "watch -n 5 ~/monitor_nas_snmp.sh"
+```
+
+> Ou avec `xterm` :
+
+```bash
+xterm -e "watch -n 5 ~/monitor_nas_snmp.sh" &
+```
+
+---
+
+### ✅ Étapes d'utilisation :
+
+1. Crée les deux scripts (`monitor_nas_snmp.sh` et `launch_snmp_monitor.sh`)
+2. Donne les droits :
+
+   ```bash
+   chmod +x launch_snmp_monitor.sh
+   ```
+3. Exécute :
+
+   ```bash
+   ./launch_snmp_monitor.sh
+   ```
+
+---
+
+## ✅ Résultat :
+
+Une nouvelle fenêtre terminal s'ouvre et affiche :
+
+```
+🖧 SNMP Monitoring - 2025-06-07 18:17:00
+-----------------------------
+🧠 CPU Utilisation : 6% (user: 3%, system: 3%)
+📥 Réseau entrant : 120 Kb/s
+📤 Réseau sortant : 40 Kb/s
+```
+
+Mis à jour toutes les 5 secondes.
+
+---
+
+Souhaites-tu maintenant ajouter un **seuil d’alerte (ex. CPU > 90%)** avec couleur ou notification système (`notify-send`) ?
+
+## G-
