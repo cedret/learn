@@ -36,10 +36,32 @@ do
         display "Mémoire (kB)" "Total: $MEM_TOTAL kB - Libre: $MEM_FREE kB"
 
         # Espace disque (UCD-SNMP-MIB hrStorage)
-        DISKS=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.25.2.3.1.3)
-        USAGES=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.25.2.3.1.6)
+#        DISKS=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.25.2.3.1.3)
+#        USAGES=$(snmpwalk -v$SNMP_VERSION -c $COMMUNITY $NAS_IP 1.3.6.1.2.1.25.2.3.1.6)
 #        display "Espaces disques détectés" "$DISKS"
 #        display "Utilisation de l’espace disque" "$USAGES"
+
+# Contrôle des débits réseau (interface 1 par défaut — à adapter si nécessaire)
+IF_INDEX=1
+OID_IN="1.3.6.1.2.1.2.2.1.10.${IF_INDEX}"
+OID_OUT="1.3.6.1.2.1.2.2.1.16.${IF_INDEX}"
+
+# Lire les octets à t0
+IN1=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
+OUT1=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_OUT -Ovq)
+sleep 1
+# Lire les octets à t1
+IN2=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_IN -Ovq)
+OUT2=$(snmpget -v$SNMP_VERSION -c $COMMUNITY $NAS_IP $OID_OUT -Ovq)
+
+# Calcul des débits (octets/sec), puis conversion en kilobits/sec (Kb/s)
+DELTA_IN=$((IN2 - IN1))
+DELTA_OUT=$((OUT2 - OUT1))
+SPEED_IN_KBPS=$((DELTA_IN * 8 / 1024))
+SPEED_OUT_KBPS=$((DELTA_OUT * 8 / 1024))
+
+# Affichage
+display "Débit réseau (interface $IF_INDEX)" "Entrant : ${SPEED_IN_KBPS} Kb/s | Sortant : ${SPEED_OUT_KBPS} Kb/s"
 
 	read -t 1 -n 1 key
 	if [[ $? == 0 ]]; then
