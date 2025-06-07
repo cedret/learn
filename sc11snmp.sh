@@ -14,6 +14,7 @@ IF_INDEX=1
 OID_IN="1.3.6.1.2.1.2.2.1.10.${IF_INDEX}"
 OID_OUT="1.3.6.1.2.1.2.2.1.16.${IF_INDEX}"
 
+LOGFILE="$HOME/snmp1nas.log"
 # Fonction d'affichage
 function display {
     echo "=== $1 ==="
@@ -79,6 +80,16 @@ SPEED_OUT_KBPS=$((DELTA_OUT * 8 / 1024))
 
 # Affichage
 display "Débit réseau (interface $IF_INDEX)" "Entrant : ${SPEED_IN_KBPS} Kb/s | Sortant : ${SPEED_OUT_KBPS} Kb/s"
+
+# Créer ou ajouter au fichier log
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+STATUS="Réseau OK"
+DEBIT_IN="${SPEED_IN_KBPS} Kb/s"
+DEBIT_OUT="${SPEED_OUT_KBPS} Kb/s"
+CPU_LOG="CPU: ${CPU_USED}%"
+
+# Écrire une ligne dans le log
+echo "[$TIMESTAMP] $STATUS | $CPU_LOG | $DEBIT_IN | $DEBIT_OUT" >> "$LOGFILE"
 
 	read -t 1 -n 1 key
 	if [[ $? == 0 ]]; then
