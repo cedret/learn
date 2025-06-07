@@ -41,8 +41,8 @@ do
         display "Uptime" "$UPTIME"
 
         # Charge CPU (si disponible)
-        CPU_LOAD=$(snmpwalk -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.4.1 | grep -i 'cpu' | head -n 5)
-        display "Utilisation CPU (approx.)" "$CPU_LOAD"
+#        CPU_LOAD=$(snmpwalk -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.4.1 | grep -i 'cpu' | head -n 5)
+#        display "Utilisation CPU (approx.)" "$CPU_LOAD"
 
         # Mémoire totale et libre (exemple avec UCD-SNMP-MIB)
         MEM_TOTAL=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP 1.3.6.1.4.1.2021.4.5.0 -Ovq)
@@ -64,7 +64,7 @@ CPU_SYSTEM=$(snmpget -v$SNMPV -c $COMMUNITY $NAS_IP $OID_SYSTEM -Ovq)
 CPU_USED=$((100 - CPU_IDLE))
 display "Utilisation CPU" "🧠 User: ${CPU_USER}% | System: ${CPU_SYSTEM}% | Total: ${CPU_USED}%"
 
-# sleep 1
+sleep 1
 # Pause écart temps réseau
 
 # Lire les octets à t1
