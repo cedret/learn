@@ -170,7 +170,7 @@ do
 		    dest="$DESTINATION/$(basename "$src")"
 		    du -sh $src >> $LOGFILE
 		    echo -e "Rsync vers '$dest' fini à:" | tee -a "$LOGFILE" 
-		    rsync -a --no-owner --no-group --progress "$src/" "$dest/"
+		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
 		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFILE"
