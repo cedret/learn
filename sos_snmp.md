@@ -7,7 +7,7 @@ vérification cpu par snmp
 ``snmpwalk -v2c -c public 192.168.1.100 .1.3.6.1.4.1.2021.11``
 
 
-## Surveiller un NAS via **SNMP** de manière **légère et efficace** depuis un système Linux
+## A-Surveiller un NAS via **SNMP** de manière **légère et efficace** depuis un système Linux
 
 Plusieurs outils en ligne de commande ou avec interface minimale peuvent convenir. Voici une sélection des **outils légers** les plus couramment utilisés pour ce type de tâche :
 
@@ -123,12 +123,11 @@ Tu veux un système plus avancé (multi-NAS, alertes, cartes réseau, etc.) ? **
 Souhaites-tu que je t'aide à écrire un script de surveillance SNMP simple pour ton NAS ?
 
 
-## 
-Parfait ! Voici un **script Bash simple** pour surveiller un **NAS via SNMP**, avec des informations de base utiles : nom d’hôte, uptime, CPU, mémoire et espace disque.
+## B- Script Bash simple pour surveiller un **NAS via SNMP**, avec des informations de base utiles : nom d’hôte, uptime, CPU, mémoire et espace disque.
 
 ---
 
-## ✅ **Script de surveillance SNMP minimal**
+### ✅ **Script de surveillance SNMP minimal**
 
 ```bash
 #!/bin/bash
@@ -171,7 +170,7 @@ display "Utilisation de l’espace disque" "$USAGES"
 
 ---
 
-## ✅ **Instructions pour l’utiliser**
+### ✅ **Instructions pour l’utiliser**
 
 1. **Copie le script dans un fichier** :
 
@@ -195,7 +194,7 @@ display "Utilisation de l’espace disque" "$USAGES"
 
 ---
 
-## ✅ **Prérequis**
+### ✅ **Prérequis**
 
 Assure-toi que ton système a bien le client SNMP :
 
@@ -207,22 +206,22 @@ Et que le **NAS autorise les connexions SNMP** depuis ton PC (via son interface 
 
 ---
 
-### Tu veux aller plus loin ?
+#### Tu veux aller plus loin ?
 
 * Ajouter l’**alerte mail si un disque est presque plein**.
 * Sortie **JSON ou CSV** pour exploitation par Prometheus, Telegraf, etc.
 * Ajout d’un **crontab** pour surveiller régulièrement.
 
-## Afficher en continu des mesures SNMP dans une fenêtre distincte
+### Afficher en continu des mesures SNMP dans une fenêtre distincte
 En utilisant des outils très simples et efficaces sous Linux/macOS.
 
 Voici plusieurs méthodes possibles selon le degré de simplicité ou d’interface que tu souhaites.
 
 ---
 
-## ✅ **Méthode 1 : `watch` dans un terminal séparé (minimaliste)**
+### ✅ **Méthode 1 : `watch` dans un terminal séparé (minimaliste)**
 
-### 🧪 Commande :
+#### 🧪 Commande :
 
 ```bash
 watch -n 2 ./monitor_nas_snmp.sh
@@ -240,11 +239,11 @@ brew install watch
 
 ---
 
-## ✅ **Méthode 2 : lancer une fenêtre terminal séparée depuis un script**
+### ✅ **Méthode 2 : lancer une fenêtre terminal séparée depuis un script**
 
 Tu peux **automatiser l'ouverture d'une fenêtre de terminal** pour afficher la sortie en continu :
 
-### ▶️ Sous **macOS** :
+#### ▶️ Sous **macOS** :
 
 ```bash
 osascript -e 'tell application "Terminal"
@@ -252,7 +251,7 @@ osascript -e 'tell application "Terminal"
 end tell'
 ```
 
-### ▶️ Sous **Linux (Gnome Terminal)** :
+#### ▶️ Sous **Linux (Gnome Terminal)** :
 
 ```bash
 gnome-terminal -- bash -c "watch -n 2 ~/monitor_nas_snmp.sh"
@@ -268,11 +267,11 @@ xterm -e "watch -n 2 ~/monitor_nas_snmp.sh" &
 
 ---
 
-## ✅ **Méthode 3 : fenêtre graphique avec Zenity ou Yad (GUI légère)**
+### ✅ **Méthode 3 : fenêtre graphique avec Zenity ou Yad (GUI légère)**
 
 Si tu veux **une fenêtre graphique mise à jour dynamiquement** :
 
-### Avec `zenity` (simple fenêtre texte mise à jour) :
+#### Avec `zenity` (simple fenêtre texte mise à jour) :
 
 ```bash
 while true; do
@@ -291,7 +290,7 @@ sudo apt install zenity  # ou brew install zenity
 
 ---
 
-## ✅ **Méthode 4 : Conky (si tu veux une vraie intégration bureau)**
+### ✅ **Méthode 4 : Conky (si tu veux une vraie intégration bureau)**
 
 Tu peux intégrer ton script dans une fenêtre **Conky** transparente en fond d’écran :
 
@@ -308,7 +307,7 @@ ${execpi 5 ~/.conky/monitor_nas_snmp.sh}
 
 ---
 
-## 🧠 Résumé
+### 🧠 Résumé
 
 | Méthode                    | Interface       | Facilité      | Rafraîchissement  |
 | -------------------------- | --------------- | ------------- | ----------------- |
@@ -329,7 +328,7 @@ Souhaites-tu que je t’écrive un **script complet avec ouverture automatique d
 
 ---
 
-## 🖥️ **Script 1 : `monitor_nas_snmp.sh`** (à placer dans `~/monitor_nas_snmp.sh` par exemple)
+### 🖥️ **Script 1 : `monitor_nas_snmp.sh`** (à placer dans `~/monitor_nas_snmp.sh` par exemple)
 
 ```bash
 #!/bin/bash
@@ -384,7 +383,7 @@ chmod +x ~/monitor_nas_snmp.sh
 
 ---
 
-## 🪟 **Script 2 : `launch_snmp_monitor.sh`** pour **ouvrir un terminal distinct avec rafraîchissement continu**
+### 🪟 **Script 2 : `launch_snmp_monitor.sh`** pour **ouvrir un terminal distinct avec rafraîchissement continu**
 
 ```bash
 #!/bin/bash
@@ -401,7 +400,7 @@ xterm -e "watch -n 5 ~/monitor_nas_snmp.sh" &
 
 ---
 
-### ✅ Étapes d'utilisation :
+#### ✅ Étapes d'utilisation :
 
 1. Crée les deux scripts (`monitor_nas_snmp.sh` et `launch_snmp_monitor.sh`)
 2. Donne les droits :
@@ -417,7 +416,7 @@ xterm -e "watch -n 5 ~/monitor_nas_snmp.sh" &
 
 ---
 
-## ✅ Résultat :
+### ✅ Résultat :
 
 Une nouvelle fenêtre terminal s'ouvre et affiche :
 
