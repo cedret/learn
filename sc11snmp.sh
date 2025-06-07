@@ -37,11 +37,9 @@ do
         display "Espaces disques détectés" "$DISKS"
         display "Utilisation de l’espace disque" "$USAGES"
 
-		echo -ne "\n Interrompre ? (o/n):"
-		read -r confirm
-
-		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
-		  echo "FIN"
-		  exit 0
-		fi
+	read -t 1 -n 1 key
+	if [[ $? == 0 ]]; then
+		echo "Touche détectée : $key — arrêt de la boucle."
+		break
+	fi
 done
