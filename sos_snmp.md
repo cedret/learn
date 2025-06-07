@@ -1,5 +1,8 @@
 sos_snmp.md
 
+https://shape.host/resources/installation-de-librenms-optimisation-de-la-surveillance-reseau-sous-ubuntu-22-04-avec-nginx
+
+
 ## Surveiller un NAS via **SNMP** de manière **légère et efficace** depuis un système Linux
 
 Plusieurs outils en ligne de commande ou avec interface minimale peuvent convenir. Voici une sélection des **outils légers** les plus couramment utilisés pour ce type de tâche :
