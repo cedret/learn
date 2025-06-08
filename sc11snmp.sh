@@ -80,6 +80,7 @@ SPEED_OUT_KBPS=$((DELTA_OUT * 8 / 1024))
 
 # Affichage
 display "Débit réseau (interface $IF_INDEX)" "Entrant : ${SPEED_IN_KBPS} Kb/s | Sortant : ${SPEED_OUT_KBPS} Kb/s"
+echo "Vérifier si bonne interface"
 
 # Créer ou ajouter au fichier log
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
