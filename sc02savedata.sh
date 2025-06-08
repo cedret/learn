@@ -187,7 +187,7 @@ do
 #     			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
 
 
-			rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1
+			rsync -a --inplace --no-owner --no-group --progress --timeout=60 "$src/" "$dest/" >> "$LOGFMR" 2>&1
 			status=$?
 
 			# Vérification du code de sortie de rsync
