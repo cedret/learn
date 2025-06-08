@@ -181,6 +181,12 @@ do
 #			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> "$LOGFIX" || \
 #			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 
+# version avec nombre de fichiers!
+#		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1 && \
+#  			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync sans erreur ℹ ℹ --- Total des fichiers transférés : $(find "$dest" -type f | wc -l)" | tee -a "$LOGFIX" || \
+#     			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
+
+
 			rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1
 			status=$?
 
