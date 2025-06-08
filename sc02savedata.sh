@@ -30,7 +30,7 @@ if ! command -v rsync &> /dev/null; then
     echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync" | tee -a "$LOGFIX"
     exit 1
 fi
-echo "----- ----- ----- -----" >> $LOGFIX
+echo " - - - - - - - - - - - - - - - - - - - -" >> $LOGFIX
 hostname >> $LOGFIX
 uname -a
 df -H
@@ -167,7 +167,7 @@ do
 #		date >> $LOGFIX
   		DATE0=date
 		# Copier les répertoires sélectionnés avec rsync
-		echo "---9 Sélection de répertoires" | tee -a "$LOGFIX"
+		echo "---9 Sélectionné pour rsync" | tee -a "$LOGFIX"
 		
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
