@@ -165,7 +165,7 @@ do
 		# Créer le dossier de destination
 		mkdir -p "$DESTINATION"
 #		date >> $LOGFIX
-  		DATE0=date
+  		DATE0=date >> $LOGFIX
 		# Copier les répertoires sélectionnés avec rsync
 		echo "---9 Sélectionné(s) pour rsync" | tee -a "$LOGFIX"
 		
