@@ -17,20 +17,21 @@ DST_LFTP="/vsy21tri2int"
 DST_SUPP="/Volumes/vsy21tri2int/ccc2506mni"
 PSWD=""
 MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
-LOGFILE="$HOME/logs/savedata$(date +%Ys%V).log"
-# LOGFILE="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
-# LOGFILE="savedata.log"
+LOGFIX="$HOME/logs/savedata$(date +%Ys%V).log"
+LOGFMR="$HOME/logs/savelast$(date +%Ys%V).log"
+# LOGFIX="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
+# LOGFIX="savedata.log"
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
 # Vérifie que rsync est installé
 if ! command -v rsync &> /dev/null; then
-    echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync" | tee -a "$LOGFILE"
+    echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync" | tee -a "$LOGFIX"
     exit 1
 fi
-echo "----- ----- ----- -----" >> $LOGFILE
-hostname >> $LOGFILE
+echo "----- ----- ----- -----" >> $LOGFIX
+hostname >> $LOGFIX
 uname -a
 df -H
 while true;
@@ -90,14 +91,14 @@ do
        		;;
   	4)
    		echo "---5 Montage NFS (MacOs)"
-		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFILE"
+		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
      		showmount -e $DST1HOST
      		sudo mkdir -p $MNT1NFS
 		sudo mount -t nfs -o resvport,rw $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
   		echo "--- df -H"
 	 	df -H
-		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFILE"
-  		date >> $LOGFILE
+		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFIX"
+  		date >> $LOGFIX
 # --exemples--
 #		sudo mount -o rw -t nfs $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
 #		sudo mount -t nfs -o resvport,rw
@@ -106,10 +107,10 @@ do
 		;;
   	5)
    		sudo umount $MNT1NFS
-     		echo "--- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFILE"
+     		echo "--- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFIX"
      		;;
   	6)
-	  	echo "9- Monter disques qnap -smb-" | tee -a "$LOGFILE"
+	  	echo "9- Monter disques qnap -smb-" | tee -a "$LOGFIX"
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
 		sudo mkdir /media/secours/secu2505v2
@@ -131,7 +132,7 @@ do
 		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
 		if [ ${#DIRS[@]} -eq 0 ]; then
-		  echo "Aucun répertoire trouvé dans $SRC0BASE." | tee -a "$LOGFILE"
+		  echo "Aucun répertoire trouvé dans $SRC0BASE." | tee -a "$LOGFIX"
 		  exit 1
 		fi
 
@@ -153,39 +154,44 @@ do
 		read -r confirm
 
 		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
-		  echo "Copie annulée." | tee -a "$LOGFILE"
+		  echo "Copie annulée." | tee -a "$LOGFIX"
 		  exit 0
 		fi
 
 		# Créer le dossier de destination
 		mkdir -p "$DESTINATION"
-#		date >> $LOGFILE
+#		date >> $LOGFIX
   		DATE0=date
 		# Copier les répertoires sélectionnés avec rsync
-		echo "---9 Sélection de répertoires" | tee -a "$LOGFILE"
+		echo "---9 Sélection de répertoires" | tee -a "$LOGFIX"
 		
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 		    src="${DIRS[$index]}"
 		    dest="$DESTINATION/$(basename "$src")"
-      		    du -sh $src | tee -a "$LOGFILE"
-		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/"
+      		    du -sh $src | tee -a "$LOGFIX"
+		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dest/"
+#		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
+#		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dest" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
+		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1 && \
+			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> "$LOGFIX" || \
+			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 		    STATUS="Rsync vers '$dest' fini à:" 
-#		    date >> $LOGFILE
+#		    date >> $LOGFIX
 		    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 		#   rsync -avz source/ user@host:/destination/
-		    echo "Code retour rsync : $?" | tee -a "$LOGFILE"
-		    echo "$DATE0 | $STATUS [$TIMESTAMP]" >> "$LOGFILE"
+		    echo "Code retour rsync : $?" | tee -a "$LOGFIX"
+		    echo "$DATE0 | $STATUS [$TIMESTAMP]" >> "$LOGFIX"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
-		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFILE"
+		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFIX"
 		  fi
 		done
 		echo -e "\n Copie terminée avec rsync."
 		;;
   	9)
  		echo -e "\n ---51 Logs"
-		cat $LOGFILE
+		cat $LOGFIX
   		ls $HOME/logs
 		;;
   	14)
@@ -198,11 +204,11 @@ do
 		echo "----- Contenu de secu7test5"
   		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-  		date >> $LOGFILE
+  		date >> $LOGFIX
 		sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2
 		echo "----- sudo rsync -av /mnt/secu7test5 /media/secours/secu2505v2"
-		echo "----- Fin copie test vers debian à:" >> $LOGFILE
-		date >> $LOGFILE
+		echo "----- Fin copie test vers debian à:" >> $LOGFIX
+		date >> $LOGFIX
 		;;
 	16)
 		echo "----- RESTAURATION vers DEBIAN -mni01-"
@@ -213,11 +219,11 @@ do
 		echo "^^^^^ Contenu de mnt/secu7mni01/ccc2505... rsync imminent"
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-		date >> $LOGFILE
+		date >> $LOGFIX
 		sudo rsync -avh --progress /mnt/secu7mni01/ccc2505mni01 /home/secours/Documents/ccc2505mni01
 		echo "----- sudo rsync -av /mnt/secu7mni01/ccc2505mni01 /Documents..."
-		echo "----- Fin copie mni01 vers mba à:" >> $LOGFILE
-		date >> $LOGFILE
+		echo "----- Fin copie mni01 vers mba à:" >> $LOGFIX
+		date >> $LOGFIX
 		;;
   	18)
 		# === Synchronisation ===
@@ -249,7 +255,7 @@ do
 #--- FUSION  	rsync -av /home/user/tosave*/ /destination/
 #		sudo rsync -avh --progress /Users/access/Documents/_MNI*/ /Volumes/vsy21tri2int/ccc2506mni/
 #--- SSH	rsync -av -e ssh "$dir" remoteuser@remotehost:/chemin/destination/
-		date >> $LOGFILE
+		date >> $LOGFIX
 		sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 # -A TESTER-	sudo rsync -ah --info=stats source/ destination/
 # -memoire-	rsync -a --no-owner --no-group source/ /private/nfs207tri2/rsy2506mni/
@@ -265,8 +271,8 @@ do
 #		tail -n 5 rsync2output.log >> savedata.log
 # 		echo "--- tail5rsync2.log"
 		echo "----- Fin sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC" >> savedata.log
-     		du -sh $SRC0BASE >> $LOGFILE
-		date >> $LOGFILE
+     		du -sh $SRC0BASE >> $LOGFIX
+		date >> $LOGFIX
   		;;
 	22)
 		echo "22 rsync depuis mba(zorin) vers ccc -$SRC0BASE-"
@@ -282,12 +288,12 @@ do
 		echo ""
 		echo "==> Pause : appuyez sur une touche pour continuer."
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
-  		date >> $LOGFILE
+  		date >> $LOGFIX
 		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/pop.sfr.fr/ /mnt/vsy21tri2int/ccc2505test
 #		sudo rsync -avh --progress /home/secours/.thunderbird/5w2sovhl.default-release/Mail/ /mnt/vsy21tri2int/ccc2505mba
 		echo "----- sudo rsync -avh --progress /home/secours/.thunderbird /mnt/vsy21tri2int/ccc2505mba"
 		echo "----- Fin copie mba vers ccc/wifi à:" >> savedata.log 
-		date >> $LOGFILE
+		date >> $LOGFIX
   		;;
 	23)
 	 	echo "23 scp depuis mni(macos) =$SRC0BASE= vers =$DST_SCP="
@@ -400,8 +406,8 @@ EOF
   		sudo rm -rf $DST_SUPP
 #    		sudo rmdir $DEST_SUPP
 		echo "sudo rm -rf $DST_SUPP"
-		echo "----- Fin suppression $DST_SUPP:" >> $LOGFILE
-		date >> $LOGFILE
+		echo "----- Fin suppression $DST_SUPP:" >> $LOGFIX
+		date >> $LOGFIX
 		;;
 	39)
  		mkdir empty_dir
@@ -434,7 +440,7 @@ EOF
 	98)
  		echo "Quantité de données dupliquées ou information?"
 		read donnees
-  		$donness >> $LOGFILE
+  		$donness >> $LOGFIX
  		;;
 	99)
  		cp Downloads/sc02savedata.sh . && rm Downloads/sc02savedata.sh
