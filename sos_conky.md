@@ -3,7 +3,7 @@
 - https://www.linuxtricks.fr/wiki/conky-des-variables-systeme-sur-le-bureau
 - 
 
-## First step
+## A - First step
 
 ```
     1  sudo apt update
@@ -36,7 +36,7 @@ X-GNOME-Autostart-Delay=0
     6  sudo apt-get install lm-sensors
     7  sudo sensors-detect
 ```
-## Second step
+## B - Second step
 
 secours@secours-Macmini:~$ cat /etc/conky/conky.conf
 ```
@@ -122,7 +122,7 @@ ${color lightgrey} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
 
 To display your **local IP address** using **Conky**, you need to use the `${addr}` variable with the name of your **network interface**.
 
-### ✅ Step-by-Step
+### Step-by-Step
 
 1. **Find your network interface name**
    Common ones are:
@@ -155,7 +155,7 @@ To display your **local IP address** using **Conky**, you need to use the `${add
 
 ---
 
-### 💡 Example `.conkyrc` snippet
+### Example `.conkyrc` snippet
 
 ```conky
 conky.config = {
@@ -174,7 +174,7 @@ ${color white}Local IP: ${addr wlp2s0}
 ]];
 ```
 
-## Pour vérifier la vitesse du ventilateur CPU avec **Conky**, tu peux suivre ces étapes :
+## C - Pour vérifier la vitesse du ventilateur CPU avec **Conky**, tu peux suivre ces étapes :
 
 ### 1. Vérifie si ton système possède les outils nécessaires
 
@@ -272,7 +272,7 @@ conky.text = [[
 ```
 ---
 
-## Autre approche?
+## D - Autre approche?
 To add **fan speed** information to your **Conky** setup, you'll need to first check if your system is reporting the fan speed and then display it in your Conky configuration.
 
 ### 🧰 **Steps to Add Fan Speed to Conky**
@@ -377,7 +377,7 @@ Let me know if you have trouble finding the fan data or need help customizing fu
 
 ---
 
-## Occupation des disques et réseau
+## E - Occupation des disques et réseau
 
    36  df -h
    38  lsblk -f
@@ -493,13 +493,13 @@ CpuTmp: ${execi 10 sensors | grep 'Core0' | awk '{print $2}'}
 #Core 3:       +47.0°C  (high = +90.0°C, crit = +90.0°C)
 ]]
 ```
-## Alerte coupure réseau
+## F - Alerte coupure réseau
 
 Très bonne idée d’utiliser **Conky** pour surveiller une **coupure réseau** sous macOS ou Linux. Même si Conky est plutôt utilisé pour l'affichage graphique, **on peut l’utiliser comme un indicateur visuel d'état réseau**, voire simuler une **alerte visuelle** si le réseau tombe.
 
 ---
 
-## 🎯 Objectif :
+## Objectif :
 
 Afficher **un message ou une icône** dans Conky quand **le réseau est coupé**, par exemple :
 
@@ -518,7 +518,7 @@ On utilise `if_existing` ou `execpi` pour exécuter une commande shell toutes le
 
 ---
 
-### 🧪 Exemple de config dans ton `~/.conkyrc` ou fichier de config Conky :
+### Exemple de config dans ton `~/.conkyrc` ou fichier de config Conky :
 
 ```lua
 conky.config = {
@@ -562,7 +562,7 @@ else
 fi
 ```
 
-> ✅ N'oublie pas de rendre ce script exécutable :
+> N'oublie pas de rendre ce script exécutable :
 
 ```bash
 chmod +x ~/.conky/network_check.sh
@@ -607,3 +607,122 @@ notify-send "ALERTE Réseau" "Coupure détectée"
 ---
 
 Souhaites-tu que je t’aide à intégrer ça **dans un thème Conky existant** ou que je t’ajoute un **son ou une action automatique** en cas de coupure ?
+
+## G - Oui, il est tout à fait possible de **greffer un script Bash** dans **Conky**, ce qui permet d'afficher des informations dynamiques issues de scripts ou de commandes personnalisées directement sur ton bureau.
+
+Voici comment tu peux intégrer un script Bash dans un fichier de configuration Conky.
+
+---
+
+### 1. **Utilisation de la directive `${exec}` de Conky**
+
+Conky permet d'exécuter des commandes et des scripts via la directive `${exec}`. Cela te permet d'exécuter un script Bash à intervalles réguliers et d'afficher sa sortie dans ton interface Conky.
+
+#### Exemple :
+
+Imaginons que tu souhaites afficher la sortie d'un script Bash personnalisé dans Conky. Voici les étapes :
+
+### 2. **Création d'un script Bash**
+
+Créons un exemple de script qui récupère des informations système (par exemple, la température du processeur, l'utilisation de la mémoire, etc.). Appelons ce script `mon_script.sh`.
+
+#### Exemple de script `mon_script.sh` :
+
+```bash
+#!/bin/bash
+
+# Exemple de script Bash qui renvoie la température du CPU
+# Cette commande est spécifique à Linux avec `sensors` installé
+# Assure-toi d'avoir installé le paquet `lm-sensors` pour obtenir les températures
+
+sensors | grep "Core 0" | awk '{print $3}'
+```
+
+1. **Rendre le script exécutable** :
+
+   ```bash
+   chmod +x /chemin/vers/mon_script.sh
+   ```
+
+2. **Vérifier le script** (au cas où il renvoie bien une sortie correcte) :
+
+   ```bash
+   /chemin/vers/mon_script.sh
+   ```
+
+### 3. **Intégrer le script Bash dans le fichier de configuration de Conky**
+
+Voici un exemple simple d’un fichier de configuration Conky (`~/.conkyrc` ou `/etc/conky/conky.conf`), où nous greffons notre script Bash à l'aide de `${exec}`.
+
+#### Exemple de configuration Conky :
+
+```bash
+conky.config = {
+    -- Configuration globale
+    alignment = 'top_left',
+    background = false,
+    update_interval = 1,  -- Temps entre chaque mise à jour (en secondes)
+    use_xft = true,
+    font = 'DejaVu Sans:size=10',
+};
+
+conky.text = [[
+${color green}CPU Temperature:
+${exec /chemin/vers/mon_script.sh}
+
+${color blue}Memory Usage:
+${mem} / ${memmax} (${memperc}%)
+
+${color yellow}Uptime:
+${uptime}
+]];
+```
+
+#### Explications :
+
+* **`${exec /chemin/vers/mon_script.sh}`** : Cette directive indique à Conky d'exécuter le script Bash et d'afficher sa sortie. Le résultat du script sera mis à jour à l'intervalle spécifié par `update_interval` (ici 1 seconde).
+* Le reste de la configuration est standard pour afficher la température, l'utilisation de la mémoire, et l'uptime du système.
+
+### 4. **Lancer Conky avec la nouvelle configuration**
+
+Après avoir ajouté ton script dans la configuration Conky, lance Conky comme d'habitude :
+
+```bash
+conky
+```
+
+Tu devrais maintenant voir les informations dynamiques issues de ton script Bash s'afficher dans Conky sur ton bureau.
+
+### 5. **Utiliser des scripts plus complexes**
+
+Si ton script Bash est plus complexe, tu peux aussi utiliser `${execi}` pour exécuter un script à intervalles spécifiques. Par exemple, si tu veux que ton script s'exécute toutes les 10 secondes :
+
+```bash
+${execi 10 /chemin/vers/mon_script.sh}
+```
+
+Cela exécutera le script toutes les 10 secondes et mettra à jour la sortie affichée dans Conky à cet intervalle.
+
+---
+
+### Quelques autres options utiles :
+
+* **`${execpi}`** : Exécuter un script ou une commande en arrière-plan à intervalles réguliers, mais sans bloquer la mise à jour de Conky.
+
+  ```bash
+  ${execpi 5 /chemin/vers/mon_script.sh}
+  ```
+
+  Cela exécutera le script toutes les 5 secondes, mais il n'attendra pas que le script se termine avant de mettre à jour l'affichage de Conky.
+
+---
+
+### Résumé :
+
+1. **Créer un script Bash** qui génère des informations dynamiques.
+2. **Utiliser `${exec}` ou `${execi}`** dans le fichier de configuration Conky pour exécuter ce script.
+3. **Lancer Conky** et vérifier que les informations apparaissent sur ton bureau.
+
+Cela te permet de personnaliser Conky en fonction de tes besoins et d'afficher des informations système spécifiques, en plus de celles qui sont déjà disponibles par défaut dans Conky.
+
+Est-ce que tu veux un exemple concret de script ou une fonction particulière à intégrer dans Conky ?
