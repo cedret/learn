@@ -72,7 +72,7 @@ sudo umount /mnt/disque2
 
 ---
 
-### ℹAstuce : Disques automontés
+### ℹ ℹ ℹ ℹ ℹ Astuce : Disques automontés
 
 Parfois, si vous branchez un disque externe, il peut être monté automatiquement sous `/media/username/`. Utilisez :
 
