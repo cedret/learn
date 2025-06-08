@@ -165,7 +165,7 @@ do
 		# Créer le dossier de destination
 		mkdir -p "$DESTINATION"
 #		date >> $LOGFIX
-  		DATE0=date >> $LOGFIX
+  		SECONDS=0
 		# Copier les répertoires sélectionnés avec rsync
 		echo "---9 Sélectionné(s) pour rsync" | tee -a "$LOGFIX"
 		echo "Démonter/remonter réseau entre chaque itération?"
@@ -192,10 +192,10 @@ do
 
 			# Vérification du code de sortie de rsync
 			if [ $status -eq 0 ]; then
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync ok fichiers total:$(find "$dest" -type f | wc -l)" | tee -a "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync de fichiers total:$(find "$dest" -type f | wc -l) en $SECONDS min." | tee -a "$LOGFIX"
     				tail -n 5 "$LOGFMR" >> "$LOGFIX"
 			else
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠ après $SECONDS sec." | tee -a "$LOGFIX"
 #    				echo "Détails de l'erreur:" >> "$LOGFIX"
 				tail -n 15 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
