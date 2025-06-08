@@ -193,10 +193,11 @@ do
 			# Vérification du code de sortie de rsync
 			if [ $status -eq 0 ]; then
 				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync ok fichiers total:$(find "$dest" -type f | wc -l)" | tee -a "$LOGFIX"
+    				tail -n 5 "$LOGFMR" >> "$LOGFIX"
 			else
 				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
 #    				echo "Détails de l'erreur:" >> "$LOGFIX"
-				tail -n 10 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
+				tail -n 15 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
 
 #		    STATUS="Rsync vers '$dest' fini à:" 
