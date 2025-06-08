@@ -175,7 +175,7 @@ do
 			dest="$DESTINATION/rsy$(basename "$src")"
 			TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 			TAILLE=$(du -sh "$src")
-			echo "[$TIMESTAMP] $TAILLE" >> "$LOGFIX"
+			echo "[$TIMESTAMP] $TAILLE" | tee -a "$LOGFIX"
 			SECONDS=0
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dest/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
