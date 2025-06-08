@@ -165,14 +165,15 @@ do
 		# Créer le dossier de destination
 		mkdir -p "$DESTINATION"
 #		date >> $LOGFIX
-  		SECONDS=0
+
 		# Copier les répertoires sélectionnés avec rsync
 		echo "---9 Sélectionné(s) pour rsync" | tee -a "$LOGFIX"
 		echo "Démonter/remonter réseau entre chaque itération?"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
-		    src="${DIRS[$index]}"
-		    dest="$DESTINATION/rsy$(basename "$src")"
+			SECONDS=0
+			src="${DIRS[$index]}"
+			dest="$DESTINATION/rsy$(basename "$src")"
       		    du -sh $src | tee -a "$LOGFIX"
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dest/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
@@ -185,17 +186,16 @@ do
 #		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1 && \
 #  			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync sans erreur ℹ ℹ --- Total des fichiers transférés : $(find "$dest" -type f | wc -l)" | tee -a "$LOGFIX" || \
 #     			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
-
-
 			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dest/" >> "$LOGFMR" 2>&1
-			status=$?
 
+   			status=$?
+   			minutes=$((SECONDS / 60))
 			# Vérification du code de sortie de rsync
 			if [ $status -eq 0 ]; then
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync de fichiers total:$(find "$dest" -type f | wc -l) en $SECONDS min." | tee -a "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync de $(find "$dest" -type f | wc -l) fichiers après $minutes min." | tee -a "$LOGFIX"
     				tail -n 5 "$LOGFMR" >> "$LOGFIX"
 			else
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠ après $SECONDS sec." | tee -a "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️  Rsync avec erreur(s): (code $status) ⚠ après $minutes min." | tee -a "$LOGFIX"
 #    				echo "Détails de l'erreur:" >> "$LOGFIX"
 				tail -n 15 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
