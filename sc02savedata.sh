@@ -173,6 +173,8 @@ do
 		    STATUS="Rsync vers '$dest' fini à:" 
 #		    date >> $LOGFILE
 		    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+		#   rsync -avz source/ user@host:/destination/
+		    echo "Code retour rsync : $?" | tee -a "$LOGFILE"
 		    echo "$DATE0 | $STATUS [$TIMESTAMP]" >> "$LOGFILE"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
