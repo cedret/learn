@@ -40,7 +40,7 @@ do
   	echo "===== ===== PREPARATION"
   	echo "---1 Informations ---4 Montage NFS (MacOs) ---7 Choisir source(s) + rsync"
    	echo "---2 Suite        ---5 Démontage NFS       ---8 Archiver savedata.log ???"
-    	echo "---3              ---6 Montage Qnap        ---9 Consulter log"
+    	echo "---3 Crontab      ---6 Montage Qnap        ---9 Consulter log"
 	echo "===== ===== RESTAURATIONS"
   	echo "---11 ---13              ---15           ---17 ---19 Choisir sauvegarde(s) + rsync"
 	echo "---12 ---14 rsync/debian ---16 rsync/MBA ---18 rsync/variables"
@@ -89,6 +89,9 @@ do
    		ls -n /volume2/vsy21tri2int/rsy2506mni/
      		ls -ld /volume2/vsy21tri2int/rsy2506mni/
        		;;
+	3)
+ 		crontab -e
+		;;
   	4)
    		echo "---5 Montage NFS (MacOs)"
 		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
