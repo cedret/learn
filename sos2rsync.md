@@ -179,7 +179,7 @@ Souhaites-tu :
 
 ### **Méthode 1 : Monter le partage Samba + `cp` ou `rsync`**
 
-### 🔧 Étapes :
+### Étapes :
 
 ### ➊ Monter le partage Samba temporairement
 
@@ -482,7 +482,7 @@ Chaque sauvegarde est stockée dans un sous-dossier horodaté comme `/home/ton_u
 
 ---
 
-## 📝 SCRIPT COMPLET : `sauvegarde_samba_versionnee.sh`
+## SCRIPT COMPLET : `sauvegarde_samba_versionnee.sh`
 
 ```bash
 #!/bin/bash
