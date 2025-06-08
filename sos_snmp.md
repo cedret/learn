@@ -307,7 +307,7 @@ ${execpi 5 ~/.conky/monitor_nas_snmp.sh}
 
 ---
 
-### 🧠 Résumé
+### Résumé
 
 | Méthode                    | Interface       | Facilité      | Rafraîchissement  |
 | -------------------------- | --------------- | ------------- | ----------------- |
@@ -370,9 +370,9 @@ SPEED_OUT_KBPS=$((DELTA_OUT * 8 / 1024))
 clear
 echo "🖧 SNMP Monitoring - $(date '+%Y-%m-%d %H:%M:%S')"
 echo "-----------------------------"
-echo "🧠 CPU Utilisation : ${CPU_USED}% (user: ${CPU_USER}%, system: ${CPU_SYSTEM}%)"
-echo "📥 Réseau entrant : ${SPEED_IN_KBPS} Kb/s"
-echo "📤 Réseau sortant : ${SPEED_OUT_KBPS} Kb/s"
+echo "CPU Utilisation : ${CPU_USED}% (user: ${CPU_USER}%, system: ${CPU_SYSTEM}%)"
+echo "Réseau entrant : ${SPEED_IN_KBPS} Kb/s"
+echo "Réseau sortant : ${SPEED_OUT_KBPS} Kb/s"
 ```
 
 > ✅ N'oublie pas :
@@ -423,9 +423,9 @@ Une nouvelle fenêtre terminal s'ouvre et affiche :
 ```
 🖧 SNMP Monitoring - 2025-06-07 18:17:00
 -----------------------------
-🧠 CPU Utilisation : 6% (user: 3%, system: 3%)
-📥 Réseau entrant : 120 Kb/s
-📤 Réseau sortant : 40 Kb/s
+CPU Utilisation : 6% (user: 3%, system: 3%)
+Réseau entrant : 120 Kb/s
+Réseau sortant : 40 Kb/s
 ```
 
 Mis à jour toutes les 5 secondes.
@@ -530,7 +530,7 @@ ${execpi 5 ~/.conky/monitor_nas_snmp.sh}
 
 ---
 
-## 🧠 Résumé
+## Résumé
 
 | Méthode                    | Interface       | Facilité      | Rafraîchissement  |
 | -------------------------- | --------------- | ------------- | ----------------- |
@@ -593,9 +593,9 @@ SPEED_OUT_KBPS=$((DELTA_OUT * 8 / 1024))
 clear
 echo "🖧 SNMP Monitoring - $(date '+%Y-%m-%d %H:%M:%S')"
 echo "-----------------------------"
-echo "🧠 CPU Utilisation : ${CPU_USED}% (user: ${CPU_USER}%, system: ${CPU_SYSTEM}%)"
-echo "📥 Réseau entrant : ${SPEED_IN_KBPS} Kb/s"
-echo "📤 Réseau sortant : ${SPEED_OUT_KBPS} Kb/s"
+echo "CPU Utilisation : ${CPU_USED}% (user: ${CPU_USER}%, system: ${CPU_SYSTEM}%)"
+echo "Réseau entrant : ${SPEED_IN_KBPS} Kb/s"
+echo "Réseau sortant : ${SPEED_OUT_KBPS} Kb/s"
 ```
 
 > ✅ N'oublie pas :
@@ -646,9 +646,9 @@ Une nouvelle fenêtre terminal s'ouvre et affiche :
 ```
 🖧 SNMP Monitoring - 2025-06-07 18:17:00
 -----------------------------
-🧠 CPU Utilisation : 6% (user: 3%, system: 3%)
-📥 Réseau entrant : 120 Kb/s
-📤 Réseau sortant : 40 Kb/s
+CPU Utilisation : 6% (user: 3%, system: 3%)
+Réseau entrant : 120 Kb/s
+Réseau sortant : 40 Kb/s
 ```
 
 Mis à jour toutes les 5 secondes.
