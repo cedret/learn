@@ -193,9 +193,9 @@ do
    			minutes=$((SECONDS / 60))
 			# Vérification du code de sortie de rsync
 			if [ $status -eq 0 ]; then
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync de $(find "$dest" -type f | wc -l) fichiers après $minutes min." | tee -a "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync réussi de $(find "$dest" -type f | wc -l) fichiers après $minutes min." | tee -a "$LOGFIX"
     				fichier="fichier.log"
-				tail -n 10 "$LOGFMR" | head -n 5 >> "$LOGFIX"
+				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
 			else
 				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️  Rsync avec erreur(s): (code $status) ⚠ après $minutes min." | tee -a "$LOGFIX"
 #    				echo "Détails de l'erreur:" >> "$LOGFIX"
