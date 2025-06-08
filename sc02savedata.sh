@@ -90,6 +90,7 @@ do
      		ls -ld /volume2/vsy21tri2int/rsy2506mni/
        		;;
 	3)
+ 		echo "Pour programmer cycle: 0 2 * * * /path/to/backup.sh"
  		crontab -e
 		;;
   	4)
@@ -173,12 +174,30 @@ do
 		    src="${DIRS[$index]}"
 		    dest="$DESTINATION/$(basename "$src")"
       		    du -sh $src | tee -a "$LOGFIX"
-		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dest/"
+#		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dest/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dest" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
-		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1 && \
-			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> "$LOGFIX" || \
-			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
+#		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1 && \
+#			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> "$LOGFIX" || \
+#			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
+
+			rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1
+			status=$?
+
+			# Vérification du code de sortie de rsync
+			if [ $status -eq 0 ]; then
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> "$LOGFIX"
+			else
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie (code $status)" >> "$LOGFIX"
+    				echo "Détails de l'erreur:" >> "$LOGFIX"
+				tail -n 20 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
+			fi
+
+
+
+
+
+   
 		    STATUS="Rsync vers '$dest' fini à:" 
 #		    date >> $LOGFIX
 		    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
