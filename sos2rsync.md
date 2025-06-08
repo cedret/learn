@@ -96,7 +96,7 @@ Si tu veux que le disque soit monté automatiquement au démarrage, je peux auss
 
 Deux façons principales :
 
-## A. **Monter un dossier Samba avec `mount` (temporaire)**
+## a. **Monter un dossier Samba avec `mount` (temporaire)**
 
 ### Étapes :
 
@@ -124,7 +124,7 @@ sudo mount -t cifs //192.168.1.10/backup /mnt/partage -o username=admin,password
 -o username=admin,password=secret,domain=WORKGROUP,vers=3.0
 ```
 
-## B. **Naviguer sans monter : utiliser `smbclient` (mode FTP)**
+## b. **Naviguer sans monter : utiliser `smbclient` (mode FTP)**
 
 Si tu veux **parcourir** ou **copier** des fichiers sans monter le partage, utilise :
 
@@ -337,7 +337,7 @@ Mais cette méthode :
 
 ---
 
-## 🛡️ Sécurité (éviter d’exposer le mot de passe)
+## Sécurité (éviter d’exposer le mot de passe)
 
 Tu peux stocker les identifiants dans un fichier :
 
@@ -366,9 +366,9 @@ avec **montage, sauvegarde et démontage**, le tout dans un **script bash** exé
 
 ---
 
-## ✅ 1. Créer un fichier d'identifiants sécurisé
+## 1. Créer un fichier d'identifiants sécurisé
 
-### 🔒 `/etc/samba/creds_backup` :
+### `/etc/samba/creds_backup` :
 
 ```ini
 username=TON_UTILISATEUR
@@ -383,9 +383,9 @@ sudo chmod 600 /etc/samba/creds_backup
 
 ---
 
-## ✅ 2. Script automatique de sauvegarde Samba
+## 2. Script automatique de sauvegarde Samba
 
-### 📄 Crée un fichier `sauvegarde_samba.sh` :
+### Crée un fichier `sauvegarde_samba.sh` :
 
 ```bash
 nano ~/sauvegarde_samba.sh
@@ -426,7 +426,7 @@ fi
 
 ---
 
-### ✅ 3. Rendre le script exécutable :
+### 3. Rendre le script exécutable :
 
 ```bash
 chmod +x ~/sauvegarde_samba.sh
@@ -434,7 +434,7 @@ chmod +x ~/sauvegarde_samba.sh
 
 ---
 
-## ✅ 4. (Optionnel) Exécuter automatiquement avec `cron`
+## 4. (Optionnel) Exécuter automatiquement avec `cron`
 
 ### Éditer le crontab :
 
@@ -450,7 +450,7 @@ crontab -e
 
 ---
 
-## ✅ Résultat :
+## Résultat :
 
 * Sauvegarde automatique quotidienne
 * Dossier synchronisé localement
@@ -468,15 +468,15 @@ Souhaites-tu que le script fasse aussi des **sauvegardes versionnées** (garder 
 
 ---
 
-### ✅ **Sauvegardes versionnées (par date)**
+### **Sauvegardes versionnées (par date)**
 
-### ✅ **Journalisation complète**
+### **Journalisation complète**
 
-### ✅ **Envoi d’un e-mail en cas d’échec** (facultatif, mais prêt à l’emploi)
+### **Envoi d’un e-mail en cas d’échec** (facultatif, mais prêt à l’emploi)
 
 ---
 
-## 🧠 Principe :
+## Principe :
 
 Chaque sauvegarde est stockée dans un sous-dossier horodaté comme `/home/ton_user/sauvegarde/2025-05-22_02-00`.
 
@@ -531,7 +531,7 @@ fi
 
 ---
 
-## ✅ 1. Rendre le script exécutable
+## 1. Rendre le script exécutable
 
 ```bash
 chmod +x ~/sauvegarde_samba_versionnee.sh
@@ -539,7 +539,7 @@ chmod +x ~/sauvegarde_samba_versionnee.sh
 
 ---
 
-## ✅ 2. Automatiser avec `cron`
+## 2. Automatiser avec `cron`
 
 ```bash
 crontab -e
@@ -553,7 +553,7 @@ Ajoute cette ligne (sauvegarde tous les jours à 2h du matin) :
 
 ---
 
-## ✅ 3. Facultatif : Configurer l’envoi de mails
+## 3. Facultatif : Configurer l’envoi de mails
 
 Installe un utilitaire de mail simple comme `mailutils` :
 
@@ -567,7 +567,7 @@ Sinon, retire simplement les lignes `mail -s ...` si tu ne veux pas de mail.
 
 ---
 
-## 🧹 BONUS : Nettoyage automatique (ex: garder 7 derniers jours)
+## BONUS : Nettoyage automatique (ex: garder 7 derniers jours)
 
 Ajoute à ton script :
 
@@ -586,7 +586,7 @@ Voici les étapes détaillées :
 
 ---
 
-### 🔧 **1. Syntaxe de base**
+### **1. Syntaxe de base**
 
 ```bash
 mount_smbfs //[user[:password]@]server/share /chemin/local
@@ -594,7 +594,7 @@ mount_smbfs //[user[:password]@]server/share /chemin/local
 
 ---
 
-### 📌 **2. Exemple concret**
+### **2. Exemple concret**
 
 Supposons que :
 
@@ -620,14 +620,14 @@ mount_smbfs //john@192.168.1.100/partage /Volumes/partage
 
 ---
 
-### ⚠️ **Remarques de sécurité**
+### ⚠ **Remarques de sécurité**
 
 * Évite de mettre le mot de passe en clair dans la commande pour des raisons de sécurité.
 * Pour une utilisation automatisée, tu peux utiliser un fichier d’identifiants sécurisé avec `keychain`, ou un système de montages auto (`/etc/auto_master` + `autofs`).
 
 ---
 
-### ✅ **Vérification**
+### **Vérification**
 
 Après le montage, tu peux vérifier avec :
 
@@ -643,7 +643,7 @@ mount
 
 ---
 
-### 🛑 **Démonter le partage**
+### **Démonter le partage**
 
 ```bash
 umount /Volumes/partage
