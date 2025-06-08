@@ -726,3 +726,12 @@ Cela exécutera le script toutes les 10 secondes et mettra à jour la sortie aff
 Cela te permet de personnaliser Conky en fonction de tes besoins et d'afficher des informations système spécifiques, en plus de celles qui sont déjà disponibles par défaut dans Conky.
 
 Est-ce que tu veux un exemple concret de script ou une fonction particulière à intégrer dans Conky ?
+```
+#!/bin/bash
+
+# Exemple de script Bash qui renvoie la température du CPU
+# Cette commande est spécifique à Linux avec `sensors` installé
+# Assure-toi d'avoir installé le paquet `lm-sensors` pour obtenir les températures
+
+sensors | grep "Core 0" | awk '{print $3}'
+```
