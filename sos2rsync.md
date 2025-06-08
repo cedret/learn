@@ -1,6 +1,6 @@
 sos_rsync.md
 
-## 1 - Monter répertoires avec linux pour Rsync
+## A - Monter répertoires avec linux pour Rsync
 
 Pour se **déplacer sur un autre disque** en ligne de commande Linux (CLI), il faut d'abord **s'assurer que le disque est monté**, puis vous pouvez simplement utiliser `cd` pour vous y rendre.
 
@@ -92,7 +92,7 @@ Si tu veux que le disque soit monté automatiquement au démarrage, je peux auss
 ---
 ---
 
-## 2 - Atteindre un dossier partagé via Samba (SMB) en ligne de commande sous Linux
+## B - Atteindre un dossier partagé via Samba (SMB) en ligne de commande sous Linux
 
 Deux façons principales :
 
@@ -175,9 +175,7 @@ Souhaites-tu :
   ---
   ---
 
-##  Pour **copier un répertoire depuis un partage Samba (SMB)** vers un répertoire local en ligne de commande, tu peux utiliser deux méthodes efficaces selon ton besoin :
-
-
+## C - Pour **copier un répertoire depuis un partage Samba (SMB)** vers un répertoire local en ligne de commande, tu peux utiliser deux méthodes efficaces selon ton besoin :
 
 ### **Méthode 1 : Monter le partage Samba + `cp` ou `rsync`**
 
@@ -261,7 +259,8 @@ Souhaites-tu faire cela **automatiquement via un script**, ou avec **mot de pass
 ---
 ---
 
-## **copier tous les répertoires d’un partage Samba vers un répertoire local**, la méthode la plus robuste et simple consiste à **monter le partage Samba localement**, puis utiliser `rsync` ou `cp` pour tout copier.
+## D - **copier tous les répertoires d’un partage Samba vers un répertoire local**,
+la méthode la plus robuste et simple consiste à **monter le partage Samba localement**, puis utiliser `rsync` ou `cp` pour tout copier.
 
 ---
 
@@ -362,7 +361,8 @@ Souhaites-tu automatiser cette copie (ex. via script ou cron) ? Je peux t’aide
 ---
 ---
 
-Parfait ! Voici **comment automatiser la copie de tous les répertoires Samba vers un dossier local**, avec **montage, sauvegarde et démontage**, le tout dans un **script bash** exécutable (et utilisable via `cron` si tu veux que ça se fasse régulièrement).
+## E - Comment automatiser la copie de tous les répertoires Samba vers un dossier local,
+avec **montage, sauvegarde et démontage**, le tout dans un **script bash** exécutable (et utilisable via `cron` si tu veux que ça se fasse régulièrement).
 
 ---
 
@@ -464,7 +464,7 @@ Souhaites-tu que le script fasse aussi des **sauvegardes versionnées** (garder 
 ---
 ---
 
-Parfait ! Voici une version **améliorée du script** avec :
+## F - Voici une version **améliorée du script** avec :
 
 ---
 
