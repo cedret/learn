@@ -37,28 +37,28 @@ df -H
 while true;
 do
 	echo ""
-  	echo "===== ===== PREPARATION"
+  	echo "===== PREPARATION"
   	echo "---1 Informations ---4 Montage NFS (MacOs) ---7 Choisir source(s) + rsync"
-   	echo "---2 Suite        ---5 Démontage NFS       ---8 Archiver savedata.log ???"
-    	echo "---3 Crontab      ---6 Montage Qnap        ---9 Consulter log"
-	echo "===== ===== RESTAURATIONS"
+   	echo "---2 Suite        ---5 Démontage NFS       ---8 Consulter log -fmr-"
+    	echo "---3 Crontab      ---6 Montage sur Qnap    ---9 Consulter log -fix-"
+  	echo "===== ===== MONTAGES"
+   	echo "---91 Monter disques qnap ---92 Vérifier montages ---93 Démonter intelligent"
+	echo "---94 Tout démonter       ---95 Supprimer /mnt//  ---96"
+ 	echo "---97                     ---98                   ---99"
+	echo "===== ===== ===== RESTAURATIONS"
   	echo "---11 ---13              ---15           ---17 ---19 Choisir sauvegarde(s) + rsync"
 	echo "---12 ---14 rsync/debian ---16 rsync/MBA ---18 rsync/variables"
-	echo "===== ===== SAUVEGARDES -$SRC0BASE- vers -$DST_RSNC- ou =$DST_SCP="
+	echo "===== ===== ===== ===== SAUVEGARDES -$SRC0BASE- vers -$DST_RSNC- ou =$DST_SCP="
 	echo "---21 rsync < mni(macos) ---23 scp < mni(macos) ---25 smbclient < mni(macos) ---27 lftp < mni(macos)-"
 	echo "---22 rsync < mba(zorin) ---24 scp < mba(zorin) ---26 smbclient < mba(zorin) ---28"
- 	echo "===== ===== COMPARAISONS"
+ 	echo "===== ===== ===== ===== ===== COMPARAISONS"
 	echo "---31 par rsync ---32 par diff   ---33 par checksum"
   	echo "---34 simple    ---35 avec hash  ---36"
- 	echo "===== ===== SUPPRESSIONS"
- 	echo "---41 Supprimer avec macos/debian cible -$DST_SUPP-"
- 	echo "---43 Supprimer avec debian cible -$DST_SUPP-"
-   	echo "---49 Par rsync"
-	echo "===== ===== LOGS"
-	echo "---51 voir savedata.log"
-	echo "===== ===== AUTRES"
-	echo "---91 Monter disques qnap ---92 Vérifier montages ---93 Démonter intelligent"
-	echo "---94                     ---95 Supprimer /mnt//  ---96"
+ 	echo "===== ===== ===== ===== ===== ===== SUPPRESSIONS"
+ 	echo "---71 Supprimer avec macos/debian cible -$DST_SUPP-"
+ 	echo "---73 Supprimer avec debian cible -$DST_SUPP-"
+   	echo "---79 Par rsync"
+	echo "===== ===== ===== ===== ===== ===== ===== AUTRES"
 	echo "---97 Tout démonter       ---98 Ajouter dans .log ---99 Remplacer ce script"
  	echo "===== ===== 0 pour quitter"
 
@@ -188,31 +188,31 @@ do
 			if [ $status -eq 0 ]; then
 				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Rsync réussi" >> "$LOGFIX"
 			else
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Rsync avec erreur: (code $status)" >> "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Rsync avec erreurs: (code $status)" >> "$LOGFIX"
 #    				echo "Détails de l'erreur:" >> "$LOGFIX"
 				tail -n 10 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
 
-
-
-
-
-   
-		    STATUS="Rsync vers '$dest' fini à:" 
+#		    STATUS="Rsync vers '$dest' fini à:" 
 #		    date >> $LOGFIX
-		    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+#		    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 		#   rsync -avz source/ user@host:/destination/
-		    echo "Code retour rsync : $?" | tee -a "$LOGFIX"
-		    echo "$DATE0 | $STATUS [$TIMESTAMP]" >> "$LOGFIX"
+#		    echo "Code retour rsync : $?" | tee -a "$LOGFIX"
+#		    echo "$DATE0 | $STATUS [$TIMESTAMP]" >> "$LOGFIX"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
 		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFIX"
 		  fi
 		done
-		echo -e "\n Copie terminée avec rsync."
+		echo -e "\n Action terminée avec rsync, voir logs pour détails."
+		;;
+    	8)
+ 		echo -e "\n ---8 Logs fmr"
+		cat $LOGFMR
+  		ls $HOME/logs
 		;;
   	9)
- 		echo -e "\n ---51 Logs"
+ 		echo -e "\n ---9 Logs fix"
 		cat $LOGFIX
   		ls $HOME/logs
 		;;
@@ -416,7 +416,7 @@ EOF
 		# Nettoyage
 		rm "$TMP1" "$TMP2"
 		;;
-    	41)
+    	71)
 		echo "----- SUPPRESSION depuis MACOS/Debian"
 		sudo ls $DST_SUPP
 #		ls -al $DEST_SUPP
@@ -431,7 +431,7 @@ EOF
 		echo "----- Fin suppression $DST_SUPP:" >> $LOGFIX
 		date >> $LOGFIX
 		;;
-	39)
+	79)
  		mkdir empty_dir
 		rsync -a --delete --progress empty_dir/ target_dir/
 		;;
@@ -443,6 +443,9 @@ EOF
 		echo "Démontage de : $m"
 		sudo umount -lf "$m"
 		done
+		;;
+  	94)
+		sudo umount -lf /mnt/*
 		;;
 	95)
 		echo "sudo rm -r /mnt/vsy21tri2int/ccc2505mba/"
@@ -456,9 +459,7 @@ EOF
 		sudo unmount /mnt/secu7test5
 		sudo unmount /mnt/vsy21tri2int
 		;;
-	97)
-		sudo umount -lf /mnt/*
-		;;
+
 	98)
  		echo "Quantité de données dupliquées ou information?"
 		read donnees
