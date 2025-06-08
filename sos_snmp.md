@@ -137,6 +137,8 @@ NAS_IP="192.168.1.100"       # IP de ton NAS
 COMMUNITY="maison"           # Communauté SNMP
 SNMP_VERSION="2c"            # Version SNMP
 
+sudo apt install snmp, snmpstat
+
 # Fonction d'affichage
 function display {
     echo "=== $1 ==="
