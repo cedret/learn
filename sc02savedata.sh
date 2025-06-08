@@ -172,7 +172,7 @@ do
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 		    src="${DIRS[$index]}"
-		    dest="$DESTINATION/$(basename "$src")"
+		    dest="$DESTINATION/rsy$(basename "$src")"
       		    du -sh $src | tee -a "$LOGFIX"
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dest/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
