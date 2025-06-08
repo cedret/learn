@@ -130,7 +130,7 @@ do
 		# Lister les répertoires déjà dans destination
 		echo "Répertoires existants dans $DESTINATION..."
 		sudo ls $DESTINATION
-
+	
 		# Lister les répertoires dans $HOME
 		echo "Répertoires dans $SRC0BASE..."
 		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
