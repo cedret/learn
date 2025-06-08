@@ -167,7 +167,7 @@ do
 #		date >> $LOGFIX
   		DATE0=date
 		# Copier les répertoires sélectionnés avec rsync
-		echo "---9 Sélectionné pour rsync" | tee -a "$LOGFIX"
+		echo "---9 Sélectionné(s) pour rsync" | tee -a "$LOGFIX"
 		
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
