@@ -168,7 +168,7 @@ do
   		DATE0=date >> $LOGFIX
 		# Copier les répertoires sélectionnés avec rsync
 		echo "---9 Sélectionné(s) pour rsync" | tee -a "$LOGFIX"
-		
+		echo" Démonter/remonter réseau entre chaque itération?"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 		    src="${DIRS[$index]}"
