@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# La fonction 9 est la plus complète à ce jour
+# La fonction 7 est la plus complète à ce jour
 
 # === Configuration ===
 # Dossier local contenant les sources
@@ -186,11 +186,11 @@ do
 
 			# Vérification du code de sortie de rsync
 			if [ $status -eq 0 ]; then
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Rsync réussi" >> "$LOGFIX"
 			else
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie (code $status)" >> "$LOGFIX"
-    				echo "Détails de l'erreur:" >> "$LOGFIX"
-				tail -n 20 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Rsync avec erreur: (code $status)" >> "$LOGFIX"
+#    				echo "Détails de l'erreur:" >> "$LOGFIX"
+				tail -n 10 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
 
 
