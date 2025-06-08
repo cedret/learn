@@ -153,7 +153,7 @@ do
 		input=$(echo "$input" | tr ',' ' ')
 		indices=($input)
 	 	df -H
-
+		echo "Corriger exit 0 si annulation"
 		echo -ne "\n Confirmer la copie ? (o/n):"
 		read -r confirm
 
