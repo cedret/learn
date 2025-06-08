@@ -186,9 +186,9 @@ do
 
 			# Vérification du code de sortie de rsync
 			if [ $status -eq 0 ]; then
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Rsync réussi" >> "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- Rsync sans erreur ---" >> "$LOGFIX"
 			else
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Rsync avec erreurs: (code $status)" >> "$LOGFIX"
+				echo "[$(date '+%Y-%m-%d %H:%M:%S')] ----- Rsync avec erreurs: (code $status) -----" >> "$LOGFIX"
 #    				echo "Détails de l'erreur:" >> "$LOGFIX"
 				tail -n 10 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
