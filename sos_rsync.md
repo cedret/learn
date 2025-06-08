@@ -1,5 +1,5 @@
 sos_rsync.md
-
+## A -
 - https://www.ionos.fr/digitalguide/serveur/configuration/commande-scp-de-linux/
 - https://linuxblog.io/btop-the-htop-alternative/
 
@@ -15,7 +15,7 @@ sos_rsync.md
 - https://www.hypexr.org/linux_scp_help.php
 - https://builtin.com/articles/scp-command
 
-### Script v1 (ts253a)
+## B - Script v1 (ts253a)
 
 ````
     2  ls -al
@@ -141,7 +141,7 @@ do
 done
 echo "Script fini"
 ```
-### Autres pistes
+## C - Autres pistes
 
 To copy a file from a **Samba shared directory** to a local directory, you can use a few different methods depending on how the Samba share is set up and the tools available on your system.
 
@@ -248,4 +248,124 @@ If you prefer a graphical approach:
 * **`smbclient`**: Use it directly to interact with the Samba share from the terminal without mounting.
 * **GUI**: For a visual approach, use your file manager to access and copy files from the Samba share.
 
-Let me know if you need more details on any of these steps!
+## D - Erreurs Rsync
+
+Très bonne question : `rsync` fournit un **bilan très détaillé des erreurs** via :
+
+1. **Son code de sortie** (`$?`)
+2. **Ses messages sur `stderr`**
+3. **Ses options de log dédiées** (`--log-file`, `--itemize-changes`, etc.)
+
+Voici comment récupérer un **bilan clair, lisible et exploitable** d’un transfert `rsync`.
+
+---
+
+## 1. **Utiliser le code de retour**
+
+Après un `rsync`, tu peux inspecter `$?` :
+
+```bash
+rsync -avz source/ user@host:/destination/
+echo "Code retour rsync : $?"
+```
+
+Les codes les plus courants :
+
+| Code | Signification                                |
+| ---- | -------------------------------------------- |
+| 0    | Succès complet                               |
+| 23   | Fichiers non transférés (erreurs partielles) |
+| 24   | Fichiers disparus pendant transfert          |
+| 30   | Erreur de connexion SSH                      |
+| 12   | Erreur dans le fichier de config / syntaxe   |
+
+> 🔍 Voir la liste complète : `man rsync` (section EXIT VALUES)
+
+---
+
+## 2. **Capturer `stderr` pour les erreurs précises**
+
+```bash
+rsync -avz source/ user@host:/destination/ 2>rsync_errors.log
+```
+
+Cela va stocker **toutes les erreurs** dans `rsync_errors.log`.
+
+---
+
+## 3. **Utiliser `--log-file` pour un log complet**
+
+```bash
+rsync -avz --log-file=rsync_full.log source/ user@host:/destination/
+```
+
+Ce fichier contiendra :
+
+* fichiers transférés
+* erreurs
+* résumés d’opérations
+
+---
+
+## 4. **Exemple de script avec bilan clair**
+
+```bash
+#!/bin/bash
+
+SRC="/home/user/data/"
+DEST="user@nas:/volume1/backup/"
+LOG="/tmp/rsync.log"
+ERR="/tmp/rsync_errors.log"
+
+rsync -avz --delete --log-file="$LOG" "$SRC" "$DEST" 2> "$ERR"
+STATUS=$?
+
+echo "==== BILAN RSYNC ===="
+echo "Code de sortie : $STATUS"
+if [[ $STATUS -eq 0 ]]; then
+    echo "✅ Transfert réussi."
+else
+    echo "❌ Erreurs détectées (code $STATUS)"
+    echo "---- Détails ----"
+    tail -n 20 "$ERR"
+fi
+```
+
+---
+
+## 5. **Analyser automatiquement les erreurs**
+
+Pour chercher les fichiers ayant échoué :
+
+```bash
+grep -i "failed" rsync_errors.log
+```
+
+Ou :
+
+```bash
+grep -E 'error|failed|denied' rsync_errors.log
+```
+
+---
+
+## Bonus : `--itemize-changes` pour un log très détaillé
+
+Ajoute :
+
+```bash
+--itemize-changes
+```
+
+Tu verras des lignes comme :
+
+```
+>f+++++++++ newfile.txt
+>f..t...... modified.txt
+```
+
+Chaque caractère indique un changement (type, taille, date, droits, etc.).
+
+---
+
+Souhaites-tu un script qui **envoie un e-mail ou une notif desktop** si des erreurs sont détectées dans le bilan ?
