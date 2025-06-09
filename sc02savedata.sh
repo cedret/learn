@@ -129,11 +129,11 @@ do
 		DESTINATION=$DST2RSNC
 
 		# Lister les répertoires déjà dans destination
-		echo "--- Répertoires existants dans $DESTINATION..."
+		echo "--- Répertoires actuels dans cible: $DESTINATION..."
 		sudo ls $DESTINATION
 	
 		# Lister les répertoires dans $HOME
-		echo "--- Répertoires dans $SRC0BASE..."
+		echo "--- Répertoires dans source: $SRC0BASE..."
 		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
 		if [ ${#DIRS[@]} -eq 0 ]; then
@@ -141,12 +141,10 @@ do
 		  exit 1
 		fi
 
-		# Affichage numéroté
-		echo "--- Répertoires disponibles :"
 		for i in "${!DIRS[@]}"; do
 		  echo "[$i] ${DIRS[$i]##*/}"
 		done
-		echo "===== Ajouter tailles ici ====="
+		echo "===== Ajouter tailles dossiers ici? ====="
 		# Demander plusieurs choix
 		echo -ne "\n --- Entrez les numéros des répertoires à copier (ex: 0 2 4) : "
 		read -r input
