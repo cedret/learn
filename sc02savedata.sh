@@ -168,15 +168,15 @@ do
 #		date >> $LOGFIX
 
 		# Copier les répertoires sélectionnés avec rsync
-		echo "---9- Sélection(s) pour rsync" | tee -a "$LOGFIX"
+		echo "---7- Sélection(s) pour rsync" | tee -a "$LOGFIX"
 		echo "--- Démonter/remonter réseau entre chaque itération?"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
 			dst="$DESTINATION/rsy$(basename "$src")"
-			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			TAILLE1=$(du -sh "$src")
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
+			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			SECONDS=0
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
@@ -206,10 +206,9 @@ do
 # Format and print the output
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
-			echo "[$TIMESTAMP1] [$TIMESTAMP2] $TAILLE1 $TAILLE2 $SIZE $MINUTES $SPEED_MBPS" | tee -a "$LOGFIX"
+			echo "[$TIMESTAMP1] - [$TIMESTAMP2] T1: $TAILLE1 - $SIZE T2: $TAILLE2 M: $MINUTES V: $SPEED_MBPS" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
-   
    			if [ $status -eq 0 ]; then
 				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
