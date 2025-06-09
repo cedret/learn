@@ -227,12 +227,12 @@ do
 			cycle=0
 			# Affichage toutes les 60s pendant l'exécution
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
-			    echo "$cycle"
+			    echo "-$cycle-"
 			    tail -n 1 "$LOGFMR"
 			    sleep 60
-			cycle=+
+			    ((cycle++))
 			done
-			echo "Rsync terminé."
+			echo "Cycle terminé."
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
    			status=$?
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
@@ -240,7 +240,9 @@ do
 # Get the size of the source (in a human-readable format)
 			TAILLE2=$(du -sh "$dst")
 # Extract the size part (without the human-readable unit, e.g., "5.2M")
-			SIZE1=$(echo "$TAILLE1" | cut -f1)
+#			SIZE1=$(echo "$TAILLE1" | cut -f1)
+			SIZE1=$(echo "$TAILLE1" | awk '{print $1}')
+   
 			SIZE2=$(echo "$TAILLE2" | cut -f1)
 # Convert the human-readable size into bytes
 #			SIZE1BYTES=$(echo "$SIZE1" | numfmt --from=iec)
@@ -259,7 +261,7 @@ do
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
-				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $dst à $SPEED_BPS O/s" | tee -a "$LOGFIX"      
+				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. à $SPEED_BPS O/s" | tee -a "$LOGFIX"      
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
 				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
