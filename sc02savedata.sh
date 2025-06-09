@@ -22,19 +22,32 @@ LOGFMR="$HOME/logs/savelast$(date +%Ys%V).log"
 # LOGFIX="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
 # LOGFIX="savedata.log"
 
-function to_bytes() {
+to_bytes() {
     local size=$1
-    local unit=${size: -1}
-    local num=${size%[a-zA-Z]*}
-	echo "fonction -to_bytes- $size, $unit, $num" | tee -a "$LOGFILE"
-    case $unit in
-        K|k) echo $(($num * 1024)) ;;
-        M|m) echo $(($num * 1024 * 1024)) ;;
-        G|g) echo $(($num * 1024 * 1024 * 1024)) ;;
-        T|t) echo $(($num * 1024 * 1024 * 1024 * 1024)) ;;
-        *) echo $num ;; # Si l'unité n'est pas spécifiée, on suppose que c'est déjà en bytes
-    esac
+    local num unit
+
+    if [[ "$size" =~ ^([0-9]+(\.[0-9]+)?)([KkMmGgTt]?)$ ]]; then
+        num="${BASH_REMATCH[1]}"
+        unit="${BASH_REMATCH[3]}"
+    else
+        echo "Erreur : format de taille invalide: $size" >&2
+        return 1
+    fi
+
+    echo "fonction -to_bytes- $size, $unit, $num" | tee -a "$LOGFIX"
+
+    awk -v n="$num" -v u="$unit" '
+        BEGIN {
+            scale = 1
+            if (u == "K" || u == "k") scale = 1024
+            else if (u == "M" || u == "m") scale = 1024^2
+            else if (u == "G" || u == "g") scale = 1024^3
+            else if (u == "T" || u == "t") scale = 1024^4
+            printf "%.0f\n", n * scale
+        }
+    '
 }
+
 
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
 mkdir -p "$HOME/logs"
