@@ -257,7 +257,7 @@ do
 			echo "[$TIMESTAMP1] - [$TIMESTAMP2]" | tee -a "$LOGFIX"
 			echo "De T1: $TAILLE1" | tee -a "$LOGFIX"
    			echo "A T2: $TAILLE2" | tee -a "$LOGFIX"
-      			echo "En $MINUTES min. à $SPEED_BPS O/s" | tee -a "$LOGFIX"
+      			echo "-test- $MINUTES min. à $SPEED_BPS O/s" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
