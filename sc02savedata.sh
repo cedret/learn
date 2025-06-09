@@ -36,14 +36,6 @@ function to_bytes() {
     esac
 }
 
-# Exemple d'utilisation
-SIZE2="1K"
-SIZE_BYTES=$(to_bytes "$SIZE2")
-echo "$SIZE_BYTES"
-
-
-
-
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
@@ -225,7 +217,7 @@ do
 			SIZE2=$(echo "$TAILLE2" | cut -f1)
 # Convert the human-readable size into bytes
 			SIZE1BYTES=$(echo "$SIZE1" | numfmt --from=iec)
-			SIZE2BYTES=to_bytes($SIZE2)
+			SIZE2BYTES=$(to_bytes "$SIZE2")
 			MINUTES=$((SECONDS / 60))
 			SPEED_BPS=$((SIZE2BYTES / SECONDS))
 			SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
@@ -233,7 +225,7 @@ do
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
 			echo "[$TIMESTAMP1] - [$TIMESTAMP2]"
-			echo "T1: $SIZE1 T2: $SIZE2 M: $MINUTES V: $SPEED_BPS" | tee -a "$LOGFIX"
+			echo "T1: $SIZE1 T2: $SIZE2 - $SIZE2BYTES M: $MINUTES V: $SPEED_BPS" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
