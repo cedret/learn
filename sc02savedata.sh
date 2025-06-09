@@ -11,7 +11,8 @@ DST_USER="access"                       # Nom d'utilisateur distant
 DST1HOST="192.168.1.207"                # IP ou hostname de la machine distante
 # Chemin sur la machine distante
 DST_RSNC="/Volumes/vsy21tri2int/rsy_2506mni"
-DST2RSNC="/private/nfs207tri2/rsy_2506test"
+DST2RSNC="/private/nfs207tri2/rsy$(date +%Ys%V)test"
+# DST2RSNC="/private/nfs207tri2/rsy_2506test"
 DST_SCP="/volume2/vsy21tri2int/scp_2505mni"
 DST_LFTP="/vsy21tri2int"
 DST_SUPP="/Volumes/vsy21tri2int/ccc_2506mni"
