@@ -220,7 +220,18 @@ do
 #  			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync sans erreur ℹ ℹ --- Total des fichiers transférés : $(find "$dst" -type f | wc -l)" | tee -a "$LOGFIX" || \
 #     			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
 ##			$RSYNC1CMD
-			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
+# Lancer rsync en arrière-plan
+			rsync -av --progress --log-file="$LOGFMR" source/ dest/ &
+			RSYNC_PID=$!
+
+			# Affichage toutes les 60s pendant l'exécution
+			while kill -0 "$RSYNC_PID" 2>/dev/null; do
+			    echo "--- $(date) ---"
+			    tail -n 5 "$LOGFMR"
+			    sleep 60
+			done
+			echo "Rsync terminé."
+#			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
    			status=$?
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
 # Calcul vitesse data transfer
