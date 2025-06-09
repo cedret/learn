@@ -30,6 +30,7 @@ if ! command -v rsync &> /dev/null; then
     echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync" | tee -a "$LOGFIX"
     exit 1
 fi
+echo "reset" > $LOGFMR
 echo " - - - - - - - - - - - - - - - - - - - -" >> $LOGFIX
 hostname >> $LOGFIX
 uname -a
