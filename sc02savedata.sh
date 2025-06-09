@@ -198,16 +198,18 @@ do
 # Get the size of the source (in a human-readable format)
 			TAILLE2=$(du -sh "$dst")
 # Extract the size part (without the human-readable unit, e.g., "5.2M")
-			SIZE=$(echo "$TAILLE1" | cut -f1)
+			SIZE1=$(echo "$TAILLE1" | cut -f1)
+			SIZE2=$(echo "$TAILLE2" | cut -f1)
 # Convert the human-readable size into bytes
-			SIZE_BYTES=$(echo "$SIZE" | numfmt --from=iec)
+			SIZE_BYTES=$(echo "$SIZE2" | numfmt --from=iec)
 			MINUTES=$((SECONDS / 60))
 			SPEED_BPS=$((SIZE_BYTES / SECONDS))
 			SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
 # Format and print the output
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
-			echo "[$TIMESTAMP1] - [$TIMESTAMP2] T1: $TAILLE1 - $SIZE T2: $TAILLE2 M: $MINUTES V: $SPEED_MBPS" | tee -a "$LOGFIX"
+			echo "[$TIMESTAMP1] - [$TIMESTAMP2]"
+			echo "T1: $SIZE1 T2: $SIZE2 M: $MINUTES V: $SPEED_MBPS" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
