@@ -227,7 +227,7 @@ do
 
 			# Affichage toutes les 60s pendant l'exécution
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
-			    echo "--- $(date) ---"
+#			    echo "--- $(date) ---"
 			    tail -n 5 "$LOGFMR"
 			    sleep 60
 			done
