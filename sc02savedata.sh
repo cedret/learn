@@ -21,6 +21,29 @@ LOGFIX="$HOME/logs/savedata$(date +%Ys%V).log"
 LOGFMR="$HOME/logs/savelast$(date +%Ys%V).log"
 # LOGFIX="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
 # LOGFIX="savedata.log"
+
+function to_bytes() {
+    local size=$1
+    local unit=${size: -1}
+    local num=${size%[a-zA-Z]*}
+
+    case $unit in
+        K|k) echo $(($num * 1024)) ;;
+        M|m) echo $(($num * 1024 * 1024)) ;;
+        G|g) echo $(($num * 1024 * 1024 * 1024)) ;;
+        T|t) echo $(($num * 1024 * 1024 * 1024 * 1024)) ;;
+        *) echo $num ;; # Si l'unité n'est pas spécifiée, on suppose que c'est déjà en bytes
+    esac
+}
+
+# Exemple d'utilisation
+SIZE2="1K"
+SIZE_BYTES=$(to_bytes "$SIZE2")
+echo "$SIZE_BYTES"
+
+
+
+
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
@@ -201,9 +224,10 @@ do
 			SIZE1=$(echo "$TAILLE1" | cut -f1)
 			SIZE2=$(echo "$TAILLE2" | cut -f1)
 # Convert the human-readable size into bytes
-			SIZE_BYTES=$(echo "$SIZE2" | numfmt --from=iec)
+			SIZE1BYTES=$(echo "$SIZE1" | numfmt --from=iec)
+			SIZE2BYTES=to_bytes($SIZE2)
 			MINUTES=$((SECONDS / 60))
-			SPEED_BPS=$((SIZE_BYTES / SECONDS))
+			SPEED_BPS=$((SIZE2BYTES / SECONDS))
 			SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
 # Format and print the output
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
