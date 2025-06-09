@@ -209,11 +209,11 @@ do
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
 			echo "[$TIMESTAMP1] - [$TIMESTAMP2]"
-			echo "T1: $SIZE1 T2: $SIZE2 M: $MINUTES V: $SPEED_MBPS" | tee -a "$LOGFIX"
+			echo "T1: $SIZE1 T2: $SIZE2 M: $MINUTES V: $SPEED_BPS" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
-				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
+				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
 				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
 			else
