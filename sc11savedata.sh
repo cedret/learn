@@ -232,7 +232,7 @@ do
 			    sleep 60
 			    ((cycle++))
 			done
-			echo "Cycle terminé."
+			echo "--- Cycle terminé."
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
    			status=$?
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
@@ -250,6 +250,7 @@ do
 #			echo "--- $SIZE2 en $SIZE2BYTES ---"
 			MINUTES=$((SECONDS / 60))
 #			SPEED_BPS=$((SIZE2BYTES / SECONDS))
+			SPEED2BPS=$((SIZE2 / MINUTES))
 #			SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
 # Format and print the output
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
@@ -257,11 +258,11 @@ do
 			echo "[$TIMESTAMP1] - [$TIMESTAMP2]" | tee -a "$LOGFIX"
 			echo "De T1: $SIZE1" | tee -a "$LOGFIX"
    			echo "A T2: $SIZE2" | tee -a "$LOGFIX"
-      			echo "-test- $MINUTES min. à $SPEED_BPS O/s" | tee -a "$LOGFIX"
+      			echo "-test- $MINUTES min. à $SPEED2BPS O/s" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
-				echo "--- ℹ ℹ Rsync en $MINUTES min. à $SPEED_BPS O/s" | tee -a "$LOGFIX"      
+				echo "--- ℹ ℹ BILAN: Rsync en $MINUTES min. à $SPEED_BPS O/s" | tee -a "$LOGFIX"      
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
 				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
@@ -279,10 +280,10 @@ do
 #		    echo "$DATE0 | $STATUS [$TIMESTAMP]" >> "$LOGFIX"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
-		    echo " Index invalide : $index (ignoré)" | tee -a "$LOGFIX"
+		    echo "--- Index invalide : $index (ignoré)" | tee -a "$LOGFIX"
 		  fi
 		done
-		echo -e "\n Action terminée avec rsync, voir logs pour détails."
+		echo -e "\n --- Action terminée avec rsync, voir logs pour détails."
 		;;
     	8)
  		echo -e "\n ---8 Logs fmr"
