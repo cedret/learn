@@ -26,7 +26,7 @@ function to_bytes() {
     local size=$1
     local unit=${size: -1}
     local num=${size%[a-zA-Z]*}
-
+	echo "to_bytes: $size, $unit, $num" | tee -a "$LOGFIX"
     case $unit in
         K|k) echo $(($num * 1024)) ;;
         M|m) echo $(($num * 1024 * 1024)) ;;
