@@ -218,6 +218,7 @@ do
 # Convert the human-readable size into bytes
 #			SIZE1BYTES=$(echo "$SIZE1" | numfmt --from=iec)
 			SIZE2BYTES=$(to_bytes "$SIZE2")
+			echo "--- $SIZE2 en $SIZE2BYTES ---"
 			MINUTES=$((SECONDS / 60))
 			SPEED_BPS=$((SIZE2BYTES / SECONDS))
 			SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
