@@ -207,7 +207,7 @@ do
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			SECONDS=0
-			echo "--- RSYNC EN COURS depuis: $src. Démonter/remonter réseau entre chaque itération?"
+			echo "--- RSYNC de: $src. Démonter/remonter réseau entre chaque itération?"
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dst" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
@@ -224,12 +224,13 @@ do
 #			rsync -av --progress --log-file="$LOGFMR" source/ dest/ &
 			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
 			RSYNC_PID=$!
-
+			cycle=0
 			# Affichage toutes les 60s pendant l'exécution
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
-#			    echo "--- $(date) ---"
-			    tail -n 5 "$LOGFMR"
+			    echo "$cycle"
+			    tail -n 1 "$LOGFMR"
 			    sleep 60
+			cycle=+
 			done
 			echo "Rsync terminé."
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
@@ -252,7 +253,9 @@ do
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
 			echo "[$TIMESTAMP1] - [$TIMESTAMP2]"
-			echo "T1: $TAILLE1 T2: $TAILLE2 M: $MINUTES V: $SPEED_BPS" | tee -a "$LOGFIX"
+			echo "T1: $TAILLE1" | tee -a "$LOGFIX"
+   			echo "T2: $TAILLE2" | tee -a "$LOGFIX"
+      			echo "M: $MINUTES V: $SPEED_BPS" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
