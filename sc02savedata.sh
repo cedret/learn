@@ -173,9 +173,9 @@ do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
 			dest="$DESTINATION/rsy$(basename "$src")"
-			TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			TAILLE=$(du -sh "$src")
-			echo "[$TIMESTAMP] $TAILLE" | tee -a "$LOGFIX"
+			echo "[$TIMESTAMP1] $TAILLE" | tee -a "$LOGFIX"
 			SECONDS=0
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dest/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
@@ -190,15 +190,28 @@ do
 #     			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
 			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dest/" >> "$LOGFMR" 2>&1
    			status=$?
-   			minutes=$((SECONDS / 60))
-			# Vérification du code de sortie de rsync
-			if [ $status -eq 0 ]; then
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync réussi de $(find "$dest" -type f | wc -l) fichiers après $minutes min." | tee -a "$LOGFIX"
-    				fichier="fichier.log"
+			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
+# Calcul vitesse data transfer
+# Get the size of the source (in a human-readable format)
+			TAILLE=$(du -sh "$src")
+# Extract the size part (without the human-readable unit, e.g., "5.2M")
+			SIZE=$(echo "$TAILLE" | cut -f1)
+# Convert the human-readable size into bytes
+			SIZE_BYTES=$(echo "$SIZE" | numfmt --from=iec)
+			MINUTES=$((SECONDS / 60))
+			SPEED_BPS=$((SIZE_BYTES / SECONDS))
+			SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
+# Format and print the output
+#			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
+# Vérification du code de sortie de rsync
+			
+   			if [ $status -eq 0 ]; then
+				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES de $(find "$dest" -type f | wc -l) fichiers: $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
+#    				fichier="fichier.log"
 				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
 			else
-				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️  Rsync avec erreur(s): (code $status) ⚠ après $minutes min." | tee -a "$LOGFIX"
-#    				echo "Détails de l'erreur:" >> "$LOGFIX"
+				echo "[$TIMESTAMP2] --- ⚠️ ⚠️  Rsync avec erreur(s): (code $status) après $MINUTES min. ⚠ ⚠" | tee -a "$LOGFIX"
+#			echo "Détails de l'erreur:" >> "$LOGFIX"
 				tail -n 15 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
 
