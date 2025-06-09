@@ -216,7 +216,7 @@ do
 			SIZE1=$(echo "$TAILLE1" | cut -f1)
 			SIZE2=$(echo "$TAILLE2" | cut -f1)
 # Convert the human-readable size into bytes
-			SIZE1BYTES=$(echo "$SIZE1" | numfmt --from=iec)
+#			SIZE1BYTES=$(echo "$SIZE1" | numfmt --from=iec)
 			SIZE2BYTES=$(to_bytes "$SIZE2")
 			MINUTES=$((SECONDS / 60))
 			SPEED_BPS=$((SIZE2BYTES / SECONDS))
