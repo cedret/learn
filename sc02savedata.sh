@@ -176,7 +176,6 @@ do
 			dst="$DESTINATION/rsy$(basename "$src")"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			TAILLE1=$(du -sh "$src")
-			echo "[$TIMESTAMP1] $TAILLE1" | tee -a "$LOGFIX"
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			SECONDS=0
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
@@ -207,7 +206,10 @@ do
 # Format and print the output
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
-			
+			echo "[$TIMESTAMP1] [$TIMESTAMP2] $TAILLE1 $TAILLE2 $SIZE $MINUTES $SPEED_MBPS" | tee -a "$LOGFIX"
+#			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
+
+   
    			if [ $status -eq 0 ]; then
 				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
