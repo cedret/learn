@@ -228,7 +228,7 @@ do
 			# Affichage toutes les 60s pendant l'exécution
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
 			    echo "-$cycle-"
-			    tail -n 1 "$LOGFMR"
+			    tail -n 2 "$LOGFMR"
 			    sleep 60
 			    ((cycle++))
 			done
@@ -255,13 +255,13 @@ do
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
 			echo "[$TIMESTAMP1] - [$TIMESTAMP2]"
-			echo "T1: $TAILLE1" | tee -a "$LOGFIX"
-   			echo "T2: $TAILLE2" | tee -a "$LOGFIX"
-      			echo "M: $MINUTES V: $SPEED_BPS" | tee -a "$LOGFIX"
+			echo "De T1: $TAILLE1" | tee -a "$LOGFIX"
+   			echo "A T2: $TAILLE2" | tee -a "$LOGFIX"
+      			echo "En $MINUTES min. à $SPEED_BPS O/s" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
-				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. à $SPEED_BPS O/s" | tee -a "$LOGFIX"      
+				echo "--- ℹ ℹ Rsync en $MINUTES min. à $SPEED_BPS O/s" | tee -a "$LOGFIX"      
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
 				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
