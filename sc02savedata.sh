@@ -105,7 +105,7 @@ do
 		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFIX"
   		date >> $LOGFIX
 # --exemples--
-#		sudo mount -o rw -t nfs $DEST1HOST:/volume2/vsy21tri2int $MNT1NFS
+#		sudo mount -o rw -t nfs $dst1HOST:/volume2/vsy21tri2int $MNT1NFS
 #		sudo mount -t nfs -o resvport,rw
 #		mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
 #  		sudo umount /nfs/home
@@ -173,32 +173,32 @@ do
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
-			dest="$DESTINATION/rsy$(basename "$src")"
+			dst="$DESTINATION/rsy$(basename "$src")"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			TAILLE1=$(du -sh "$src")
 			echo "[$TIMESTAMP1] $TAILLE1" | tee -a "$LOGFIX"
-			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dest/" >> "$LOGFMR" 2>&1"
+			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			SECONDS=0
-#		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dest/"
-#		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
-#		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dest" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
-#		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1 && \
+#		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
+#		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
+#		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dst" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
+#		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> "$LOGFMR" 2>&1 && \
 #			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> "$LOGFIX" || \
 #			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 
 # version avec nombre de fichiers!
-#		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dest/" >> "$LOGFMR" 2>&1 && \
-#  			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync sans erreur ℹ ℹ --- Total des fichiers transférés : $(find "$dest" -type f | wc -l)" | tee -a "$LOGFIX" || \
+#		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> "$LOGFMR" 2>&1 && \
+#  			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync sans erreur ℹ ℹ --- Total des fichiers transférés : $(find "$dst" -type f | wc -l)" | tee -a "$LOGFIX" || \
 #     			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
 ##			$RSYNC1CMD
-			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dest/" >> "$LOGFMR" 2>&1 
+			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
    			status=$?
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
 # Calcul vitesse data transfer
 # Get the size of the source (in a human-readable format)
-			TAILLE2=$(du -sh "$src")
+			TAILLE2=$(du -sh "$dst")
 # Extract the size part (without the human-readable unit, e.g., "5.2M")
-			SIZE=$(echo "$TAILLE2" | cut -f1)
+			SIZE=$(echo "$TAILLE1" | cut -f1)
 # Convert the human-readable size into bytes
 			SIZE_BYTES=$(echo "$SIZE" | numfmt --from=iec)
 			MINUTES=$((SECONDS / 60))
@@ -209,7 +209,7 @@ do
 # Vérification du code de sortie de rsync
 			
    			if [ $status -eq 0 ]; then
-				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES de $(find "$dest" -type f | wc -l) fichiers: $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
+				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
 				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
 			else
@@ -218,7 +218,7 @@ do
 				tail -n 15 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
 
-#		    STATUS="Rsync vers '$dest' fini à:" 
+#		    STATUS="Rsync vers '$dst' fini à:" 
 #		    date >> $LOGFIX
 #		    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 		#   rsync -avz source/ user@host:/destination/
@@ -360,7 +360,7 @@ do
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
   		date >> savedata.log
 		smbclient //$DST1HOST/$DST_RSNC -U $DST_USER
-#		scp -v -r -p $SOURCE_BASE $DEST_HOST:$DEST_SCP
+#		scp -v -r -p $SOURCE_BASE $dst_HOST:$dst_SCP
   		echo "===== smbclient //$DST1HOST/$DST_RSNC -U $DST_USER" >> savedata.log
    		du -sh $SRC0BASE >> savedata.log
 		echo "===== Fin à:" >> savedata.log && date >> savedata.log
@@ -372,7 +372,7 @@ do
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
   		date >> savedata.log
 		lftp -u "$DST_USER","$PSWD" "$DST_HOST" <<EOF
-		mirror -R "$SOURCE_BASE" "$DEST_PATH"
+		mirror -R "$SOURCE_BASE" "$dst_PATH"
 		bye
 EOF
   		echo "===== smbclient //$DST1HOST/$DST_LFTP -U $DST_USER" >> savedata.log
@@ -444,14 +444,14 @@ EOF
     	71)
 		echo "----- SUPPRESSION depuis MACOS/Debian"
 		sudo ls $DST_SUPP
-#		ls -al $DEST_SUPP
+#		ls -al $dst_SUPP
 		du -sh $DST_SUPP
     		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "==> Pause : appuyez sur une touche pour suppression forcée: $DST_SUPP"
 		read -n 1 -s -r  # -n 1 : lit un caractère, -s : silencieux, -r : brut
 #		sudo rm -r /Volumes/vsy21tri2int/ccc2506mni
   		sudo rm -rf $DST_SUPP
-#    		sudo rmdir $DEST_SUPP
+#    		sudo rmdir $dst_SUPP
 		echo "sudo rm -rf $DST_SUPP"
 		echo "----- Fin suppression $DST_SUPP:" >> $LOGFIX
 		date >> $LOGFIX
