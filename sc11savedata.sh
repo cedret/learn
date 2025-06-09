@@ -221,7 +221,8 @@ do
 #     			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
 ##			$RSYNC1CMD
 # Lancer rsync en arrière-plan
-			rsync -av --progress --log-file="$LOGFMR" source/ dest/ &
+#			rsync -av --progress --log-file="$LOGFMR" source/ dest/ &
+			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats --log-file="$LOGFMR" "$src/" "$dst/" &
 			RSYNC_PID=$!
 
 			# Affichage toutes les 60s pendant l'exécution
@@ -537,7 +538,7 @@ EOF
   		$donness >> $LOGFIX
  		;;
 	99)
- 		cp Downloads/sc02savedata.sh . && rm Downloads/sc02savedata.sh
+ 		cp Downloads/sc11savedata.sh . && rm Downloads/sc11savedata.sh
    		;;
   	0)
 		break
