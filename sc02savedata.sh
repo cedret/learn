@@ -141,12 +141,12 @@ do
 		  exit 1
 		fi
 
-		for i in "${!DIRS[@]}"; do
+		for i in "${!DIRS[@]}+1"; do
 		  echo "[$i] ${DIRS[$i]##*/}"
 		done
 		echo "===== Ajouter tailles dossiers ici? ====="
 		# Demander plusieurs choix
-		echo -ne "\n --- Entrez les numéros des répertoires à copier (ex: 0 2 4) : "
+		echo -ne "\n --- Entrez les numéros des répertoires à copier (ex: 1 7 12) : [0 pour quitter]"
 		read -r input
 
 		input=$(echo "$input" | tr ',' ' ')
