@@ -242,8 +242,8 @@ do
 # Extract the size part (without the human-readable unit, e.g., "5.2M")
 #			SIZE1=$(echo "$TAILLE1" | cut -f1)
 			SIZE1=$(echo "$TAILLE1" | awk '{print $1}')
-   
-			SIZE2=$(echo "$TAILLE2" | cut -f1)
+			SIZE2=$(echo "$TAILLE2" | awk '{print $1}')
+#			SIZE2=$(echo "$TAILLE2" | cut -f1)
 # Convert the human-readable size into bytes
 #			SIZE1BYTES=$(echo "$SIZE1" | numfmt --from=iec)
 #			SIZE2BYTES=$(to_bytes $SIZE2)
