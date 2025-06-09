@@ -26,7 +26,7 @@ function to_bytes() {
     local size=$1
     local unit=${size: -1}
     local num=${size%[a-zA-Z]*}
-	echo "to_bytes: $size, $unit, $num" | tee -a "$LOGFIX"
+	echo "fonction -to_bytes- $size, $unit, $num" | tee -a "$LOGFILE"
     case $unit in
         K|k) echo $(($num * 1024)) ;;
         M|m) echo $(($num * 1024 * 1024)) ;;
@@ -176,7 +176,7 @@ do
 
 		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
 		  echo "--- Copie annulée." | tee -a "$LOGFIX"
-		  exit 0
+		  exit 1
 		fi
 
 		# Créer le dossier de destination
