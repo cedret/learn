@@ -28,7 +28,7 @@ Sans chmod:
 
 ``bash ScriptBash.sh``
 
-## B - COmmande dans variable
+## B - Commande dans variable
 Oui, vous pouvez stocker une commande `rsync` dans une variable et l'exécuter dans un script bash. Il existe plusieurs manières de le faire. Voici les différentes méthodes pour y parvenir :
 
 ### Méthode 1 : Utilisation de `eval` pour exécuter la commande
@@ -93,7 +93,8 @@ Dans la plupart des cas, l'utilisation directe de la variable (comme dans la **m
 
 Est-ce que tu veux plus d'exemples ou des ajustements à ce script ?
 
-## C - Pour enregistrer l'exécution de la commande `rsync` dans un fichier de log, vous pouvez rediriger la sortie standard (`stdout`) et la sortie d'erreur (`stderr`) vers un fichier log. Voici comment vous pouvez le faire dans votre script.
+## C - Logs
+Pour enregistrer l'exécution de la commande `rsync` dans un fichier de log, vous pouvez rediriger la sortie standard (`stdout`) et la sortie d'erreur (`stderr`) vers un fichier log. Voici comment vous pouvez le faire dans votre script.
 
 ### Exemple de script avec `rsync` et enregistrement dans un fichier de log :
 
