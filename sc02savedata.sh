@@ -90,11 +90,11 @@ do
      		ls -ld /volume2/vsy21tri2int/rsy2506mni/
        		;;
 	3)
- 		echo "Pour programmer cycle: 0 2 * * * /path/to/backup.sh"
+ 		echo "----- Pour programmer cycle: 0 2 * * * /path/to/backup.sh"
  		crontab -e
 		;;
   	4)
-   		echo "---5 Montage NFS (MacOs)"
+   		echo "---4- Montage NFS (MacOs)"
 		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
      		showmount -e $DST1HOST
      		sudo mkdir -p $MNT1NFS
@@ -111,10 +111,10 @@ do
 		;;
   	5)
    		sudo umount $MNT1NFS
-     		echo "--- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFIX"
+     		echo "---5- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFIX"
      		;;
   	6)
-	  	echo "9- Monter disques qnap -smb-" | tee -a "$LOGFIX"
+	  	echo "--6- Monter disques qnap -smb-" | tee -a "$LOGFIX"
  		sudo mkdir /media/secours/secu2505v1
 		sudo mount /dev/sda /media/secours/secu2505v1
 		sudo mkdir /media/secours/secu2505v2
@@ -128,37 +128,37 @@ do
 		DESTINATION=$DST2RSNC
 
 		# Lister les répertoires déjà dans destination
-		echo "Répertoires existants dans $DESTINATION..."
+		echo "--- Répertoires existants dans $DESTINATION..."
 		sudo ls $DESTINATION
 	
 		# Lister les répertoires dans $HOME
-		echo "Répertoires dans $SRC0BASE..."
+		echo "--- Répertoires dans $SRC0BASE..."
 		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
 		if [ ${#DIRS[@]} -eq 0 ]; then
-		  echo "Aucun répertoire trouvé dans $SRC0BASE." | tee -a "$LOGFIX"
+		  echo "--- Aucun répertoire trouvé dans $SRC0BASE." | tee -a "$LOGFIX"
 		  exit 1
 		fi
 
 		# Affichage numéroté
-		echo "Répertoires disponibles :"
+		echo "--- Répertoires disponibles :"
 		for i in "${!DIRS[@]}"; do
 		  echo "[$i] ${DIRS[$i]##*/}"
 		done
 		echo "===== Ajouter tailles ici ====="
 		# Demander plusieurs choix
-		echo -ne "\n Entrez les numéros des répertoires à copier (ex: 0 2 4) : "
+		echo -ne "\n --- Entrez les numéros des répertoires à copier (ex: 0 2 4) : "
 		read -r input
 
 		input=$(echo "$input" | tr ',' ' ')
 		indices=($input)
 	 	df -H
-		echo "Corriger exit 0 si annulation"
-		echo -ne "\n Confirmer la copie ? (o/n):"
+		echo "--- Corriger exit 0 si annulation"
+		echo -ne "\n --- Confirmer la copie ? (o/n):"
 		read -r confirm
 
 		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
-		  echo "Copie annulée." | tee -a "$LOGFIX"
+		  echo "--- Copie annulée." | tee -a "$LOGFIX"
 		  exit 0
 		fi
 
@@ -167,8 +167,8 @@ do
 #		date >> $LOGFIX
 
 		# Copier les répertoires sélectionnés avec rsync
-		echo "---9 Sélectionné(s) pour rsync" | tee -a "$LOGFIX"
-		echo "Démonter/remonter réseau entre chaque itération?"
+		echo "---9- Sélection(s) pour rsync" | tee -a "$LOGFIX"
+		echo "--- Démonter/remonter réseau entre chaque itération?"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
