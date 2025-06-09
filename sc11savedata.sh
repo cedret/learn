@@ -203,7 +203,7 @@ do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
 			dst="$DESTINATION/rsy$(basename "$src")"
-			TAILLE1=$(du -sh "$src")
+			TAILLE1=$(du -sb "$src" | cut -f1)
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			SECONDS=0
@@ -224,21 +224,22 @@ do
 #			rsync -av --progress --log-file="$LOGFMR" source/ dest/ &
 			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
 			RSYNC_PID=$!
+      			status=$?
 			cycle=0
 			# Affichage toutes les 60s pendant l'exécution
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
 			    echo "--- $cycle minutes --- extrait de logfmr ---"
-			    tail -n 2 "$LOGFMR"
+			    tail -n 1 "$LOGFMR"
 			    sleep 60
 			    ((cycle++))
 			done
 			echo "--- Cycle terminé."
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
-   			status=$?
+
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
 # Calcul vitesse data transfer
 # Get the size of the source (in a human-readable format)
-			TAILLE2=$(du -sh "$dst")
+			TAILLE2=$(du -sb "$dst"| cut -f1)
 # Extract the size part (without the human-readable unit, e.g., "5.2M")
 #			SIZE1=$(echo "$TAILLE1" | cut -f1)
 			SIZE1=$(echo "$TAILLE1" | awk '{print $1}')
@@ -250,14 +251,14 @@ do
 #			echo "--- $SIZE2 en $SIZE2BYTES ---"
 			MINUTES=$((SECONDS / 60))
 #			SPEED_BPS=$((SIZE2BYTES / SECONDS))
-			SPEED2BPS=$((SIZE2 / MINUTES))
+			SPEED2BPS=$((TAILLE2 / MINUTES))
 #			SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
 # Format and print the output
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
 			echo "[$TIMESTAMP1] - [$TIMESTAMP2]" | tee -a "$LOGFIX"
-			echo "De T1: $SIZE1" | tee -a "$LOGFIX"
-   			echo "A T2: $SIZE2" | tee -a "$LOGFIX"
+			echo "De T1: $TAILLE1" | tee -a "$LOGFIX"
+   			echo "A T2: $TAILLE2" | tee -a "$LOGFIX"
       			echo "-test- $MINUTES min. à $SPEED2BPS O/s" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
