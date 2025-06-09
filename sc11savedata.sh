@@ -203,7 +203,7 @@ do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
 			dst="$DESTINATION/rsy$(basename "$src")"
-			TAILLE1=$(du -sb "$src" | cut -f1)
+			TAILLE1=$(du -sm "$src" | cut -f1)
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			SECONDS=0
@@ -239,7 +239,7 @@ do
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
 # Calcul vitesse data transfer
 # Get the size of the source (in a human-readable format)
-			TAILLE2=$(du -sb "$dst"| cut -f1)
+			TAILLE2=$(du -sm "$dst"| cut -f1)
 # Extract the size part (without the human-readable unit, e.g., "5.2M")
 #			SIZE1=$(echo "$TAILLE1" | cut -f1)
 			SIZE1=$(echo "$TAILLE1" | awk '{print $1}')
@@ -259,7 +259,7 @@ do
 			echo "[$TIMESTAMP1] - [$TIMESTAMP2]" | tee -a "$LOGFIX"
 			echo "De T1: $TAILLE1" | tee -a "$LOGFIX"
    			echo "A T2: $TAILLE2" | tee -a "$LOGFIX"
-      			echo "-test- $MINUTES min. à $SPEED2BPS O/s" | tee -a "$LOGFIX"
+      			echo "-test- $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
