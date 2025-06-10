@@ -207,7 +207,7 @@ do
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			SECONDS=0
-			echo "--- RSYNC de: $TAILLE1. Démonter/remonter réseau entre chaque itération?"
+			echo "--- RSYNC de: $TAILLE1 --- Progression:"
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dst" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
@@ -225,9 +225,10 @@ do
 			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
 			RSYNC_PID=$!
       			status=$?
-			cycle=0
+			cycle=1
 			# Affichage toutes les 60s pendant l'exécution
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
+   			    sleep 60
 			    echo "--- $cycle minutes --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
 			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 1 "$LOGFMR"
@@ -239,7 +240,7 @@ do
 #			grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
 #   			grep -oP '(\d+%)|to-check=\d+/\d+' logfile.txt
 #			tail -n 5 logfile.txt | grep -oP '(\d+%)|to-check=\d+/\d+'
-			echo "--- Cycle terminé."
+			echo "--- Cycle terminé, démonter/remonter réseau entre chaque itération?"
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
 
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
