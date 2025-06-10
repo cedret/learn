@@ -207,7 +207,7 @@ do
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			SECONDS=0
-			echo "--- RSYNC de: $TAILLE1 --- Progression:"
+			echo "--- RSYNC de: $TAILLE1 Mo --- Progression:"
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dst" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
