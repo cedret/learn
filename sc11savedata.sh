@@ -228,7 +228,7 @@ do
 			cycle=0
 			# Affichage toutes les 60s pendant l'exécution
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
-			    echo "--- $cycle minutes --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check"
+			    echo "--- $cycle minutes --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
 			    tail -n 1 "$LOGFMR"
 			    sleep 60
 			    ((cycle++))
