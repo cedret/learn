@@ -309,7 +309,7 @@ do
 					    # Extraction des valeurs
 #					    local values checked total prog percent
 					    values=$(echo "$line" | grep -o 'to-check=[0-9]*/[0-9]*' | cut -d= -f2)
-					    checked=${values%%/*}
+					    prog=${values%%/*}
 					    total=${values##*/}
 
 					    # Sécurité contre division par zéro
@@ -317,10 +317,10 @@ do
 					        echo "Erreur : total = 0, division impossible."
 					        return 1
 					    fi
-						prog=$((total - checked))
-						percent=$((100 * prog / total))
-      						estimation=$(((100 - percent) * prog / SECONDS / 60))
-	    					echo "--- tests: $total - $checked = $prog > $percent% >> $estimation minutes"
+						rest=$((total - prog))
+						percent=$((100 * rest / total))
+      						estimation=$(((100 - percent) * rest / SECONDS / 60))
+	    					echo "--- tests: $total - $prog = $rest > $percent% >> $estimation minutes"
 						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$total=$percent% - encore $estimation minutes"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
