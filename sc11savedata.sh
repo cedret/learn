@@ -49,6 +49,34 @@ to_bytes() {
     '
 }
 
+controleflux() {
+cancelled=0
+if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
+  echo "--- Copie annulée." | tee -a "$LOGFILE"
+  cancelled=1  # Marque que l'opération est annulée
+fi
+# Le script continue ici
+if [[ $cancelled -eq 1 ]]; then
+  echo "Opération annulée. Le script peut continuer avec d'autres actions."
+else
+  echo "La copie a été confirmée. Le script continue..."
+  # Ajoutez ici la logique du script pour continuer la copie.
+fi
+}
+
+# Fonction qui effectue une vérification et quitte si nécessaire
+function check_confirmation() {
+  if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
+    echo "--- Copie annulée." | tee -a "$LOGFILE"
+    return 1  # Sort de la fonction, sans quitter le script global
+  fi
+}
+# Appel de la fonction
+check_confirmation
+# Le script continue ici après la fonction, si confirm est valide
+echo "Le script continue..."
+
+
 
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
 mkdir -p "$HOME/logs"
@@ -207,7 +235,7 @@ do
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			SECONDS=0
-			echo "--- RSYNC de: $TAILLE1 Mo --- Progression:"
+			echo "--- RSYNC de $TAILLE1 Mo --- Progression:"
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dst" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
