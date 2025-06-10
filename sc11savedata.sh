@@ -235,10 +235,12 @@ do
 			src="${DIRS[$index]}"
 			dst="$DESTINATION/rsy$(basename "$src")"
 			TAILLE1=$(du -sm "$src" | cut -f1)
+#   			TAILLE3=$(du -sm "$dst" | cut -f1) # desetination présente et combien?
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			SECONDS=0
 			echo "--- $TAILLE1 Mo --- $src ---"
+			echo "--- $TAILLE3 Mo --- $dst ---"
 #		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 #		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dst" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
@@ -319,7 +321,7 @@ do
 					    fi
 						prog=$((total - checked))
 						percent=$((100 * prog / total))
-      						estimation=$(((100 - prog) * prog / SECONDS))
+      						estimation=$(((100 - prog) * prog / SECONDS / 60))
 						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$total=$percent% - encore $estimation minutes"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
