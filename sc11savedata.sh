@@ -259,7 +259,8 @@ do
    			    sleep 60
 			    echo "--- $cycle minutes --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
-			    tail -n 10 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
+#			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
+			    tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+'
 #			    tail -n 1 "$LOGFMR"
 			    sleep 60
 			    ((cycle++))
