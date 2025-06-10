@@ -322,6 +322,7 @@ do
 						prog=$((total - checked))
 						percent=$((100 * prog / total))
       						estimation=$(((100 - percent) * prog / SECONDS / 60))
+	    					echo "--- tests: $total - $checked = $prog > $percent% >> $estimation minutes"
 						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$total=$percent% - encore $estimation minutes"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
