@@ -319,7 +319,8 @@ do
 					    fi
 						prog=$((total - checked))
 						percent=$((100 * prog / total))
-						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$total=$percent%"
+      						estimation=$(((100 - prog) * prog / SECONDS))
+						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$total=$percent% - encore $estimation minutes"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
