@@ -190,7 +190,8 @@ do
 
 		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
 		  echo "--- Copie annulée." | tee -a "$LOGFIX"
-		  exit 1
+    		  break
+#		  exit 1
 		fi
 
 		# Créer le dossier de destination
@@ -230,7 +231,8 @@ do
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
    			    sleep 60
 			    echo "--- $cycle minutes --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
-			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
+#			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
+			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
 #			    tail -n 1 "$LOGFMR"
 			    sleep 60
 			    ((cycle++))
