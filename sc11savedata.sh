@@ -117,8 +117,9 @@ do
  	echo "---73 Supprimer avec debian cible -$DST_SUPP-"
    	echo "---79 Par rsync"
 	echo "===== ===== ===== ===== ===== ===== ===== AUTRES"
-   	echo "---91 Activité CPU du Nas	---92 Gestion des erreurs"
- 	echo "---97 Tout démonter       ---98 Ajouter dans .log ---99 Remplacer ce script"
+   	echo "---91 Activité CPU du Nas	---92 Gestion des erreurs ---93 Reset log actuel"
+   	echo "---94			---95			  ---96 "
+     	echo "---97 Tout démonter       ---98 Ajouter dans .log   ---99 Remplacer ce script"
  	echo "===== ===== 0 pour quitter"
 
 	read choix
@@ -613,13 +614,17 @@ EOF
 	92)
 		mount | grep '^/mnt'
 		;;
-	93)
+	83)
 		for m in $(mount | awk '$3 ~ "^/mnt" {print $3}'); do
 		echo "Démontage de : $m"
 		sudo umount -lf "$m"
 		done
 		;;
-  	94)
+	93)
+		TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+		echo "--- [$TIMESTAMP] --- Reset savedata___.log" > $LOGFIX
+   		;;
+   	94)
 		sudo umount -lf /mnt/*
 		;;
 	95)
