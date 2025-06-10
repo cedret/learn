@@ -237,6 +237,7 @@ do
 #			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" | grep -oP 'to-check=\d+/\d+' | awk -F= '{print $2}'
 			grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
    			grep -oP '(\d+%)|to-check=\d+/\d+' logfile.txt
+			tail -n 5 logfile.txt | grep -oP '(\d+%)|to-check=\d+/\d+'
 			echo "--- Cycle terminé."
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
 
