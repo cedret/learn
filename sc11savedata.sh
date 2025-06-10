@@ -319,7 +319,7 @@ do
 					    fi
 						prog=$((total - rest))
 						percent=$((100 * prog / total))
-      						estimation=$(((100 - percent) * prog / SECONDS / 60))
+      						estimation=$(((100 - percent) * SECONDS * 60 / prog))
 	    					echo "--- tests: $total - $rest = $prog > $percent% fait, restent $estimation minutes"
 						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$total=$percent% restent $estimation minutes"
 						;;
