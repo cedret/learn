@@ -259,13 +259,66 @@ do
    			    sleep 60
 			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
 			    ((cycle++))
-				# Extraire les 5 dernières lignes et les lignes contenant "to-check"
-				tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+' | while read line; do
-				  x=$(echo $line | grep -oE '[0-9]+(?=/)' )  # Valeur x avant "/"
-				  y=$(echo $line | grep -oE '(?<=/)[0-9]+' )  # Valeur y après "/"
-				  ratio=$(echo "scale=2; $x/$y" | bc)
-				  echo "Ratio $x/$y = $ratio"
-				done
+
+				filtre=4
+    				case $filtre in
+					1)
+#				       grep -o 'to-check=[0-9]*/[0-9]*' "$LOGFMR" | sed -E 's/to-check=([0-9]*)\/([0-9]*)/\1 \2/'
+
+					# Extraire les 5 dernières lignes et les lignes contenant "to-check"
+					tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+' | while read line; do
+					x=$(echo $line | grep -oE '[0-9]+(?=/)' )  # Valeur x avant "/"
+					y=$(echo $line | grep -oE '(?<=/)[0-9]+' )  # Valeur y après "/"
+					ratio=$(echo "scale=2; $x/$y" | bc)
+					echo "Ratio $x/$y = $ratio"
+						done
+    					;;
+	 				2)
+					line=$(grep -o 'to-check=[0-9]*/[0-9]*' "$LOGFMR" | tail -n 1)
+					values=${line#to-check=}
+
+					checked=${values%%/*}   # encore à faire
+					total=${values##*/}     # total à faire
+
+					done=$((total - checked))
+					percent=$(( 100 * done / total ))
+					echo "Progression : $percent% ($done sur $total fichiers traités)"
+					;;
+     					3)
+						IFS=/ read checked total <<< $(grep -o 'to-check=[0-9]*/[0-9]*' log.txt | tail -n 1 | cut -d= -f2)
+					;;
+     					4)
+						# Vérifie que le fichier existe
+						if [[ ! -f "$LOGFMR" ]]; then
+						        echo "Erreur : fichier '$LOGFMR' introuvable."
+						        return 1
+						    fi
+
+					    # Trouve la dernière ligne contenant to-check
+					    line=$(grep 'to-check=' "$LOGFMR" | tail -n 1)
+
+					    # Si aucune ligne valide
+					    if [[ -z "$line" ]]; then
+					        echo "Aucune ligne contenant 'to-check=' trouvée."
+					        return 1
+					    fi
+
+					    # Extraction des valeurs
+#					    local values checked total prog percent
+					    values=$(echo "$line" | grep -o 'to-check=[0-9]*/[0-9]*' | cut -d= -f2)
+					    checked=${values%%/*}
+					    total=${values##*/}
+
+					    # Sécurité contre division par zéro
+					    if [[ "$total" -eq 0 ]]; then
+					        echo "Erreur : total = 0, division impossible."
+					        return 1
+					    fi
+
+					    prog=$((total - checked))
+					    percent=$((100 * done / total))
+					    echo "Progression : $percent% ($done / $total fichiers traités)"
+						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
 #			    tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+'
