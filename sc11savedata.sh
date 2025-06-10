@@ -316,7 +316,7 @@ do
 					    fi
 
 					    prog=$((total - checked))
-					    percent=$((100 * done / total))
+					    percent=$((100 * prog / total))
 					    echo "Progression : $percent% ($prog / $total fichiers traités)"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
