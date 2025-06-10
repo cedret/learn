@@ -296,7 +296,7 @@ do
 
 					    # Trouve la dernière ligne contenant to-check
 					    line=$(grep 'to-check=' "$LOGFMR" | tail -n 1)
-						echo "--- line= $line"
+#						echo "--- test --- $line"
 					    # Si aucune ligne valide
 					    if [[ -z "$line" ]]; then
 					        echo "--- Aucune ligne contenant 'to-check=' trouvée."
