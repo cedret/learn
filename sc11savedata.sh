@@ -229,15 +229,16 @@ do
 			# Affichage toutes les 60s pendant l'exécution
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
 			    echo "--- $cycle minutes --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
-			    tail -n 1 "$LOGFMR"
+			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
+#			    tail -n 1 "$LOGFMR"
 			    sleep 60
 			    ((cycle++))
 			done
 
 #			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" | grep -oP 'to-check=\d+/\d+' | awk -F= '{print $2}'
-			grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
-   			grep -oP '(\d+%)|to-check=\d+/\d+' logfile.txt
-			tail -n 5 logfile.txt | grep -oP '(\d+%)|to-check=\d+/\d+'
+#			grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
+#   			grep -oP '(\d+%)|to-check=\d+/\d+' logfile.txt
+#			tail -n 5 logfile.txt | grep -oP '(\d+%)|to-check=\d+/\d+'
 			echo "--- Cycle terminé."
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
 
