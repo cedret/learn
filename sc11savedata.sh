@@ -226,7 +226,7 @@ do
 #		date >> $LOGFIX
 
 		# Copier les répertoires sélectionnés avec rsync
-		echo "---7- Sélection(s) pour rsync" | tee -a "$LOGFIX"
+		echo "---7 Sélection(s) pour rsync" | tee -a "$LOGFIX"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
@@ -260,7 +260,7 @@ do
 			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
 			    ((cycle++))
 				# Extraire les 5 dernières lignes et les lignes contenant "to-check"
-				tail -n 5 "$LOGFILE" | grep -oE 'to-check=[0-9]+/[0-9]+' | while read line; do
+				tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+' | while read line; do
 				  x=$(echo $line | grep -oE '[0-9]+(?=/)' )  # Valeur x avant "/"
 				  y=$(echo $line | grep -oE '(?<=/)[0-9]+' )  # Valeur y après "/"
 				  ratio=$(echo "scale=2; $x/$y" | bc)
