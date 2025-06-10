@@ -76,8 +76,6 @@ check_confirmation
 # Le script continue ici après la fonction, si confirm est valide
 echo "Le script continue..."
 
-
-
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
@@ -358,6 +356,7 @@ do
 # Format and print the output
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
+			echo "" >> $LOGFIX
 			echo "---$src- vers -$dst---" >> $LOGFIX
 			echo "---[$TIMESTAMP1] - De T1: $TAILLE1 Mo ---[$TIMESTAMP2] - A T2: $TAILLE2 Mo" | tee -a "$LOGFIX"
 #      			echo "[$TIMESTAMP2] $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"
