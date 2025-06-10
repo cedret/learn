@@ -190,8 +190,7 @@ do
 
 		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
 		  echo "--- Copie annulée." | tee -a "$LOGFIX"
-    		  break
-#		  exit 1
+		  return
 		fi
 
 		# Créer le dossier de destination
