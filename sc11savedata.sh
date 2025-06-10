@@ -290,16 +290,16 @@ do
      					4)
 						# Vérifie que le fichier existe
 						if [[ ! -f "$LOGFMR" ]]; then
-						        echo "Erreur : fichier '$LOGFMR' introuvable."
+						        echo "--- Erreur : fichier '$LOGFMR' introuvable."
 						        return 1
 						    fi
 
 					    # Trouve la dernière ligne contenant to-check
 					    line=$(grep 'to-check=' "$LOGFMR" | tail -n 1)
-
+						echo "--- line= $line"
 					    # Si aucune ligne valide
 					    if [[ -z "$line" ]]; then
-					        echo "Aucune ligne contenant 'to-check=' trouvée."
+					        echo "--- Aucune ligne contenant 'to-check=' trouvée."
 					        return 1
 					    fi
 
