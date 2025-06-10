@@ -233,6 +233,13 @@ do
 			    sleep 60
 			    ((cycle++))
 			done
+
+#			rsync --progress source/ destination/ | while read -r line; do
+#			    if [[ "$line" =~ ([0-9]+)% ]]; then
+#			        echo "Progression: ${BASH_REMATCH[1]}%"
+#			    fi
+#			done
+
 			echo "--- Cycle terminé."
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
 
