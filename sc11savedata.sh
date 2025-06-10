@@ -258,14 +258,19 @@ do
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
    			    sleep 60
 			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
+			    ((cycle++))
+				# Extraire les 5 dernières lignes et les lignes contenant "to-check"
+				tail -n 5 "$LOGFILE" | grep -oE 'to-check=[0-9]+/[0-9]+' | while read line; do
+				  x=$(echo $line | grep -oE '[0-9]+(?=/)' )  # Valeur x avant "/"
+				  y=$(echo $line | grep -oE '(?<=/)[0-9]+' )  # Valeur y après "/"
+				  ratio=$(echo "scale=2; $x/$y" | bc)
+				  echo "Ratio $x/$y = $ratio"
+				done
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
-			    tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+'
+#			    tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+'
 #			    tail -n 1 "$LOGFMR"
-			    sleep 60
-			    ((cycle++))
 			done
-
 #			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" | grep -oP 'to-check=\d+/\d+' | awk -F= '{print $2}'
 #			grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
 #   			grep -oP '(\d+%)|to-check=\d+/\d+' logfile.txt
