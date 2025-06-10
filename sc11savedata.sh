@@ -309,19 +309,19 @@ do
 					    # Extraction des valeurs
 #					    local values checked total prog percent
 					    values=$(echo "$line" | grep -o 'to-check=[0-9]*/[0-9]*' | cut -d= -f2)
-					    rest=${values%%/*}
-					    total=${values##*/}
+					    restf=${values%%/*}
+					    totalf=${values##*/}
 
 					    # Sécurité contre division par zéro
-					    if [[ "$total" -eq 0 ]]; then
+					    if [[ "$totalf" -eq 0 ]]; then
 					        echo "Erreur : total = 0, division impossible."
 					        return 1
 					    fi
-						prog=$((total - rest))
-						percent=$((100 * prog / total))
-      						estimation=$((rest * SECONDS / prog / 60))
-	    					echo "--- tests: $total - $rest = $prog > $percent% fait, restent $estimation minutes"
-						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$total=$percent% restent $estimation minutes"
+						prog=$((totalf - restf))
+						percent=$((100 * prog / totalf))
+      						estimation=$((restf * SECONDS / prog / 60 + 1))
+	    					echo "--- tests: $totalf - $restf = $prog > $percent% fait, restent $estimation minutes"
+						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$totalf=$percent% restent $estimation minutes"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
@@ -363,7 +363,7 @@ do
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
-				echo "--- BILAN: Rsync en $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"      
+				echo "--- BILAN: $totalf fichiers en $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"      
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
 				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
