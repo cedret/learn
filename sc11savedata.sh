@@ -280,9 +280,9 @@ do
 					checked=${values%%/*}   # encore à faire
 					total=${values##*/}     # total à faire
 
-					done=$((total - checked))
+					prog=$((total - checked))
 					percent=$(( 100 * done / total ))
-					echo "Progression : $percent% ($done sur $total fichiers traités)"
+					echo "Progression : $percent% ($prog sur $total fichiers traités)"
 					;;
      					3)
 						IFS=/ read checked total <<< $(grep -o 'to-check=[0-9]*/[0-9]*' log.txt | tail -n 1 | cut -d= -f2)
@@ -317,7 +317,7 @@ do
 
 					    prog=$((total - checked))
 					    percent=$((100 * done / total))
-					    echo "Progression : $percent% ($done / $total fichiers traités)"
+					    echo "Progression : $percent% ($prog / $total fichiers traités)"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
