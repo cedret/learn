@@ -257,7 +257,7 @@ do
 			# Affichage toutes les 60s pendant l'exécution
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
    			    sleep 60
-			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
+#			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
 			    ((cycle++))
 
 				filtre=4
@@ -314,10 +314,9 @@ do
 					        echo "Erreur : total = 0, division impossible."
 					        return 1
 					    fi
-
-					    prog=$((total - checked))
-					    percent=$((100 * prog / total))
-					    echo "Progression : $percent% ($prog / $total fichiers traités)"
+						prog=$((total - checked))
+						percent=$((100 * prog / total))
+						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $percent% ($prog / $total fichiers traités)"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
