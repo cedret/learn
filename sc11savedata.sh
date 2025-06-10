@@ -357,7 +357,7 @@ do
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
-				echo "--- BILAN: Rsync en $MINUTES min. à $SPEED2BPS Mo/s de $src" | tee -a "$LOGFIX"      
+				echo "--- BILAN: Rsync en $MINUTES min. à $SPEED2BPS Mo/s de -$src-" | tee -a "$LOGFIX"      
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
 				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
