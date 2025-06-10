@@ -212,7 +212,7 @@ do
 		input=$(echo "$input" | tr ',' ' ')
 		indices=($input)
 	 	df -H
-		echo "--- Corriger exit 0 si annulation"
+		echo "--- Voir alternatives pour annulation"
 		echo -ne "\n --- Confirmer la copie ? (o/n):"
 		read -r confirm
 
@@ -259,7 +259,7 @@ do
    			    sleep 60
 			    echo "--- $cycle minutes --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
-			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
+			    tail -n 10 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
 #			    tail -n 1 "$LOGFMR"
 			    sleep 60
 			    ((cycle++))
