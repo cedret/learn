@@ -323,6 +323,7 @@ do
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
 #			    tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+'
 #			    tail -n 1 "$LOGFMR"
+					esac
 			done
 #			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" | grep -oP 'to-check=\d+/\d+' | awk -F= '{print $2}'
 #			grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
