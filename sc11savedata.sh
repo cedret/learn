@@ -117,7 +117,8 @@ do
  	echo "---73 Supprimer avec debian cible -$DST_SUPP-"
    	echo "---79 Par rsync"
 	echo "===== ===== ===== ===== ===== ===== ===== AUTRES"
-	echo "---97 Tout démonter       ---98 Ajouter dans .log ---99 Remplacer ce script"
+   	echo "---91 Activité CPU du Nas	---92 Gestion des erreurs"
+ 	echo "---97 Tout démonter       ---98 Ajouter dans .log ---99 Remplacer ce script"
  	echo "===== ===== 0 pour quitter"
 
 	read choix
