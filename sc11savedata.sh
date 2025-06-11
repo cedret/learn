@@ -251,7 +251,12 @@ do
 			src="${DIRS[$index]}"
 			dst="$DESTINATION/rsy$(basename "$src")"
 			TAILLE1=$(du -sm "$src" | cut -f1)
-   			TAILLE3=$(du -sm "$dst" | cut -f1) # desetination présente et combien?
+
+			if [ -d "$dst}" ]; then  # Vérifie si le répertoire existe
+	   			TAILLE3=$(du -sm "$dst" | cut -f1) # taille destination présente
+				else
+				TAILLE3=0
+			fi
 			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
 			SECONDS=0
@@ -375,13 +380,13 @@ do
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
 			echo "" >> $LOGFIX
-			echo "---$src- vers -$dst---" >> $LOGFIX
-			echo "---[$TIMESTAMP1] - De T1: $TAILLE1 Mo ---[$TIMESTAMP2] - A T2: $TAILLE2 Mo" | tee -a "$LOGFIX"
+			echo "-- DE [$TIMESTAMP1] - $TAILLE1 Mo ---$src" >> $LOGFIX
+			echo "--  A [$TIMESTAMP2] - $TAILLE2 Mo ---$dst" >> $LOGIFX
 #      			echo "[$TIMESTAMP2] $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
-				echo "--- BILAN: $totalf fichiers en $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"      
+				echo "-- $totalf fichiers en $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"      
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
 				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
