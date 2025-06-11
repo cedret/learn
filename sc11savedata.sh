@@ -70,7 +70,9 @@ function mont_nfs() {
 		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
      		showmount -e $DST1HOST
      		sudo mkdir -p $MNT1NFS
-		sudo mount -t nfs -o bg,intr,timeo=600,resvport,rw,retrans=10 $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
+#		sudo mount -t nfs -o bg,intr,timeo=600,resvport,rw,retrans=10 $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
+# Avec Macos
+		sudo mount_nfs -o rw,nolock,timeo=300,retrycnt=3 $DST1HOST:/volume2/vsy21tri2int $MNT1NFS  
   		echo "--- df -H"
 	 	df -H
 		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFIX"
