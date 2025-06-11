@@ -71,16 +71,16 @@ function mont_nfs() {
 		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
      		showmount -e $DST1HOST
      		sudo mkdir -p $MNT2NFS
-#		sudo mount -t nfs -o bg,intr,timeo=600,resvport,rw,retrans=10 $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
+#		sudo mount -t nfs -o bg,intr,timeo=600,resvport,rw,retrans=10 $DST1HOST:/volume2/vsy21tri2int $MNT2NFS
 # Avec Macos
-		sudo mount_nfs -o rw,nolock,timeo=300,retrycnt=3 $DST1HOST:/volume2/vsy21tri2int $MNT1NFS  
+		sudo mount_nfs -o rw,nolock,timeo=300,retrycnt=3 $DST1HOST:/volume2/vsy21tri2int $MNT2NFS  
   		echo "--- df -H"
 	 	df -H
-		echo "--- Test montage nfs (MacOs) -$MNT1NFS-" | tee -a "$LOGFIX"
+		echo "--- Test montage nfs (MacOs) -$MNT2NFS-" | tee -a "$LOGFIX"
 		mount | grep nfs
   		date >> "$LOGFIX"
 # --exemples--
-#		sudo mount -o rw -t nfs $dst1HOST:/volume2/vsy21tri2int $MNT1NFS
+#		sudo mount -o rw -t nfs $dst1HOST:/volume2/vsy21tri2int $MNT2NFS
 #		sudo mount -t nfs -o resvport,rw
 #		mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
 #  		sudo umount /nfs/home
