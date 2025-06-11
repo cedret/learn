@@ -199,7 +199,8 @@ do
 		;;
 	7)
 #		SOURCE_BASE="$HOME"
-		DESTINATION=$DST2RSNC
+#		DESTINATION=$DST2RSNC
+		DESTINATION="/Volumes/nfs207tri2/rsy$(date +%Ys%V)mni"
 
 		# Lister les répertoires déjà dans destination
 		echo "--- Répertoires actuels dans cible: $DESTINATION..."
