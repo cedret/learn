@@ -1,3 +1,6 @@
+
+mount_nfs: can't mount /volume2/vsy21tri2int from 192.168.1.207 onto /private/nfs207tri2: Operation not permitted
+
 ## A - 
 
 Quand `rsync` **semble "se mettre en pause"** après 15 minutes (ou plus) vers un **point de montage NFS**, c’est généralement **lié à des limitations ou comportements spécifiques du système NFS**, pas à `rsync` lui-même.
