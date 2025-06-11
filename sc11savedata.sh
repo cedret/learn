@@ -90,7 +90,7 @@ function demont_nfs() {
 # Fonction qui effectue une vérification et quitte si nécessaire
 function check_confirmation() {
   if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
-    echo "--- Copie annulée." | tee -a "$LOGFILE"
+    echo "--- Copie annulée." | tee -a "$LOGFIX"
     return 1  # Sort de la fonction, sans quitter le script global
   fi
 }
@@ -108,9 +108,9 @@ if ! command -v rsync &> /dev/null; then
     echo "rsync n'est pas installé. Installe-le avec : sudo apt install rsync" | tee -a "$LOGFIX"
     exit 1
 fi
-echo "reset" > $LOGFMR
-echo " - - - - - - - - - - - - - - - - - - - -" >> $LOGFIX
-hostname >> $LOGFIX
+echo "reset" > "$LOGFMR"
+echo " - - - - - - - - - - - - - - - - - - - -" >> "$LOGFIX"
+hostname >> "$LOGFIX"
 uname -a
 df -H
 while true;
@@ -389,10 +389,12 @@ do
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
-				echo "-- $totalf fichiers en $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"      
+				echo "-- $totalf fichiers en $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"
+				echo "-- Stats des logs" >> "$LOGFIX"
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
-				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
+				tail -n 12 "$LOGFMR" >> "$LOGFIX
+#				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
 			else
 				echo "[$TIMESTAMP2] --- ⚠️ ⚠️  Rsync avec erreur(s): (code $status) après $MINUTES min. ⚠ ⚠" | tee -a "$LOGFIX"
 #			echo "Détails de l'erreur:" >> "$LOGFIX"
