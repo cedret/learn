@@ -393,7 +393,7 @@ do
 				echo "-- Stats des logs" >> "$LOGFIX"
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
-				tail -n 12 "$LOGFMR" >> "$LOGFIX
+				tail -n 12 "$LOGFMR" >> "$LOGFIX"
 #				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
 			else
 				echo "[$TIMESTAMP2] --- ⚠️ ⚠️  Rsync avec erreur(s): (code $status) après $MINUTES min. ⚠ ⚠" | tee -a "$LOGFIX"
