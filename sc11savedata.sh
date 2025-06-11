@@ -18,6 +18,7 @@ DST_LFTP="/vsy21tri2int"
 DST_SUPP="/Volumes/vsy21tri2int/ccc_2506mni"
 PSWD=""
 MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
+MNT2NFS="/Volumes/nfs207tri2/"
 LOGFIX="$HOME/logs/savedata$(date +%Ys%V).log"
 LOGFMR="$HOME/logs/savelast$(date +%Ys%V).log"
 # LOGFIX="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
@@ -69,7 +70,7 @@ function mont_nfs() {
    		echo "----- Montage NFS (MacOs)"
 		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
      		showmount -e $DST1HOST
-     		sudo mkdir -p $MNT1NFS
+     		sudo mkdir -p $MNT2NFS
 #		sudo mount -t nfs -o bg,intr,timeo=600,resvport,rw,retrans=10 $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
 # Avec Macos
 		sudo mount_nfs -o rw,nolock,timeo=300,retrycnt=3 $DST1HOST:/volume2/vsy21tri2int $MNT1NFS  
@@ -86,8 +87,8 @@ function mont_nfs() {
 }
 
 function demont_nfs() {
-   		sudo umount $MNT1NFS
-     		echo "----- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFIX"
+   		sudo umount $MNT2NFS
+     		echo "----- Démontage nfs -$MNT2NFS-"  | tee -a "$LOGFIX"
 }
 
 # Fonction qui effectue une vérification et quitte si nécessaire
