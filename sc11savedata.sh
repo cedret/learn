@@ -210,11 +210,18 @@ do
 		  exit 1
 		fi
 
-		for i in "${!DIRS[@]}"; do
+#		for i in "${!DIRS[@]}"; do
 #		for ((i = 0; i < ${#DIRS[@]}; i++)); do
-			echo "[$i] ${DIRS[$i]##*/}"
+#			echo "[$i] ${DIRS[$i]##*/}"
 #			echo "[$(($i + 1))] ${DIRS[$i]##*/}"
-   		done
+#   		done
+
+		for i in "${!DIRS[@]}"; do
+		    sized=$(du -sh "${DIRS[$i]}" | cut -f1)  # Get the size of the directory
+		    echo "[$i] - $sized - ${DIRS[$i]##*/}"
+		done
+
+
 
   		echo "===== Ajouter tailles dossiers ici? ====="
 		# Demander plusieurs choix
