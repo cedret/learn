@@ -703,6 +703,7 @@ EOF
 #  		sudo umount /nfs/home
 		;;
   	0)
+   		echo "Sortie script" >> "$LOGFIX"
 		break
 		;;
 	esac
