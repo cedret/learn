@@ -236,7 +236,7 @@ do
 		indices=($input)
 	 	df -H
 		echo "--- Voir alternatives pour annulation"
-		echo -ne "\n --- Confirmer la copie ? (o/n):"
+		echo -ne "\n   Confirmer la copie ? (o/n):"
 		read -r confirm
 
 		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
