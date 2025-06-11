@@ -143,6 +143,7 @@ do
    	echo "---94			---95			  ---96 "
      	echo "---97 Tout démonter       ---98 Ajouter dans .log   ---99 Remplacer ce script"
  	echo "===== ===== 0 pour quitter"
+  	echo "--- En attente: fonctions et return!!!! (annulation)"
 
 	read choix
 
