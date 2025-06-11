@@ -70,7 +70,7 @@ function mont_nfs() {
 		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
      		showmount -e $DST1HOST
      		sudo mkdir -p $MNT1NFS
-		sudo mount -t nfs -o resvport,rw $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
+		sudo mount -t nfs -o bg,intr,timeo=600,resvport,rw,retrans=10 $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
   		echo "--- df -H"
 	 	df -H
 		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFIX"
@@ -86,8 +86,6 @@ function demont_nfs() {
    		sudo umount $MNT1NFS
      		echo "----- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFIX"
 }
-
-
 
 # Fonction qui effectue une vérification et quitte si nécessaire
 function check_confirmation() {
