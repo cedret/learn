@@ -109,8 +109,8 @@ if ! command -v rsync &> /dev/null; then
     exit 1
 fi
 echo "reset" > "$LOGFMR"
-echo " - - - - - - - - - - - - - - - - - - - -" >> "$LOGFIX"
-hostname >> "$LOGFIX"
+echo " - - - - - - - - - - - - - - - - - - - - $hostname" >> "$LOGFIX"
+#hostname >> "$LOGFIX"
 uname -a
 df -H
 while true;
@@ -249,7 +249,7 @@ do
 #		date >> $LOGFIX
 
 		# Copier les répertoires sélectionnés avec rsync
-		echo "--7-- Sélection(s) pour rsync de:" | tee -a "$LOGFIX"
+		echo "-7- Sélection(s) pour rsync de:" | tee -a "$LOGFIX"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
@@ -348,7 +348,7 @@ do
 						percent=$((100 * prog / totalf))
       						estimation=$((restf * SECONDS / prog / 60))
 #	    					echo "--- tests: $totalf - $restf = $prog > $percent% fait, restent $estimation minutes"
-						echo "--- Sonde $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$totalf=$percent% restent $estimation minutes"
+						echo "--- Sondage $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$totalf=$percent% restent $estimation minutes"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
@@ -385,15 +385,15 @@ do
 # Format and print the output
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
-			echo "-- DE [$TIMESTAMP1] - $TAILLE1 Mo ---$src" >> "$LOGFIX"
-			echo "--  A [$TIMESTAMP2] - $TAILLE2 Mo ---$dst" >> "$LOGFIX"
-			echo "-- $totalf fichiers en $MINUTES min, environ $MOYFIC Mo/fichier" >> "$LOGFIX"
+			echo "--- DE [$TIMESTAMP1] - $TAILLE1 Mo ---$src" >> "$LOGFIX"
+			echo "---  A [$TIMESTAMP2] - $TAILLE2 Mo ---$dst" >> "$LOGFIX"
+			echo "--- $totalf fichiers en $MINUTES min, environ $MOYFIC Mo/fichier" >> "$LOGFIX"
 #      			echo "[$TIMESTAMP2] $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
    			if [ $status -eq 0 ]; then
-				echo "-- Vitesses moyennes: $SPEED2BPS Mo/min & $SPEED2FPS f/min" | tee -a "$LOGFIX"
-				echo "-- Stats des logs" >> "$LOGFIX"
+				echo "--- Vitesses moyennes: $SPEED2BPS Mo/min & $SPEED2FPS f/min" | tee -a "$LOGFIX"
+				echo "--- Stats des logs" >> "$LOGFIX"
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
 #				tail -n 12 "$LOGFMR" >> "$LOGFIX"
