@@ -257,7 +257,7 @@ do
 #		date >> $LOGFIX
 
 		# Copier les répertoires sélectionnés avec rsync
-		echo "-7- Sélection(s) pour rsync de:" | tee -a "$LOGFIX"
+		echo "=7= Sélection(s) pour rsync de:" | tee -a "$LOGFIX"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
@@ -426,7 +426,7 @@ do
 		    echo "--- Index invalide : $index (ignoré)" | tee -a "$LOGFIX"
 		  fi
 		done
-		echo -e "\n === Action terminée avec rsync, voir logs pour détails."
+		echo "=== Rsync terminé, voir logs pour détails."
 		;;
     	8)
  		echo -e "\n ---8 Logs fmr"
