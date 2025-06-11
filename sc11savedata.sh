@@ -143,7 +143,7 @@ do
    	echo "---94			---95			  ---96 "
      	echo "---97 Tout démonter       ---98 Ajouter dans .log   ---99 Remplacer ce script"
  	echo "===== ===== 0 pour quitter"
-  	echo "--- En attente: fonctions et return!!!! (annulation)"
+  	echo "--- En attente: fonctions et return!!!! (annulation) --- Coupure NFS après 12 minutes?"
 
 	read choix
 
@@ -395,8 +395,8 @@ do
 				echo "-- Stats des logs" >> "$LOGFIX"
 #				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
-				tail -n 12 "$LOGFMR" >> "$LOGFIX"
-#				tail -n 12 "$LOGFMR" | head -n 5 >> "$LOGFIX"
+#				tail -n 12 "$LOGFMR" >> "$LOGFIX"
+				tail -n 12 "$LOGFMR" | head -n 4 >> "$LOGFIX"
 			else
 				echo "[$TIMESTAMP2] --- ⚠️ ⚠️  Rsync avec erreur(s): (code $status) après $MINUTES min. ⚠ ⚠" | tee -a "$LOGFIX"
 #			echo "Détails de l'erreur:" >> "$LOGFIX"
