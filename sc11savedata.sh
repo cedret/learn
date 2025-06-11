@@ -371,7 +371,7 @@ do
 #			grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
 #   			grep -oP '(\d+%)|to-check=\d+/\d+' logfile.txt
 #			tail -n 5 logfile.txt | grep -oP '(\d+%)|to-check=\d+/\d+'
-			echo "--- Cycle terminé, démonter/remonter réseau entre chaque itération?"
+
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
 
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
@@ -414,7 +414,7 @@ do
 #			echo "Détails de l'erreur:" >> "$LOGFIX"
 				tail -n 15 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
-
+			echo "=== Cycle terminé, démonter/remonter réseau entre chaque itération?"
 #		    STATUS="Rsync vers '$dst' fini à:" 
 #		    date >> $LOGFIX
 #		    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
@@ -426,7 +426,7 @@ do
 		    echo "--- Index invalide : $index (ignoré)" | tee -a "$LOGFIX"
 		  fi
 		done
-		echo -e "\n --- Action terminée avec rsync, voir logs pour détails."
+		echo -e "\n === Action terminée avec rsync, voir logs pour détails."
 		;;
     	8)
  		echo -e "\n ---8 Logs fmr"
