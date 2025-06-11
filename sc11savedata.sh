@@ -215,7 +215,12 @@ do
 #   		done
 
 		for i in "${!DIRS[@]}"; do
-		    sized=$(du -sh "${DIRS[$i]}" | cut -f1)  # Get the size of the directory
+  			if [ -d "${!DIRS[@]}" ]; then  # Vérifie si le répertoire existe
+				sized=$(du -sh "${DIRS[$i]}" | cut -f1)  # Get the size of the directory
+#	   			TAILLE3=$(du -sm "$dst" | cut -f1) # taille destination présente
+				else
+				sized=0
+			fi
 		    echo "[$i] - $sized - ${DIRS[$i]##*/}"
 		done
 
@@ -250,7 +255,7 @@ do
 			dst="$DESTINATION/rsy$(basename "$src")"
 			TAILLE1=$(du -sm "$src" | cut -f1)
 
-			if [ -d "$dst}" ]; then  # Vérifie si le répertoire existe
+			if [ -d "{$dst}" ]; then  # Vérifie si le répertoire existe
 	   			TAILLE3=$(du -sm "$dst" | cut -f1) # taille destination présente
 				else
 				TAILLE3=0
