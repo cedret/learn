@@ -75,8 +75,9 @@ function mont_nfs() {
 		sudo mount_nfs -o rw,nolock,timeo=300,retrycnt=3 $DST1HOST:/volume2/vsy21tri2int $MNT1NFS  
   		echo "--- df -H"
 	 	df -H
-		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFIX"
-  		date >> $LOGFIX
+		echo "--- Test montage nfs (MacOs) -$MNT1NFS-" | tee -a "$LOGFIX"
+		mount | grep nfs
+  		date >> "$LOGFIX"
 # --exemples--
 #		sudo mount -o rw -t nfs $dst1HOST:/volume2/vsy21tri2int $MNT1NFS
 #		sudo mount -t nfs -o resvport,rw
