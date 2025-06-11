@@ -73,7 +73,7 @@ function mont_nfs() {
      		sudo mkdir -p $MNT2NFS
 #		sudo mount -t nfs -o bg,intr,timeo=600,resvport,rw,retrans=10 $DST1HOST:/volume2/vsy21tri2int $MNT2NFS
 # Avec Macos
-		sudo mount_nfs -o rw,nolock,timeo=300,retrycnt=3 $DST1HOST:/volume2/vsy21tri2int $MNT2NFS  
+		sudo mount_nfs -o rw,nolock,timeo=300,retrycnt=3,resvport $DST1HOST:/volume2/vsy21tri2int $MNT2NFS  
   		echo "--- df -H"
 	 	df -H
 		echo "--- Test montage nfs (MacOs) -$MNT2NFS-" | tee -a "$LOGFIX"
