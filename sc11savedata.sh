@@ -215,7 +215,7 @@ do
 #   		done
 
 		for i in "${!DIRS[@]}"; do
-  			if [ -d "${!DIRS[@]}" ]; then  # Vérifie si le répertoire existe
+  			if [ -d "${DIRS[$i]}" ]; then  # Vérifie si le répertoire existe
 				sized=$(du -sh "${DIRS[$i]}" | cut -f1)  # Get the size of the directory
 #	   			TAILLE3=$(du -sm "$dst" | cut -f1) # taille destination présente
 				else
