@@ -1,4 +1,4 @@
-
+## A - 
 https://www.cyberciti.biz/faq/apple-mac-osx-nfs-mount-command-tutorial/
 
 https://www.it-connect.fr/le-protocole-nfs-pour-les-debutants/
@@ -75,7 +75,7 @@ Password:
 ```
 
 
-Le message d'erreur :
+## B - message d'erreur :
 
 ```
 mount_nfs: can't mount /volume2/vsy21tri2 from 192.168.100.107 onto /private/nfs107tri2: Permission denied
@@ -153,7 +153,7 @@ Cela te montre les partages NFS visibles. Si le répertoire `vsy21tri2` n’appa
 
 Souhaite-tu que je t’aide à corriger les exports sur un Synology NAS ?
 
-Merci pour le détail. Ton export NFS :
+## C - Merci pour le détail. Ton export NFS :
 
 ```
 192.168.100.0/24(rw,async,no_wdelay,no_root_squash,insecure_locks,sec=sys,anonuid=1025,anongid=100)
@@ -245,8 +245,8 @@ sudo mount -t nfs -o resvport 192.168.100.107:/volume2/vsy21tri2 /private/nfs107
 
 Souhaite-tu que je t’aide à faire une vérification plus précise des UID/GID sur le Synology ?
 
-
-L'erreur `rsync: chown ... failed: Operation not permitted (1)` signifie que **`rsync` essaie de changer le propriétaire (`chown`)** d’un fichier ou dossier, mais que le **système de fichiers distant (NFS)** **refuse cette opération**.
+## D - L'erreur `rsync: chown ... failed: Operation not permitted (1)`
+signifie que **`rsync` essaie de changer le propriétaire (`chown`)** d’un fichier ou dossier, mais que le **système de fichiers distant (NFS)** **refuse cette opération**.
 
 ---
 
@@ -332,3 +332,99 @@ sudo chown 501:20 /private/nfs207tri2/testfile
 | NAS ignore `no_root_squash` pour `chown` | Tester sans tentative de `chown`, ou créer utilisateurs correspondants |
 
 Souhaite-tu que je t’aide à adapter ton export Synology pour permettre `chown`, ou préfères-tu modifier ta commande `rsync` ?
+---
+
+## E - 
+
+Voici un **script Bash local** que tu peux exécuter pour tester la **réactivité d’un point de montage NFS**, en mesurant :
+
+* Temps d’écriture
+* Temps de lecture
+* Temps de `fsync` (synchronisation disque)
+* Temps de suppression
+
+---
+
+## 📝 `nfs_test.sh` — Script Bash
+
+```bash
+#!/bin/bash
+
+MOUNT_POINT="/mnt/nfs_test"
+TEST_FILE="$MOUNT_POINT/nfs_rsync_testfile.tmp"
+SIZE_MB=10
+BLOCK_SIZE=$((1024 * 1024)) # 1 MB
+
+echo "▶ Test de réactivité NFS sur : $MOUNT_POINT"
+if ! mountpoint -q "$MOUNT_POINT"; then
+    echo "❌ $MOUNT_POINT n'est pas un point de montage actif." >&2
+    exit 1
+fi
+
+# Fonction de chronométrage
+measure() {
+    local label="$1"
+    shift
+    local start=$(date +%s.%N)
+    "$@" > /dev/null 2>&1
+    local end=$(date +%s.%N)
+    local elapsed=$(echo "$end - $start" | bc)
+    printf "%-15s : %.3f sec\n" "$label" "$elapsed"
+}
+
+# 1. Écriture
+measure "Écriture" dd if=/dev/urandom of="$TEST_FILE" bs=$BLOCK_SIZE count=$SIZE_MB
+
+# 2. Lecture
+measure "Lecture" dd if="$TEST_FILE" of=/dev/null bs=$BLOCK_SIZE count=$SIZE_MB
+
+# 3. Fsync (flush en écriture)
+measure "Fsync" bash -c "exec 3>>$TEST_FILE; echo '' >&3; sync; fsync 3; exec 3>&-"
+
+# 4. Suppression
+measure "Suppression" rm -f "$TEST_FILE"
+
+echo "✅ Test terminé."
+```
+
+---
+
+## 📦 Installation & Exécution
+
+1. Copie le script dans un fichier :
+
+```bash
+nano nfs_test.sh
+```
+
+2. Rends-le exécutable :
+
+```bash
+chmod +x nfs_test.sh
+```
+
+3. Lance-le :
+
+```bash
+./nfs_test.sh
+```
+
+---
+
+## 🧪 Exemple de sortie
+
+```
+▶ Test de réactivité NFS sur : /mnt/nfs_test
+Écriture        : 0.723 sec
+Lecture         : 0.318 sec
+Fsync           : 1.105 sec
+Suppression     : 0.015 sec
+✅ Test terminé.
+```
+
+---
+
+Souhaites-tu qu’il génère aussi un log CSV ou JSON pour l’archiver ?
+---
+
+## F - 
