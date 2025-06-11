@@ -335,6 +335,27 @@ Souhaite-tu que je t’aide à adapter ton export Synology pour permettre `chown
 ---
 
 ## E - 
+Le script a détecté que le répertoire `/mnt/nfs_test` **n'est pas un point de montage actif**.
+
+🔧 Pour que le test fonctionne :
+
+1. **Monte manuellement ton partage NFS**, par exemple :
+
+   ```bash
+   sudo mount -t nfs server:/export/path /mnt/nfs_test
+   ```
+
+2. Assure-toi que le répertoire `/mnt/nfs_test` existe localement :
+
+   ```bash
+   sudo mkdir -p /mnt/nfs_test
+   ```
+
+3. Ensuite, relance le test.
+
+Souhaites-tu une version du script que tu puisses exécuter **localement en Bash** sur ta machine ?
+
+## F - 
 
 Voici un **script Bash local** que tu peux exécuter pour tester la **réactivité d’un point de montage NFS**, en mesurant :
 
