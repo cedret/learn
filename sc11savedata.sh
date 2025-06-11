@@ -250,8 +250,10 @@ do
 		  return 1
 		fi
 
-		# Créer le dossier de destination
-		mkdir -p "$DESTINATION"
+		if [ ! -d "$DESTINATION" ]; then
+			# Créer le dossier de destination
+			mkdir -p "$DESTINATION"
+		fi
 #		date >> $LOGFIX
 
 		# Copier les répertoires sélectionnés avec rsync
