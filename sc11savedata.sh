@@ -280,7 +280,10 @@ do
 ##			$RSYNC1CMD
 # Lancer rsync en arrière-plan
 #			rsync -av --progress --log-file="$LOGFMR" source/ dest/ &
-			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
+#			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
+			rsync -av --whole-file --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
+
+   
 			RSYNC_PID=$!
       			status=$?
 			cycle=1
