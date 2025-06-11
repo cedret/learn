@@ -249,7 +249,7 @@ do
 #		date >> $LOGFIX
 
 		# Copier les répertoires sélectionnés avec rsync
-		echo "---7 Sélection(s) pour rsync de:" | tee -a "$LOGFIX"
+		echo "--7-- Sélection(s) pour rsync de:" | tee -a "$LOGFIX"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
@@ -380,13 +380,14 @@ do
 #			SPEED_BPS=$((SIZE2BYTES / SECONDS))
 			SPEED2BPS=$((TAILLE2 / MINUTES))
 			SPEED2FPS=$((totalf / MINUTES))
+   			MOYFIC=$((TAILLE2 / totalf))
 #			SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
 # Format and print the output
 #			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
 			echo "-- DE [$TIMESTAMP1] - $TAILLE1 Mo ---$src" >> "$LOGFIX"
 			echo "--  A [$TIMESTAMP2] - $TAILLE2 Mo ---$dst" >> "$LOGFIX"
-			echo "-- $total fichiers en $MINUTES min" >> "$LOGFIX"
+			echo "-- $totalf fichiers en $MINUTES min, environ $MOYFIC Mo/fichier" >> "$LOGFIX"
 #      			echo "[$TIMESTAMP2] $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"
 #			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
