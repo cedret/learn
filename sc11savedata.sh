@@ -5,19 +5,19 @@
 # === Configuration ===
 # Dossier local contenant les sources
 SRC0BASE="/Users/access/Documents"
-SRC1BASE="/Users/access/Documents/_MNI0*"
-SRC8BASE="/Users/access/Documents/_MNI08_Sante_coll"
+#SRC1BASE="/Users/access/Documents/_MNI0*"
+#SRC8BASE="/Users/access/Documents/_MNI08_Sante_coll"
 DST_USER="access"                       # Nom d'utilisateur distant
 DST1HOST="192.168.1.207"                # IP ou hostname de la machine distante
 # Chemin sur la machine distante
-DST_RSNC="/Volumes/vsy21tri2int/rsy_2506mni"
-DST2RSNC="/private/nfs207tri2/rsy$(date +%Ys%V)mni"
+#DST_RSNC="/Volumes/vsy21tri2int/rsy_2506mni"
+DST2RSNC="/Volumes/nfs207tri2/rsy$(date +%Ys%V)mni"
 # DST2RSNC="/private/nfs207tri2/rsy_2506test"
-DST_SCP="/volume2/vsy21tri2int/scp_2505mni"
-DST_LFTP="/vsy21tri2int"
-DST_SUPP="/Volumes/vsy21tri2int/ccc_2506mni"
+#DST_SCP="/volume2/vsy21tri2int/scp_2505mni"
+#DST_LFTP="/vsy21tri2int"
+#DST_SUPP="/Volumes/vsy21tri2int/rsy$(date +%Ys%V)mni"
 PSWD=""
-MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
+#MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
 MNT2NFS="/Volumes/nfs207tri2/"
 LOGFIX="$HOME/logs/savedata$(date +%Ys%V).log"
 LOGFMR="$HOME/logs/savelast$(date +%Ys%V).log"
