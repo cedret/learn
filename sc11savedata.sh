@@ -348,7 +348,7 @@ do
 						percent=$((100 * prog / totalf))
       						estimation=$((restf * SECONDS / prog / 60))
 #	    					echo "--- tests: $totalf - $restf = $prog > $percent% fait, restent $estimation minutes"
-						echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$totalf=$percent% restent $estimation minutes"
+						echo "--- Sonde $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$totalf=$percent% restent $estimation minutes"
 						;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
