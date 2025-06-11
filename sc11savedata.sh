@@ -64,6 +64,31 @@ else
 fi
 }
 
+
+function mont_nfs() {
+   		echo "----- Montage NFS (MacOs)"
+		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
+     		showmount -e $DST1HOST
+     		sudo mkdir -p $MNT1NFS
+		sudo mount -t nfs -o resvport,rw $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
+  		echo "--- df -H"
+	 	df -H
+		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFIX"
+  		date >> $LOGFIX
+# --exemples--
+#		sudo mount -o rw -t nfs $dst1HOST:/volume2/vsy21tri2int $MNT1NFS
+#		sudo mount -t nfs -o resvport,rw
+#		mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
+#  		sudo umount /nfs/home
+}
+
+function demont_nfs() {
+   		sudo umount $MNT1NFS
+     		echo "----- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFIX"
+}
+
+
+
 # Fonction qui effectue une vérification et quitte si nécessaire
 function check_confirmation() {
   if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
@@ -153,24 +178,10 @@ do
  		crontab -e
 		;;
   	4)
-   		echo "---4- Montage NFS (MacOs)"
-		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
-     		showmount -e $DST1HOST
-     		sudo mkdir -p $MNT1NFS
-		sudo mount -t nfs -o resvport,rw $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
-  		echo "--- df -H"
-	 	df -H
-		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFIX"
-  		date >> $LOGFIX
-# --exemples--
-#		sudo mount -o rw -t nfs $dst1HOST:/volume2/vsy21tri2int $MNT1NFS
-#		sudo mount -t nfs -o resvport,rw
-#		mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
-#  		sudo umount /nfs/home
+		mont_nfs
 		;;
   	5)
-   		sudo umount $MNT1NFS
-     		echo "---5- Démontage nfs -$MNT1NFS-"  | tee -a "$LOGFIX"
+		demont_nfs
      		;;
   	6)
 	  	echo "--6- Monter disques qnap -smb-" | tee -a "$LOGFIX"
@@ -652,6 +663,22 @@ EOF
 	99)
  		cp Downloads/sc11savedata.sh . && rm Downloads/sc11savedata.sh
    		;;
+	100)
+ 		echo "---4- Montage NFS (MacOs)"
+		echo "--- showmount -e $DST1HOST"  | tee -a "$LOGFIX"
+     		showmount -e $DST1HOST
+     		sudo mkdir -p $MNT1NFS
+		sudo mount -t nfs -o resvport,rw $DST1HOST:/volume2/vsy21tri2int $MNT1NFS
+  		echo "--- df -H"
+	 	df -H
+		echo "--- Montage nfs -$MNT1NFS-" | tee -a "$LOGFIX"
+  		date >> $LOGFIX
+# --exemples--
+#		sudo mount -o rw -t nfs $dst1HOST:/volume2/vsy21tri2int $MNT1NFS
+#		sudo mount -t nfs -o resvport,rw
+#		mount -t nfs 192.168.1.50:/share/nfs /mnt/disque-nfs
+#  		sudo umount /nfs/home
+		;;
   	0)
 		break
 		;;
