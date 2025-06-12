@@ -205,41 +205,44 @@ do
 		# Lister les répertoires déjà dans destination
 		echo "--- Répertoires actuels dans cible: $DESTINATION..."
 		sudo ls $DESTINATION
-	
-		# Lister les répertoires dans $HOME
+
 		echo "--- Répertoires dans source: $SRC0BASE..."
 		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
-		if [ ${#DIRS[@]} -eq 0 ]; then
-		  echo "--- Aucun répertoire trouvé dans $SRC0BASE." | tee -a "$LOGFIX"
-		  exit 1
-		fi
-
-#		for i in "${!DIRS[@]}"; do
-#		for ((i = 0; i < ${#DIRS[@]}; i++)); do
-#			echo "[$i] ${DIRS[$i]##*/}"
-#			echo "[$(($i + 1))] ${DIRS[$i]##*/}"
-#   		done
-
-		for i in "${!DIRS[@]}"; do
-  			if [ -d "${DIRS[$i]}" ]; then  # Vérifie si le répertoire existe
-				sized=$(du -sh "${DIRS[$i]}" | cut -f1)  # Get the size of the directory
-#	   			TAILLE3=$(du -sm "$dst" | cut -f1) # taille destination présente
-				else
-				sized=0
-			fi
-		    echo "[$i] - $sized - ${DIRS[$i]##*/}"
+		# Affichage de la liste avec index
+		for ((i = 0; i < ${#DIRS[@]}; i++)); do
+		    echo "[$((i + 1))] ${DIRS[$i]##*/}"
 		done
 
+# Demande de sélection
+echo -ne "\n--- Entrez les numéros des répertoires à copier (ex: 1 7 12), * pour tout sélectionner, 0 pour quitter : "
+read -r input
+input=$(echo "$input" | tr ',' ' ')  # remplace les virgules par des espaces
 
+# Gérer les options
+if [[ "$input" == "0" ]]; then
+    echo "Abandon."
+    exit 0
+elif [[ "$input" == "*" || "$input" == "all" ]]; then
+    # sélectionne tout
+    indices=($(seq 1 ${#DIRS[@]}))
+else
+    # sélection personnalisée
+    indices=($input)
+fi
 
-  		echo "===== Ajouter tailles dossiers ici? ====="
-		# Demander plusieurs choix
-		echo -ne "\n --- Entrez les numéros des répertoires à copier (ex: 1 7 12) : [0 pour quitter]"
-		read -r input
+# Affichage des choix
+echo "Répertoires sélectionnés :"
+for idx in "${indices[@]}"; do
+    # Vérifie que l'index est valide
+    if (( idx >= 1 && idx <= ${#DIRS[@]} )); then
+        echo " - ${DIRS[$((idx - 1))]##*/}"
+    else
+        echo " ! Index invalide : $idx"
+    fi
+done
+	
 
-		input=$(echo "$input" | tr ',' ' ')
-		indices=($input)
 	 	df -H
 		echo "--- Voir alternatives pour annulation"
 		echo -ne "\n   Confirmer la copie ? (o/n):"
