@@ -209,20 +209,80 @@ do
 			echo "--- Répertoires actuels dans cible: $DESTINATION..."
 			sudo ls $DESTINATION
 		fi
+
+echo "--- Répertoires dans source: $SRC0BASE..."
+
+# Choix du tri
+echo -e "\n--- Tri des répertoires (> 5 Go uniquement) :"
+echo "1) Par nom"
+echo "2) Par taille"
+echo "3) Par date de modification"
+read -p "Choisissez le mode de tri [1-3, défaut=1] : " sort_mode
+sort_mode=${sort_mode:-1}
+
+# Trouver et filtrer les répertoires > 5 Go
+mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 5000000')
+
+if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
+    echo "Aucun répertoire de plus de 5 Go trouvé."
+    exit 0
+fi
+
+# Extraire chemins et tailles
+DIRS=()
+SIZES=()
+for entry in "${DIRS_WITH_SIZES[@]}"; do
+    size_kb=$(awk '{print $1}' <<< "$entry")
+    path=$(awk '{print $2}' <<< "$entry")
+    DIRS+=("$path")
+    SIZES+=("$size_kb")
+done
+
+# Tri
+case "$sort_mode" in
+    2)
+        # par taille décroissante
+        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
+        ;;
+    3)
+        # par date
+        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
+        ;;
+    *)
+        # par nom
+        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
+        ;;
+esac
+
+# Réassembler DIRS depuis le tri
+DIRS=()
+for line in "${sorted[@]}"; do
+    path="${line#*|}"
+    DIRS+=("$path")
+done
+
+# Affichage avec taille lisible
+for ((i = 0; i < ${#DIRS[@]}; i++)); do
+    dir_name="${DIRS[$i]##*/}"
+    size=$(du -sh "${DIRS[$i]}" 2>/dev/null | cut -f1)
+    echo "[$((i + 1))] $dir_name ($size)"
+done
+
+
   
-		echo "--- Répertoires dans source: $SRC0BASE..."
-		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
+#		echo "--- Répertoires dans source: $SRC0BASE..."
+#		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
 		# Affiche la liste avec index et taille
-		for ((i = 0; i < ${#DIRS[@]}; i++)); do
-		    dir_name="${DIRS[$i]##*/}"
-		    dir_path="${DIRS[$i]}"
-		    size=$(du -sh "$dir_path" 2>/dev/null | cut -f1)
-		    echo "[$((i + 1))] $dir_name ($size)"
-		done
+#		for ((i = 0; i < ${#DIRS[@]}; i++)); do
+#		    dir_name="${DIRS[$i]##*/}"
+#		    dir_path="${DIRS[$i]}"
+#		    size=$(du -sh "$dir_path" 2>/dev/null | cut -f1)
+#		    echo "[$((i + 1))] $dir_name ($size)"
+#		done
 
 		# Demande de sélection
-		echo -ne "\n--- Entrez les numéros des répertoires à copier (ex: 1 7 12), * pour tout sélectionner, 0 pour quitter : "
+		echo -ne "\n--- Entrez les numéros des répertoires à copier (ex: 1 7 12), * pour tout sélectionner, vide (ou 0) pour quitter : "
 		read -r input
 		input=$(echo "$input" | tr ',' ' ')  # remplace les virgules par des espaces
 
