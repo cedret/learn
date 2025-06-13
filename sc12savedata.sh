@@ -130,12 +130,14 @@ do
 	echo "---94 Tout démonter       ---95 Supprimer /mnt//  ---96"
  	echo "---97                     ---98                   ---99"
 	echo "===== ===== ===== RESTAURATIONS"
-  	echo "---11 ---13              ---15           ---17 ---19 Choisir sauvegarde(s) + rsync"
-	echo "---12 ---14 rsync/debian ---16 rsync/MBA ---18 rsync/variables"
+  	echo "---11 ---14 rsync/debian  ---17"
+	echo "---12 ---15               ---18 rsync/variables"
+ 	echo "---13 ---16 rsync/MBA	---19 Choisir sauvegarde(s) + rsync"
 	echo "===== ===== ===== ===== SAUVEGARDES"
  	echo "-$SRC0BASE- vers -$DST_RSNC- ou =$DST_SCP="
-	echo "---21 rsync < mni(macos) ---23 scp < mni(macos) ---25 smbclient < mni(macos) ---27 lftp < mni(macos)-"
-	echo "---22 rsync < mba(zorin) ---24 scp < mba(zorin) ---26 smbclient < mba(zorin) ---28"
+	echo "---21 rsync < mni(macos) ---24 scp < mba(zorin)       ---27 lftp < mni(macos)-"
+	echo "---22 rsync < mba(zorin) ---25 smbclient < mni(macos) ---28"
+ 	echo "---23 scp < mni(macos)   ---26 smbclient < mba(zorin)"
  	echo "===== ===== ===== ===== ===== COMPARAISONS"
 	echo "---31 par rsync ---32 par diff   ---33 par checksum"
   	echo "---34 simple    ---35 avec hash  ---36"
@@ -210,76 +212,72 @@ do
 			sudo ls $DESTINATION
 		fi
 
-echo "--- Répertoires dans source: $SRC0BASE..."
+		echo "--- Répertoires dans source: $SRC0BASE..."
 
 # Choix du tri
-echo -e "\n--- Tri des répertoires (> 5 Go uniquement) :"
-echo "1) Par nom"
-echo "2) Par taille"
-echo "3) Par date de modification"
-read -p "Choisissez le mode de tri [1-3, défaut=1] : " sort_mode
-sort_mode=${sort_mode:-1}
-
-# Trouver et filtrer les répertoires > 5 Go
-mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 5000000')
+		echo -e "\n--- Tri des répertoires (> 5 Go uniquement) :"
+		echo "1) Par nom"
+		echo "2) Par taille"
+		echo "3) Par date de modification"
+		read -p "Choisissez le mode de tri [1-3, défaut=1] : " sort_mode
+		sort_mode=${sort_mode:-1}
 
 # Demander taille limite
-#		read -p "Afficher les répertoires de plus de combien de Go ? [défaut = 5] : " size_limit_gb
-#		size_limit_gb=${size_limit_gb:-5}  # valeur par défaut : 5 Go
-#		limit_kb=$((size_limit_gb * 1000000))  # conversion Go → kilo-octets
+		read -p "Afficher les répertoires de plus de combien de Go ? [défaut = 5] : " size_limit_gb
+		size_limit_gb=${size_limit_gb:-5}  # valeur par défaut : 5 Go
+		limit_kb=$((size_limit_gb * 1000000))  # conversion Go → kilo-octets
 
 # Trouver et filtrer les répertoires dépassant la taille limite
-#		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
+		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 
+# Trouver et filtrer les répertoires > 5 Go
+#		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 5000000')
 
-
-if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
-    echo "Aucun répertoire de plus de 5 Go trouvé."
-    exit 0
-fi
+		if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
+		    echo "Aucun répertoire de plus de 5 Go trouvé."
+		    exit 0
+		fi
 
 # Extraire chemins et tailles
-DIRS=()
-SIZES=()
-for entry in "${DIRS_WITH_SIZES[@]}"; do
-    size_kb=$(awk '{print $1}' <<< "$entry")
-    path=$(awk '{print $2}' <<< "$entry")
-    DIRS+=("$path")
-    SIZES+=("$size_kb")
-done
+		DIRS=()
+		SIZES=()
+		for entry in "${DIRS_WITH_SIZES[@]}"; do
+		    size_kb=$(awk '{print $1}' <<< "$entry")
+		    path=$(awk '{print $2}' <<< "$entry")
+		    DIRS+=("$path")
+		    SIZES+=("$size_kb")
+		done
 
 # Tri
-case "$sort_mode" in
-    2)
+		case "$sort_mode" in
+		    2)
         # par taille décroissante
-        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
-        ;;
-    3)
+		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
+		        ;;
+		    3)
         # par date
-        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
-        ;;
-    *)
+		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
+		        ;;
+		    *)
         # par nom
-        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
-        ;;
-esac
+		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
+		        ;;
+		esac
 
 # Réassembler DIRS depuis le tri
-DIRS=()
-for line in "${sorted[@]}"; do
-    path="${line#*|}"
-    DIRS+=("$path")
-done
+		DIRS=()
+		for line in "${sorted[@]}"; do
+		    path="${line#*|}"
+		    DIRS+=("$path")
+		done
 
 # Affichage avec taille lisible
-for ((i = 0; i < ${#DIRS[@]}; i++)); do
-    dir_name="${DIRS[$i]##*/}"
-    size=$(du -sh "${DIRS[$i]}" 2>/dev/null | cut -f1)
-    echo "[$((i + 1))] $dir_name ($size)"
-done
+		for ((i = 0; i < ${#DIRS[@]}; i++)); do
+		    dir_name="${DIRS[$i]##*/}"
+		    size=$(du -sh "${DIRS[$i]}" 2>/dev/null | cut -f1)
+		    echo "[$((i + 1))] $dir_name ($size)"
+		done
 
-
-  
 #		echo "--- Répertoires dans source: $SRC0BASE..."
 #		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
