@@ -11,12 +11,12 @@ DST_USER="access"                       # Nom d'utilisateur distant
 DST1HOST="192.168.1.207"                # IP ou hostname de la machine distante
 # Chemin sur la machine distante
 #DST_RSNC="/Volumes/vsy21tri2int/rsy_2506mni"
-DST2RSNC="/Volumes/nfs207tri2/rsy$(date +%Ys%V)mni"
+DST2RSNC="/Volumes/nfs207tri2/rsy$(date +%Ys%V)mni" #Cible pour rsync
 # DST2RSNC="/private/nfs207tri2/rsy_2506test"
 #DST_SCP="/volume2/vsy21tri2int/scp_2505mni"
 #DST_LFTP="/vsy21tri2int"
 #DST_SUPP="/Volumes/vsy21tri2int/rsy$(date +%Ys%V)mni"
-PSWD=""
+PSWD=""					# Mot de passe
 #MNT1NFS="/private/nfs207tri2/"         # Enlever / ???
 MNT2NFS="/Volumes/nfs207tri2/"
 LOGFIX="$HOME/logs/savedata$(date +%Ys%V).log"
@@ -203,10 +203,13 @@ do
 		DESTINATION="/Volumes/nfs207tri2/rsy$(date +%Ys%V)mni"
 
 		# Lister les répertoires déjà dans destination
-		echo "--- Répertoires actuels dans cible: $DESTINATION..."
-		sudo ls $DESTINATION
+  		if [ ! -d "$DESTINATION" ]; then
+  			echo "--- ⚠️ ⚠️ Répertoire(s) cible(s) manquant(s): $DESTINATION..."
+      		else
+			echo "--- Répertoires actuels dans cible: $DESTINATION..."
+			sudo ls $DESTINATION
+		fi
   
-
 		echo "--- Répertoires dans source: $SRC0BASE..."
 		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
@@ -225,7 +228,7 @@ do
 
 		# Gérer les options
 		if [[ "$input" == "0" ]]; then
-		    echo "Abandon."
+		    echo "--- ⚠️ ⚠️ Abandon."
 		    exit 0
 		elif [[ "$input" == "*" || "$input" == "all" ]]; then
 		    # sélectionne tout
@@ -242,7 +245,7 @@ do
 		    if (( idx >= 1 && idx <= ${#DIRS[@]} )); then
 		        echo " - ${DIRS[$((idx - 1))]##*/}"
 		    else
-		        echo " ! Index invalide : $idx"
+		        echo "--- ⚠️ ⚠️ Index invalide : $idx"
 		    fi
 		done
   
@@ -337,7 +340,7 @@ do
      					4)
 						# Vérifie que le fichier existe
 						if [[ ! -f "$LOGFMR" ]]; then
-						        echo "--- Erreur : fichier '$LOGFMR' introuvable."
+						        echo "--- ⚠️ ⚠️ Erreur : fichier '$LOGFMR' introuvable."
 						        return 1
 						    fi
 
@@ -346,7 +349,7 @@ do
 #						echo "--- test --- $line"
 					    # Si aucune ligne valide
 					    if [[ -z "$line" ]]; then
-					        echo "--- Aucune ligne contenant 'to-check=' trouvée."
+					        echo "--- ⚠️ ⚠️ Aucune ligne contenant 'to-check=' trouvée."
 					        return 1
 					    fi
 
@@ -358,7 +361,7 @@ do
 
 					    # Sécurité contre division par zéro
 					    if [[ "$totalf" -eq 0 ]]; then
-					        echo "Erreur : total = 0, division impossible."
+					        echo "--- ⚠️ ⚠️ Erreur : total = 0, division impossible."
 					        return 1
 					    fi
 						prog=$((totalf - restf))
@@ -416,7 +419,7 @@ do
 #				tail -n 12 "$LOGFMR" >> "$LOGFIX"
 				tail -n 14 "$LOGFMR" | head -n 4 >> "$LOGFIX"
 			else
-				echo "[$TIMESTAMP2] --- ⚠️ ⚠️  Rsync avec erreur(s): (code $status) après $MINUTES min. ⚠ ⚠" | tee -a "$LOGFIX"
+				echo "[$TIMESTAMP2] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) après $MINUTES min. ⚠ ⚠" | tee -a "$LOGFIX"
 #			echo "Détails de l'erreur:" >> "$LOGFIX"
 				tail -n 15 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
 			fi
@@ -429,7 +432,7 @@ do
 #		    echo "$DATE0 | $STATUS [$TIMESTAMP]" >> "$LOGFIX"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
-		    echo "--- Index invalide : $index (ignoré)" | tee -a "$LOGFIX"
+		    echo "--- ⚠️ ⚠️ Index invalide : $index (ignoré)" | tee -a "$LOGFIX"
 		  fi
 		done
 		echo "=== Rsync terminé, voir logs pour détails."
@@ -482,7 +485,7 @@ do
 		        echo "Synchronisation de: $dir"
 		        rsync -av -e ssh "$dir" "${DST_USER}@${DST1HOST}:${DST_RSNC}/"
 		    else
-		        echo "----- Aucun dossier correspondant trouvé: $dir"
+		        echo "--- ⚠️ ⚠️ Aucun dossier correspondant trouvé: $dir"
 		    fi
 		done
 
