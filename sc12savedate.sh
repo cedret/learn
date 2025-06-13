@@ -209,49 +209,51 @@ do
 		echo "--- Répertoires dans source: $SRC0BASE..."
 		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
-		# Affichage de la liste avec index
+		# Affiche la liste avec index et taille
 		for ((i = 0; i < ${#DIRS[@]}; i++)); do
-		    echo "[$((i + 1))] ${DIRS[$i]##*/}"
+		    dir_name="${DIRS[$i]##*/}"
+		    dir_path="${DIRS[$i]}"
+		    size=$(du -sh "$dir_path" 2>/dev/null | cut -f1)
+		    echo "[$((i + 1))] $dir_name ($size)"
 		done
 
-# Demande de sélection
-echo -ne "\n--- Entrez les numéros des répertoires à copier (ex: 1 7 12), * pour tout sélectionner, 0 pour quitter : "
-read -r input
-input=$(echo "$input" | tr ',' ' ')  # remplace les virgules par des espaces
+		# Demande de sélection
+		echo -ne "\n--- Entrez les numéros des répertoires à copier (ex: 1 7 12), * pour tout sélectionner, 0 pour quitter : "
+		read -r input
+		input=$(echo "$input" | tr ',' ' ')  # remplace les virgules par des espaces
 
-# Gérer les options
-if [[ "$input" == "0" ]]; then
-    echo "Abandon."
-    exit 0
-elif [[ "$input" == "*" || "$input" == "all" ]]; then
-    # sélectionne tout
-    indices=($(seq 1 ${#DIRS[@]}))
-else
-    # sélection personnalisée
-    indices=($input)
-fi
-
-# Affichage des choix
-echo "Répertoires sélectionnés :"
-for idx in "${indices[@]}"; do
-    # Vérifie que l'index est valide
-    if (( idx >= 1 && idx <= ${#DIRS[@]} )); then
-        echo " - ${DIRS[$((idx - 1))]##*/}"
-    else
-        echo " ! Index invalide : $idx"
-    fi
-done
-	
-
-	 	df -H
-		echo "--- Voir alternatives pour annulation"
-		echo -ne "\n   Confirmer la copie ? (o/n):"
-		read -r confirm
-
-		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
-		  echo "--- Copie annulée." | tee -a "$LOGFIX"
-		  return 1
+		# Gérer les options
+		if [[ "$input" == "0" ]]; then
+		    echo "Abandon."
+		    exit 0
+		elif [[ "$input" == "*" || "$input" == "all" ]]; then
+		    # sélectionne tout
+		    indices=($(seq 1 ${#DIRS[@]}))
+		else
+		    # sélection personnalisée
+		    indices=($input)
 		fi
+
+		# Affichage des choix
+		echo "Répertoires sélectionnés :"
+		for idx in "${indices[@]}"; do
+		    # Vérifie que l'index est valide
+		    if (( idx >= 1 && idx <= ${#DIRS[@]} )); then
+		        echo " - ${DIRS[$((idx - 1))]##*/}"
+		    else
+		        echo " ! Index invalide : $idx"
+		    fi
+		done
+  
+	 	df -H
+#		echo "--- Voir alternatives pour annulation"
+#		echo -ne "\n   Confirmer la copie ? (o/n):"
+#		read -r confirm
+
+#		if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
+#		  echo "--- Copie annulée." | tee -a "$LOGFIX"
+#		  return 1
+#		fi
 
 		if [ ! -d "$DESTINATION" ]; then
 			# Créer le dossier de destination
