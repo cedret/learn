@@ -205,6 +205,7 @@ do
 		# Lister les répertoires déjà dans destination
 		echo "--- Répertoires actuels dans cible: $DESTINATION..."
 		sudo ls $DESTINATION
+  
 
 		echo "--- Répertoires dans source: $SRC0BASE..."
 		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
@@ -697,7 +698,7 @@ EOF
   		$donness >> "$LOGFIX"
  		;;
 	99)
- 		cp Downloads/sc11savedata.sh . && rm Downloads/sc11savedata.sh
+ 		cp Downloads/sc12savedata.sh . && rm Downloads/sc12savedata.sh
    		;;
 	100)
  		echo "---4- Montage NFS (MacOs)"
