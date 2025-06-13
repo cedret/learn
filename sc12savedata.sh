@@ -215,7 +215,7 @@ do
 		echo "--- Répertoires dans source: $SRC0BASE..."
 
 # Choix du tri
-		echo -e "\n--- Tri des répertoires (> 5 Go uniquement) :"
+		echo -e "\n--- Tri des répertoires (> 1 Go uniquement) :"
 		echo "1) Par nom"
 		echo "2) Par taille"
 		echo "3) Par date de modification"
@@ -223,18 +223,18 @@ do
 		sort_mode=${sort_mode:-1}
 
 # Demander taille limite
-		read -p "Afficher les répertoires de plus de combien de Go ? [défaut = 5] : " size_limit_gb
-		size_limit_gb=${size_limit_gb:-5}  # valeur par défaut : 5 Go
+		read -p "Afficher les répertoires de plus de combien de Go ? [défaut = 1] : " size_limit_gb
+		size_limit_gb=${size_limit_gb:-1}  # valeur par défaut : 1 Go
 		limit_kb=$((size_limit_gb * 1000000))  # conversion Go → kilo-octets
 
 # Trouver et filtrer les répertoires dépassant la taille limite
 		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 
-# Trouver et filtrer les répertoires > 5 Go
-#		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 5000000')
+# Trouver et filtrer les répertoires > 1 Go
+#		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 1000000')
 
 		if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
-		    echo "Aucun répertoire de plus de 5 Go trouvé."
+		    echo "Aucun répertoire de plus de 1 Go trouvé."
 		    exit 0
 		fi
 
