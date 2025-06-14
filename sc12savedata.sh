@@ -238,7 +238,7 @@ do
 		echo "$size_limit_gb go devient $limit_kb ko"
 # Trouver et filtrer les répertoires dépassant la taille limite
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
-		echo "--- Etape1: Remplissage du tableau 'DIRS_WITH_SIZES'"
+		echo "--- Etape1: Appel fonction 'DIRS_WITH_SIZES'"
 		DIRS_WITH_SIZES=()
 
 # Version pour MacOs
@@ -286,11 +286,6 @@ do
 		    DIRS+=("$path")
 		    SIZES+=("$size_kb")
 		done
-
-		echo "--- Vérification: Chaque ligne de 'DIRS'"
-  		for ligne in "${DIRS[@]}"; do
-  			echo "Ligne: $ligne"
-		done
   
 		echo "--- Etape5: Sort mode"
 # Tri
@@ -321,10 +316,7 @@ do
 		        ;;
 		esac
 # Afficher chaque ligne tu tableau
-		echo "--- Vérification: Chaque ligne de 'sorted'"
-  		for ligne in "${sorted[@]}"; do
-  			echo "Ligne: $ligne"
-		done
+
 		echo "--- Etape 6: Ré-assembler DIRS"
 # mapfile -t DIRS < <(command) remplacer avec:
 # DIRS=()
