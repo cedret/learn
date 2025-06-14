@@ -229,7 +229,7 @@ do
 		echo "$size_limit_gb go devient $limit_kb ko"
 # Trouver et filtrer les répertoires dépassant la taille limite
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
-		echo "--- Etape1: Remplissage du tableau"
+		echo "--- Etape1: Remplissage du tableau 'DIRS_WITH_SIZES'"
 		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
@@ -265,6 +265,12 @@ do
 		    DIRS+=("$path")
 		    SIZES+=("$size_kb")
 		done
+
+		echo "--- Vérification: Chaque ligne de 'DIRS'"
+  		for ligne in "${DIRS[@]}"; do
+  			echo "Ligne: $ligne"
+		done
+  
 		echo "--- Etape5: Sort mode"
 # Tri
 		case "$sort_mode" in
