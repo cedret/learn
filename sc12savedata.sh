@@ -104,6 +104,14 @@ check_confirmation
 # Le script continue ici après la fonction, si confirm est valide
 echo "Le script continue..."
 
+get_large_dirs() {
+    local line
+    while IFS= read -r line; do
+        DIRS_WITH_SIZES+=("$line")
+    done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
+}
+
+
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
@@ -231,13 +239,15 @@ do
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 		echo "--- Etape1: Remplissage du tableau 'DIRS_WITH_SIZES'"
 		DIRS_WITH_SIZES=()
+
+# Version pour MacOs
+		get_large_dirs
   
 #		while IFS= read -r line; do
 #		    DIRS_WITH_SIZES+=("$line")
 # 		    echo "Tableau: $line, $limit, $limit_kb"
 #		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 
-# Version pour MacOs
 
   		echo "--- Vérification: Chaque ligne de 'DIRS_WITH_SIZES'"
   		for ligne in "${DIRS_WITH_SIZES[@]}"; do
