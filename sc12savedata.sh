@@ -233,6 +233,7 @@ do
 		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
+  			echo "Line: $line"
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 		echo "Etape2"
 # mapfile -t DIRS < <(command) remplacer avec:
@@ -246,7 +247,7 @@ do
 # Trouver et filtrer les répertoires > 1 Go
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 1000000')
 		for ligne in "${#DIRS_WITH_SIZES[@]}"; do
-  			echo "$ligne"
+  			echo "Ligne: $ligne"
 		done
 
 		if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
