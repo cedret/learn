@@ -235,20 +235,20 @@ do
 		    DIRS_WITH_SIZES+=("$line")
   		    echo "Line: $line"
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
-		echo "--- Etape2a: # nombre de lignes?"
-		echo "${#DIRS_WITH_SIZES[@]}"
-		echo "--- Etape2b: tout sur une ligne"
-		echo "${DIRS_WITH_SIZES[@]}"
-		echo "--- Etape2c: première ligne"
-  		echo "${DIRS_WITH_SIZES}"
+#		echo "--- Etape2a: # nombre de lignes?"
+#		echo "${#DIRS_WITH_SIZES[@]}"
+#		echo "--- Etape2b: tout sur une ligne"
+#		echo "${DIRS_WITH_SIZES[@]}"
+#		echo "--- Etape2c: première ligne"
+ # 		echo "${DIRS_WITH_SIZES}"
 
 # Trouver et filtrer les répertoires > 1 Go
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 1000000')
-		echo "--- Etape2d: Chaque ligne?"
-  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
-  			echo "Ligne: $ligne"
-		done
-		echo "--- Etape2e: index"
+#		echo "--- Etape2d: Chaque ligne?"
+#  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
+#  			echo "Ligne: $ligne"
+#		done
+		echo "--- Etape2e: Avec index"
 
 		for i in "${!DIRS_WITH_SIZES[@]}"; do
   			echo "[$i] ${DIRS_WITH_SIZES[$i]}"
@@ -260,7 +260,7 @@ do
 #		    exit 0
 		    exit 1
 		fi
-		echo "--- Etape4"
+		echo "--- Etape4: Extraire chemins et tailles"
 # Extraire chemins et tailles
 		DIRS=()
 		SIZES=()
@@ -270,7 +270,7 @@ do
 		    DIRS+=("$path")
 		    SIZES+=("$size_kb")
 		done
-		echo "--- Etape5"
+		echo "--- Etape5: Sort mode"
 # Tri
 		case "$sort_mode" in
 		    2)
@@ -295,7 +295,7 @@ do
 #		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
 		        ;;
 		esac
-		echo "--- Etape6"
+		echo "--- Etape6: Rassembler DIRS"
 # mapfile -t DIRS < <(command) remplacer avec:
 # DIRS=()
 # while IFS= read -r line; do
@@ -308,14 +308,14 @@ do
 		    path="${line#*|}"
 		    DIRS+=("$path")
 		done
-		echo "--- Etape7"
+		echo "--- Etape7: Affichage taille lisible"
 # Affichage avec taille lisible
 		for ((i = 0; i < ${#DIRS[@]}; i++)); do
 		    dir_name="${DIRS[$i]##*/}"
 		    size=$(du -sh "${DIRS[$i]}" 2>/dev/null | cut -f1)
 		    echo "[$((i + 1))] $dir_name ($size)"
 		done
-		echo "--- Etape8"
+		echo "--- Etape8: Sélection"
 #		echo "--- Répertoires dans source: $SRC0BASE..."
 #		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
@@ -332,6 +332,7 @@ do
 		read -r input
 		input=$(echo "$input" | tr ',' ' ')  # remplace les virgules par des espaces
 
+  		echo "--- Etape9: Conséquences options"
 		# Gérer les options
 		if [[ "$input" == "0" ]]; then
 		    echo "--- ⚠️ ⚠️ Abandon."
@@ -345,7 +346,7 @@ do
 		fi
 
 		# Affichage des choix
-		echo "Répertoires sélectionnés :"
+		echo "-- Etape 10: Répertoires sélectionnés :"
 		for idx in "${indices[@]}"; do
 		    # Vérifie que l'index est valide
 		    if (( idx >= 1 && idx <= ${#DIRS[@]} )); then
@@ -364,7 +365,7 @@ do
 #		  echo "--- Copie annulée." | tee -a "$LOGFIX"
 #		  return 1
 #		fi
-
+		echo "--- Etape 11: Vérification/création cible"
 		if [ ! -d "$DESTINATION" ]; then
 			# Créer le dossier de destination
 			mkdir -p "$DESTINATION"
@@ -372,6 +373,7 @@ do
 #		date >> $LOGFIX
 
 		# Copier les répertoires sélectionnés avec rsync
+  		echo "--- Etape 12: Démarrage RSync"
 		echo "=7= Sélection(s) pour rsync de:" | tee -a "$LOGFIX"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
