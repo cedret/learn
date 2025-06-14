@@ -233,7 +233,7 @@ do
 		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
-  		    echo "Line: $line"
+  		    echo -e "\n Line: $line"
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 		echo "--- Etape2a"
 		echo "${#DIRS_WITH_SIZES[@]}"
@@ -242,9 +242,7 @@ do
 		echo "--- Etape2c"
   		echo "${DIRS_WITH_SIZES}"
 		echo "--- Etape2d"
-  
 # mapfile -t DIRS < <(command) remplacer avec:
-
 # DIRS=()
 # while IFS= read -r line; do
 #    DIRS+=("$line")
@@ -252,16 +250,22 @@ do
 
 # Trouver et filtrer les répertoires > 1 Go
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 1000000')
-		for ligne in "${#DIRS_WITH_SIZES[@]}"; do
+		for ligne in "${DIRS_WITH_SIZES[@]}"; do
   			echo "Ligne: $ligne"
 		done
+		echo "--- Etape2e"
 
+		for i in "${!DIRS_WITH_SIZES[@]}"; do
+  			echo "[$i] ${DIRS_WITH_SIZES[@]}"
+		done
+
+		echo "--- Etape3"
 		if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
 		    echo "Aucun répertoire de plus de 1 Go trouvé."
 #		    exit 0
 		    exit 1
 		fi
-		echo "--- Etape3"
+		echo "--- Etape4"
 # Extraire chemins et tailles
 		DIRS=()
 		SIZES=()
@@ -271,7 +275,7 @@ do
 		    DIRS+=("$path")
 		    SIZES+=("$size_kb")
 		done
-		echo "--- Etape4"
+		echo "--- Etape5"
 # Tri
 		case "$sort_mode" in
 		    2)
