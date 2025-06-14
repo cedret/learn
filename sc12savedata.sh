@@ -233,14 +233,20 @@ do
 		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
-#  		    echo "Tableau: $line"
+  		    echo "Tableau: $line"
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
+
+  		echo "--- Vérification: Chaque ligne de 'DIRS_WITH_SIZES'"
+  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
+  			echo "Ligne: $ligne"
+		done
+
 #		echo "--- Etape2a: # nombre de lignes?"
 #		echo "${#DIRS_WITH_SIZES[@]}"
 #		echo "--- Etape2b: tout sur une ligne"
 #		echo "${DIRS_WITH_SIZES[@]}"
 #		echo "--- Etape2c: première ligne"
- # 		echo "${DIRS_WITH_SIZES}"
+# 		echo "${DIRS_WITH_SIZES}"
 
 # Trouver et filtrer les répertoires > 1 Go
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 1000000')
@@ -255,11 +261,6 @@ do
 #		    exit 0
 		    exit 1
 		fi
-
-  		echo "--- Vérification: Chaque ligne de 'DIRS_WITH_SIZES'"
-  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
-  			echo "Ligne: $ligne"
-		done
   
 		echo "--- Etape4: Extraire chemins et tailles"
 # Extraire chemins et tailles
