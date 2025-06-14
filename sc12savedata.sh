@@ -135,12 +135,12 @@ do
  	echo "---13 ---16 rsync/MBA	---19 Choisir sauvegarde(s) + rsync"
 	echo "===== ===== ===== ===== SAUVEGARDES"
  	echo "-$SRC0BASE- vers -$DST_RSNC- ou =$DST_SCP="
-	echo "---21 rsync < mni(macos) ---24 scp < mba(zorin)       ---27 lftp < mni(macos)-"
-	echo "---22 rsync < mba(zorin) ---25 smbclient < mni(macos) ---28"
- 	echo "---23 scp < mni(macos)   ---26 smbclient < mba(zorin)"
+	echo "---41 rsync < mni(macos) ---44 scp < mba(zorin)       ---47 lftp < mni(macos)-"
+	echo "---42 rsync < mba(zorin) ---45 smbclient < mni(macos) ---48"
+ 	echo "---43 scp < mni(macos)   ---46 smbclient < mba(zorin)"
  	echo "===== ===== ===== ===== ===== COMPARAISONS"
-	echo "---31 par rsync ---32 par diff   ---33 par checksum"
-  	echo "---34 simple    ---35 avec hash  ---36"
+	echo "---51 par rsync ---52 par diff   ---53 par checksum"
+  	echo "---54 simple    ---55 avec hash  ---56"
  	echo "===== ===== ===== ===== ===== ===== SUPPRESSIONS"
  	echo "---71 Supprimer avec macos/debian cible -$DST_SUPP-"
  	echo "---73 Supprimer avec debian cible -$DST_SUPP-"
@@ -603,7 +603,7 @@ do
    			sudo rsync -avh --progress "$dir" /Volumes/vsy21tri2int/ccc2506mni/
 			done
 		;;
- 	21)
+ 	41)
 		echo "21 rsync depuis mni(macos) -$SRC0BASE- vers -$DST2RSNC-"
 #    		ifconfig
 #		sudo mkdir -p /Volumes/vsy21tri2int
@@ -635,7 +635,7 @@ do
      		du -sh $SRC0BASE >> "$LOGFIX"
 		date >> "$LOGFIX"
   		;;
-	22)
+	42)
 		echo "22 rsync depuis mba(zorin) vers ccc -$SRC0BASE-"
 		sudo mkdir -p /mnt/vsy21tri2int
 #		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/vsy21tri2int -o username=access,password=illicO12
@@ -656,7 +656,7 @@ do
 		echo "----- Fin copie mba vers ccc/wifi à:" >> savedata.log 
 		date >> "$LOGFIX"
   		;;
-	23)
+	43)
 	 	echo "23 scp depuis mni(macos) =$SRC0BASE= vers =$DST_SCP="
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour scp ....."
@@ -667,7 +667,7 @@ do
    		du -sh $SRC0BASE >> "$LOGFIX"
 		echo "===== Fin à:" >> "$LOGFIX" && date >> "$LOGFIX"
   		;;
-	25)
+	45)
 	  	echo "25 smbclient depuis mni(macos) =$SRC0BASE= vers -"
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour scp ....."
@@ -679,7 +679,7 @@ do
    		du -sh $SRC0BASE >> "$LOGFIX"
 		echo "===== Fin à:" >> "$LOGFIX" && date >> "$LOGFIX"
   		;;
-	27)
+	47)
 	    	echo "27 lftp depuis mni(macos) -$SRC0BASE- vers -"
   		echo ">>>>> ATTENTION AU MODE DE MONTAGE DE(S) DOSSIER(S) DISTANT(S) !!!!!"
 		echo "===== Pause : appuyez sur une touche pour lftp ....."
@@ -693,13 +693,13 @@ EOF
    		du -sh $SRC0BASE >> "$LOGFIX"
 		echo "===== Fin à:" >> "$LOGFIX" && date >> "$LOGFIX"
   		;;
-    	31)
+    	51)
      		rsync -avnc --delete /Users/ton_utilisateur/Documents/dossier_local/ /Volumes/partage_smb/dossier_distant/
 		;;
-  	32)
+  	52)
    		diff -qr /Users/ton_utilisateur/Documents/dossier_local /Volumes/partage_smb/dossier_distant
 		;;
-  	33)
+  	53)
    		# Générer des listes de fichiers avec hash
 		find /Users/ton_utilisateur/Documents/dossier_local -type f -exec shasum {} \; | sort > local_hashes.txt
 		find /Volumes/partage_smb/dossier_distant -type f -exec shasum {} \; | sort > distant_hashes.txt
@@ -707,7 +707,7 @@ EOF
 		# Comparer les deux fichiers
 		diff local_hashes.txt distant_hashes.txt
 		;;
-    	34)
+    	54)
 		# Répertoires à comparer
 		LOCAL_DIR="/Users/ton_utilisateur/Documents/dossier_local"
 		SMB_DIR="/Volumes/partage_smb/dossier_distant"
@@ -732,7 +732,7 @@ EOF
 		echo ""
 		echo "Comparaison terminée. Rapport enregistré dans : $LOGFIX"
 		;;
-  	35)
+  	55)
 		LOCAL_DIR="/Users/ton_utilisateur/Documents/dossier_local"
 		SMB_DIR="/Volumes/partage_smb/dossier_distant"
 		TMP1=$(mktemp)
