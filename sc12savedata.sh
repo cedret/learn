@@ -114,6 +114,78 @@ function get_large_dirs() {
     done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_blocks" '$1 >= limit')
 }
 
+function bloc5go() {
+local
+SOURCE_DIR="$1"
+DEST_DIR="$2"
+LIMIT_GB="${3:-5}"  # seuil en Go
+LIMIT_KB=$((LIMIT_GB * 1000000))
+
+if [[ ! -d "$SOURCE_DIR" ]]; then
+    echo "Erreur : dossier source invalide"
+    exit 1
+fi
+
+mkdir -p "$DEST_DIR"
+
+echo "Recherche des sous-répertoires > ${LIMIT_GB} Go dans : $SOURCE_DIR"
+echo
+
+# Lister les répertoires à copier
+mapfile -t DIRS_TO_COPY < <(
+    find "$SOURCE_DIR" -mindepth 1 -maxdepth 1 -type d |
+    while read -r dir; do
+        size_kb=$(du -sk "$dir" 2>/dev/null | cut -f1)
+        [[ $size_kb -ge $LIMIT_KB ]] && echo "$dir"
+    done
+)
+
+total=${#DIRS_TO_COPY[@]}
+if [[ $total -eq 0 ]]; then
+    echo "Aucun répertoire > ${LIMIT_GB} Go trouvé."
+    exit 0
+fi
+
+echo "$total répertoire(s) à copier."
+
+# Chronomètre global
+start_time=$(date +%s)
+copied=0
+
+for dir in "${DIRS_TO_COPY[@]}"; do
+    copied=$((copied + 1))
+    base=$(basename "$dir")
+    size_h=$(du -sh "$dir" 2>/dev/null | cut -f1)
+
+    # Calcul du temps écoulé et estimation
+    now=$(date +%s)
+    elapsed=$((now - start_time))
+    if (( copied > 1 )); then
+        avg_time=$((elapsed / (copied - 1)))
+        remaining=$((avg_time * (total - copied + 1)))
+        eta=$(date -ud "@$remaining" +%T)
+        echo
+        echo "Estimation : encore ~$eta"
+    fi
+
+    echo
+    echo "🔄 [$copied / $total] Copie de : $base ($size_h)"
+    echo "→ vers : $DEST_DIR/$base"
+
+    rsync -a --info=progress2 "$dir/" "$DEST_DIR/$base/"
+
+    echo "Fini : $base"
+done
+
+# Fin
+end_time=$(date +%s)
+total_time=$((end_time - start_time))
+duration=$(date -ud "@$total_time" +%T)
+
+echo
+echo "Total copié : $copied répertoire(s)"
+echo "⏱ Temps total : $duration"
+}
 
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
 mkdir -p "$HOME/logs"
