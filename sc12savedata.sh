@@ -233,7 +233,7 @@ do
 		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
-  		    echo "Line: $line"
+#  		    echo "Line: $line"
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 #		echo "--- Etape2a: # nombre de lignes?"
 #		echo "${#DIRS_WITH_SIZES[@]}"
@@ -305,10 +305,6 @@ do
 		    path="${line#*|}"
 		    DIRS+=("$path")
 		done
-
-  		for i in "${!DIRS[@]}"; do
-  			echo "[$i] ${DIRS[$i]}"
-		done
   
 		echo "--- Etape 7: Affichage taille lisible"
 # Affichage avec taille lisible
@@ -317,7 +313,7 @@ do
 		    dir_name="${path##*/}" #extrire nom dossier
 #		    dir_name="${DIRS[$i]##*/}"
 		    size=$(du -sh "${DIRS[$i]}" 2>/dev/null | cut -f1)
-		    echo "[$((i + 1))] $dir_name ($size)"
+		    echo "[$((i + 1))] ($size) $dir_name"
 		done
 		echo "--- Etape 8: Sélection"
 #		echo "--- Répertoires dans source: $SRC0BASE..."
