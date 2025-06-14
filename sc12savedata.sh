@@ -255,6 +255,12 @@ do
 #		    exit 0
 		    exit 1
 		fi
+
+  		echo "--- Vérification: Chaque ligne de 'DIRS_WITH_SIZES'"
+  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
+  			echo "Ligne: $ligne"
+		done
+  
 		echo "--- Etape4: Extraire chemins et tailles"
 # Extraire chemins et tailles
 		DIRS=()
