@@ -233,7 +233,7 @@ do
 		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
-  		    echo "Tableau: $line"
+#  		    echo "Tableau: $line"
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 #		echo "--- Etape2a: # nombre de lignes?"
 #		echo "${#DIRS_WITH_SIZES[@]}"
@@ -244,6 +244,7 @@ do
 
 # Trouver et filtrer les répertoires > 1 Go
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 1000000')
+# Afficher chaque ligne tu tableau
 #		echo "--- Etape2d: Chaque ligne?"
 #  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
 #  			echo "Ligne: $ligne"
@@ -268,7 +269,7 @@ do
 # Tri
 		case "$sort_mode" in
 		    2)
-        # par taille décroissante
+# par taille décroissante
 			while IFS= read -r line; do
 			    sorted+=("$line")
 			done < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
@@ -276,7 +277,7 @@ do
 #		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
 		        ;;
 		    3)
-        # par date
+# par date
 			while IFS= read -r line; do
 			    sorted+=("$line")
 			done < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
@@ -284,7 +285,7 @@ do
 			echo "--- case 3"
 	  		;;
 		    *)
-        # par nom
+# par nom
 			echo "--- case *"
    			while IFS= read -r line; do
 			    sorted+=("$line")
@@ -292,6 +293,11 @@ do
 #		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
 		        ;;
 		esac
+# Afficher chaque ligne tu tableau
+		echo "--- Vérification: Chaque ligne de 'sorted'"
+  		for ligne in "${sorted[@]}"; do
+  			echo "Ligne: $ligne"
+		done
 		echo "--- Etape 6: Ré-assembler DIRS"
 # mapfile -t DIRS < <(command) remplacer avec:
 # DIRS=()
