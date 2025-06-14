@@ -245,10 +245,14 @@ do
 
 # Trouver et filtrer les répertoires > 1 Go
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 1000000')
+		for ligne in "${#DIRS_WITH_SIZES[@]}"; do
+  			echo "$ligne"
+		done
 
 		if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
 		    echo "Aucun répertoire de plus de 1 Go trouvé."
-		    exit 0
+#		    exit 0
+		    exit 1
 		fi
 		echo "Etape3"
 # Extraire chemins et tailles
