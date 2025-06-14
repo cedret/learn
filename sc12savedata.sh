@@ -234,6 +234,7 @@ do
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
   		    echo "Tableau: $line"
+	
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 
   		echo "--- Vérification: Chaque ligne de 'DIRS_WITH_SIZES'"
