@@ -293,7 +293,10 @@ do
 		        ;;
 		    *)
         # par nom
-		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
+			while IFS= read -r line; do
+			    DIRS_WITH_SIZES+=("$line")
+			done < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
+#		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
 		        ;;
 		esac
 
