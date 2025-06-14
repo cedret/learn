@@ -229,11 +229,11 @@ do
 
 # Trouver et filtrer les répertoires dépassant la taille limite
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
-		echo "--- Etape1"
+		echo "--- Etape1: Remplissage du tableau"
 		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
-  		    echo -e "\n Line: $line"
+  		    echo "Line: $line"
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 		echo "--- Etape2a: # nombre de lignes?"
 		echo "${#DIRS_WITH_SIZES[@]}"
@@ -257,7 +257,7 @@ do
 		echo "--- Etape2e: index"
 
 		for i in "${!DIRS_WITH_SIZES[@]}"; do
-  			echo "[$i] ${DIRS_WITH_SIZES[@]}"
+  			echo "[$i] ${DIRS_WITH_SIZES[$i]}"
 		done
 
 		echo "--- Etape3: résultat nul?"
