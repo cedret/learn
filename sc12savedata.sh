@@ -226,14 +226,14 @@ do
 		read -p "Afficher les répertoires de plus de combien de Go ? [défaut = 1] : " size_limit_gb
 		size_limit_gb=${size_limit_gb:-1}  # valeur par défaut : 1 Go
 		limit_kb=$((size_limit_gb * 1000000))  # conversion Go → kilo-octets
-
+		echo "$size_limit_gb go devient $limit_kb ko"
 # Trouver et filtrer les répertoires dépassant la taille limite
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 		echo "--- Etape1: Remplissage du tableau"
 		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
-#  		    echo "Line: $line"
+  		    echo "Tableau: $line"
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 #		echo "--- Etape2a: # nombre de lignes?"
 #		echo "${#DIRS_WITH_SIZES[@]}"
