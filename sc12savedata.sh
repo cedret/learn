@@ -281,7 +281,11 @@ do
 		case "$sort_mode" in
 		    2)
         # par taille décroissante
-		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
+#			DIRS_WITH_SIZES=()
+			while IFS= read -r line; do
+			    DIRS_WITH_SIZES+=("$line")
+			done < <(for i in "${!DIRS_WITH_SIZES[@]}"; do echo "${SIZES[$i]}|${DIRS_WITH_SIZES[$i]}"; done | sort -nr)
+#		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
 		        ;;
 		    3)
         # par date
