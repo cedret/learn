@@ -104,10 +104,11 @@ check_confirmation
 # Le script continue ici après la fonction, si confirm est valide
 echo "Le script continue..."
 
-get_large_dirs() {
+function get_large_dirs() {
     local line
     while IFS= read -r line; do
         DIRS_WITH_SIZES+=("$line")
+	echo "F_Tableau: $line, $limit; $limit_kb"
     done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 }
 
