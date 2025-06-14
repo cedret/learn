@@ -278,15 +278,18 @@ do
 			while IFS= read -r line; do
 			    sorted+=("$line")
 			done < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
+			echo "--- case 2"
 #		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
 		        ;;
 		    3)
         # par date
 		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
-		        ;;
+			echo "--- case 3"
+	  		;;
 		    *)
         # par nom
-			while IFS= read -r line; do
+			echo "--- case *"
+   			while IFS= read -r line; do
 			    sorted+=("$line")
 			done < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
 #		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
