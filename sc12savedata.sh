@@ -292,10 +292,6 @@ do
 #		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
 		        ;;
 		esac
-  		echo "--- Etape 5b: Sorted avec index"
-		for i in "${!sorted[@]}"; do
-  			echo "[$i] ${sorted[$i]}"
-		done
 		echo "--- Etape 6: Ré-assembler DIRS"
 # mapfile -t DIRS < <(command) remplacer avec:
 # DIRS=()
@@ -313,10 +309,13 @@ do
   		for i in "${!DIRS[@]}"; do
   			echo "[$i] ${DIRS[$i]}"
 		done
+  
 		echo "--- Etape 7: Affichage taille lisible"
 # Affichage avec taille lisible
 		for ((i = 0; i < ${#DIRS[@]}; i++)); do
-		    dir_name="${DIRS[$i]##*/}"
+  		    path="${DIRS[$i]%/}" #supprime /
+		    dir_name="${path##*/}" #extrire nom dossier
+#		    dir_name="${DIRS[$i]##*/}"
 		    size=$(du -sh "${DIRS[$i]}" 2>/dev/null | cut -f1)
 		    echo "[$((i + 1))] $dir_name ($size)"
 		done
