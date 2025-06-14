@@ -121,20 +121,20 @@ df -H
 while true;
 do
 	echo ""
+  	echo "-$SRC0BASE- vers -$DST_RSNC- ou =$DST_SCP="
   	echo "===== PREPARATION"
   	echo "---1 Informations ---4 Montage NFS (MacOs) ---7 Choisir source(s) + rsync"
    	echo "---2 Suite        ---5 Démontage NFS       ---8 Consulter log -fmr-"
     	echo "---3 Crontab      ---6 Montage sur Qnap    ---9 Consulter log -fix-"
   	echo "===== ===== MONTAGES"
-   	echo "---91 Monter disques qnap ---92 Vérifier montages ---93 Démonter intelligent"
-	echo "---94 Tout démonter       ---95 Supprimer /mnt//  ---96"
- 	echo "---97                     ---98                   ---99"
+   	echo "---11 Monter disques qnap ---12 Vérifier montages ---13 Démonter intelligent"
+	echo "---14 Tout démonter       ---15 Supprimer /mnt//  ---16"
+ 	echo "---17                     ---18                   ---19"
 	echo "===== ===== ===== RESTAURATIONS"
-  	echo "---11 ---14 rsync/debian  ---17"
-	echo "---12 ---15               ---18 rsync/variables"
- 	echo "---13 ---16 rsync/MBA	---19 Choisir sauvegarde(s) + rsync"
+  	echo "---31 ---34 rsync/debian  ---37"
+	echo "---32 ---35               ---38 rsync/variables"
+ 	echo "---33 ---36 rsync/MBA	---39 Choisir sauvegarde(s) + rsync"
 	echo "===== ===== ===== ===== SAUVEGARDES"
- 	echo "-$SRC0BASE- vers -$DST_RSNC- ou =$DST_SCP="
 	echo "---41 rsync < mni(macos) ---44 scp < mba(zorin)       ---47 lftp < mni(macos)-"
 	echo "---42 rsync < mba(zorin) ---45 smbclient < mni(macos) ---48"
  	echo "---43 scp < mni(macos)   ---46 smbclient < mba(zorin)"
@@ -555,7 +555,31 @@ do
 		cat $LOGFIX
   		ls $HOME/logs
 		;;
-  	14)
+  	12)
+		mount | grep '^/mnt'
+		;;
+	13)
+		for m in $(mount | awk '$3 ~ "^/mnt" {print $3}'); do
+		echo "Démontage de : $m"
+		sudo umount -lf "$m"
+		done
+		;;
+   	14)
+		sudo umount -lf /mnt/*
+		;;
+	15)
+		echo "sudo rm -r /mnt/vsy21tri2int/ccc2505mba/"
+		sudo rm -r /mnt/vsy21tri2int/ccc2505mba/
+		;;
+	16)
+		sudo unmount /mnt/secu7test1
+		sudo unmount /mnt/secu7test2
+		sudo unmount /mnt/secu7test3
+		sudo unmount /mnt/secu7test4
+		sudo unmount /mnt/secu7test5
+		sudo unmount /mnt/vsy21tri2int
+		;;
+  	34)
  		echo "----- RESTAURATION vers DEBIAN -.207v?-"
 		sudo mkdir -p /mnt/secu7test5
 		sudo mount -t cifs //192.168.1.207/vsy21v4vrac /mnt/secu7test5 -o username=accesr,password=fastoche
@@ -571,7 +595,7 @@ do
 		echo "----- Fin copie test vers debian à:" >> "$LOGFIX"
 		date >> "$LOGFIX"
 		;;
-	16)
+	36)
 		echo "----- RESTAURATION vers DEBIAN -mni01-"
 #		sudo mkdir -p /mnt/secu7mni01
 		sudo mount -t cifs //192.168.1.207/vsy21tri2int /mnt/secu7mni01 -o username=accesr,password=difficiL3
@@ -586,7 +610,7 @@ do
 		echo "----- Fin copie mni01 vers mba à:" >> "$LOGFIX"
 		date >> "$LOGFIX"
 		;;
-  	18)
+  	38)
 		# === Synchronisation ===
 		for dir in "$SRC0BASE"/tosave*/; do
 		    if [ -d "$dir" ]; then
@@ -773,36 +797,11 @@ EOF
 	79)
  		mkdir empty_dir
 		rsync -a --delete --progress empty_dir/ target_dir/
-		;;
-	92)
-		mount | grep '^/mnt'
-		;;
-	83)
-		for m in $(mount | awk '$3 ~ "^/mnt" {print $3}'); do
-		echo "Démontage de : $m"
-		sudo umount -lf "$m"
-		done
-		;;
+		;; 
 	93)
 		TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 		echo "--- [$TIMESTAMP] --- Reset savedata___.log" > "$LOGFIX"
    		;;
-   	94)
-		sudo umount -lf /mnt/*
-		;;
-	95)
-		echo "sudo rm -r /mnt/vsy21tri2int/ccc2505mba/"
-		sudo rm -r /mnt/vsy21tri2int/ccc2505mba/
-		;;
-	96)
-		sudo unmount /mnt/secu7test1
-		sudo unmount /mnt/secu7test2
-		sudo unmount /mnt/secu7test3
-		sudo unmount /mnt/secu7test4
-		sudo unmount /mnt/secu7test5
-		sudo unmount /mnt/vsy21tri2int
-		;;
-
 	98)
  		echo "Quantité de données dupliquées ou information?"
 		read donnees
