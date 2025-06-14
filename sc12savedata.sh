@@ -277,7 +277,10 @@ do
 		        ;;
 		    3)
         # par date
-		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
+			while IFS= read -r line; do
+			    sorted+=("$line")
+			done < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
+#		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
 			echo "--- case 3"
 	  		;;
 		    *)
@@ -290,11 +293,10 @@ do
 		        ;;
 		esac
   		echo "--- Etape 5b: Sorted avec index"
-
 		for i in "${!sorted[@]}"; do
   			echo "[$i] ${sorted[$i]}"
 		done
-		echo "--- Etape 6: Rassembler DIRS"
+		echo "--- Etape 6: Ré-assembler DIRS"
 # mapfile -t DIRS < <(command) remplacer avec:
 # DIRS=()
 # while IFS= read -r line; do
@@ -306,6 +308,10 @@ do
 		for line in "${sorted[@]}"; do
 		    path="${line#*|}"
 		    DIRS+=("$path")
+		done
+
+  		for i in "${!DIRS[@]}"; do
+  			echo "[$i] ${DIRS[$i]}"
 		done
 		echo "--- Etape 7: Affichage taille lisible"
 # Affichage avec taille lisible
