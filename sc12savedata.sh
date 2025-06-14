@@ -233,7 +233,7 @@ do
 		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS_WITH_SIZES+=("$line")
-  			echo "Line: $line"
+  		    echo "Line: $line"
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 		echo "Etape2"
 # mapfile -t DIRS < <(command) remplacer avec:
