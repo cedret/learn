@@ -105,6 +105,7 @@ check_confirmation
 echo "Le script continue..."
 
 function get_large_dirs() {
+# ATTENTION AUX BLOCS DE 512 octets au lieu de 1024 (sur MacOs?) !!!!!
     local line
     limit_blocks=$((limit_kb * 2))
     while IFS= read -r line; do
