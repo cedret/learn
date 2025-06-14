@@ -228,13 +228,13 @@ do
 		limit_kb=$((size_limit_gb * 1000000))  # conversion Go → kilo-octets
 
 # Trouver et filtrer les répertoires dépassant la taille limite
-		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
-
+#		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
+		echo "Etape1"
 #		DIRS_WITH_SIZES=()
 		while IFS= read -r line; do
 		    DIRS+=("$line")
 		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
-
+		echo "Etape2"
 # mapfile -t DIRS < <(command) remplacer avec:
 
 # DIRS=()
@@ -250,7 +250,7 @@ do
 		    echo "Aucun répertoire de plus de 1 Go trouvé."
 		    exit 0
 		fi
-
+		echo "Etape3"
 # Extraire chemins et tailles
 		DIRS=()
 		SIZES=()
@@ -260,7 +260,7 @@ do
 		    DIRS+=("$path")
 		    SIZES+=("$size_kb")
 		done
-
+		echo "Etape4"
 # Tri
 		case "$sort_mode" in
 		    2)
