@@ -106,10 +106,11 @@ echo "Le script continue..."
 
 function get_large_dirs() {
     local line
+    limit_blocks=$((limit_kb * 2))
     while IFS= read -r line; do
         DIRS_WITH_SIZES+=("$line")
-	echo "F_Tableau: $line, $limit; $limit_kb"
-    done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
+	echo "F_Tableau: $line, $limit; $limit_kb, $limit_blocks"
+    done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_blocks" '$1 >= limit')
 }
 
 
