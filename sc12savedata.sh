@@ -248,12 +248,6 @@ do
 #  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
 #  			echo "Ligne: $ligne"
 #		done
-		echo "--- Etape2e: Avec index"
-
-		for i in "${!DIRS_WITH_SIZES[@]}"; do
-  			echo "[$i] ${DIRS_WITH_SIZES[$i]}"
-		done
-
 		echo "--- Etape3: résultat nul?"
 		if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
 		    echo "Aucun répertoire de plus de $size_limit_gb Go trouvé."
@@ -295,7 +289,12 @@ do
 #		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
 		        ;;
 		esac
-		echo "--- Etape6: Rassembler DIRS"
+  		echo "--- Etape 5b: Sorted avec index"
+
+		for i in "${!sorted[@]}"; do
+  			echo "[$i] ${sorted[$i]}"
+		done
+		echo "--- Etape 6: Rassembler DIRS"
 # mapfile -t DIRS < <(command) remplacer avec:
 # DIRS=()
 # while IFS= read -r line; do
@@ -308,14 +307,14 @@ do
 		    path="${line#*|}"
 		    DIRS+=("$path")
 		done
-		echo "--- Etape7: Affichage taille lisible"
+		echo "--- Etape 7: Affichage taille lisible"
 # Affichage avec taille lisible
 		for ((i = 0; i < ${#DIRS[@]}; i++)); do
 		    dir_name="${DIRS[$i]##*/}"
 		    size=$(du -sh "${DIRS[$i]}" 2>/dev/null | cut -f1)
 		    echo "[$((i + 1))] $dir_name ($size)"
 		done
-		echo "--- Etape8: Sélection"
+		echo "--- Etape 8: Sélection"
 #		echo "--- Répertoires dans source: $SRC0BASE..."
 #		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
