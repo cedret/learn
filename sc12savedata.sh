@@ -231,11 +231,13 @@ do
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 		echo "--- Etape1: Remplissage du tableau 'DIRS_WITH_SIZES'"
 		DIRS_WITH_SIZES=()
-		while IFS= read -r line; do
-		    DIRS_WITH_SIZES+=("$line")
-  		    echo "Tableau: $line"
-	
-		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
+  
+#		while IFS= read -r line; do
+#		    DIRS_WITH_SIZES+=("$line")
+# 		    echo "Tableau: $line, $limit, $limit_kb"
+#		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
+
+# Version pour MacOs
 
   		echo "--- Vérification: Chaque ligne de 'DIRS_WITH_SIZES'"
   		for ligne in "${DIRS_WITH_SIZES[@]}"; do
