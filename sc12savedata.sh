@@ -295,6 +295,7 @@ do
 #		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
 		        ;;
 		esac
+		echo "--- Etape6"
 # mapfile -t DIRS < <(command) remplacer avec:
 # DIRS=()
 # while IFS= read -r line; do
@@ -307,14 +308,14 @@ do
 		    path="${line#*|}"
 		    DIRS+=("$path")
 		done
-
+		echo "--- Etape7"
 # Affichage avec taille lisible
 		for ((i = 0; i < ${#DIRS[@]}; i++)); do
 		    dir_name="${DIRS[$i]##*/}"
 		    size=$(du -sh "${DIRS[$i]}" 2>/dev/null | cut -f1)
 		    echo "[$((i + 1))] $dir_name ($size)"
 		done
-
+		echo "--- Etape8"
 #		echo "--- Répertoires dans source: $SRC0BASE..."
 #		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
