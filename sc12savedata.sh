@@ -242,12 +242,6 @@ do
 		echo "--- Etape2c: première ligne"
   		echo "${DIRS_WITH_SIZES}"
 
-# mapfile -t DIRS < <(command) remplacer avec:
-# DIRS=()
-# while IFS= read -r line; do
-#    DIRS+=("$line")
-# done < <(command)
-
 # Trouver et filtrer les répertoires > 1 Go
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk '$1 >= 1000000')
 		echo "--- Etape2d: Chaque ligne?"
@@ -281,10 +275,9 @@ do
 		case "$sort_mode" in
 		    2)
         # par taille décroissante
-#			DIRS_WITH_SIZES=()
 			while IFS= read -r line; do
-			    DIRS_WITH_SIZES+=("$line")
-			done < <(for i in "${!DIRS_WITH_SIZES[@]}"; do echo "${SIZES[$i]}|${DIRS_WITH_SIZES[$i]}"; done | sort -nr)
+			    sorted+=("$line")
+			done < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
 #		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
 		        ;;
 		    3)
@@ -294,11 +287,16 @@ do
 		    *)
         # par nom
 			while IFS= read -r line; do
-			    DIRS_WITH_SIZES+=("$line")
+			    sorted+=("$line")
 			done < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
 #		        mapfile -t sorted < <(for dir in "${DIRS[@]}"; do echo "$dir"; done | sort | awk '{print "|" $0}')
 		        ;;
 		esac
+# mapfile -t DIRS < <(command) remplacer avec:
+# DIRS=()
+# while IFS= read -r line; do
+#    DIRS+=("$line")
+# done < <(command)
 
 # Réassembler DIRS depuis le tri
 		DIRS=()
