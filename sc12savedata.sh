@@ -670,6 +670,12 @@ do
 #			tail -n 5 logfile.txt | grep -oP '(\d+%)|to-check=\d+/\d+'
 
 #			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
+#Compter le nombre de fichiers et répertoires:
+			ls-l | wc-l
+#Compter le nombre de sous-répertoires que:
+			ls-l | grep ^ d | wc-l
+#Compter le nombre de fichiers uniquement (commande grep inversé):
+			ls-l | grep-v ^ d | wc-l
 
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
 # Calcul vitesse data transfer
