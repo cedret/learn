@@ -190,7 +190,8 @@ echo "⏱ Temps total : $duration"
 function progression(){
 # FONCTION PROGRESSION   
 			# Affichage toutes les 60s pendant l'exécution
-			cycle=1
+			local cycle=1
+			local values,restf,totalf,prog,percent,estimation
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
    			    sleep 60
 #			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
