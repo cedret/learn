@@ -676,7 +676,10 @@ do
 			ls-l | grep ^ d | wc-l
 #Compter le nombre de fichiers uniquement (commande grep inversé):
 			ls-l | grep-v ^ d | wc-l
-
+#Nombre de fichiers dans une arborescence (dossier et tous ses sous-dossiers)
+			​find /home/toto -type f | wc -l | awk '{print $1}'
+#Nombre de fichiers dans un dossier (sans descendre dans ses sous-dossiers)
+			​find /home/toto -maxdepth 1 -type f | wc -l | awk '{print $1}'
 			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
 # Calcul vitesse data transfer
 # Get the size of the source (in a human-readable format)
