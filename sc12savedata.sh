@@ -169,7 +169,7 @@ for dir in "${DIRS_TO_COPY[@]}"; do
     fi
 
     echo
-    echo "🔄 [$copied / $total] Copie de : $base ($size_h)"
+    echo "[$copied / $total] Copie de : $base ($size_h)"
     echo "→ vers : $DEST_DIR/$base"
 
     rsync -a --info=progress2 "$dir/" "$DEST_DIR/$base/"
@@ -185,6 +185,84 @@ duration=$(date -ud "@$total_time" +%T)
 echo
 echo "Total copié : $copied répertoire(s)"
 echo "⏱ Temps total : $duration"
+}
+
+function progression(){
+# FONCTION PROGRESSION   
+			# Affichage toutes les 60s pendant l'exécution
+			cycle=1
+			while kill -0 "$RSYNC_PID" 2>/dev/null; do
+   			    sleep 60
+#			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
+			    ((cycle++))
+			# FOrmats d'affichage possibles
+				filtre=4
+    				case $filtre in
+					1)
+#				       grep -o 'to-check=[0-9]*/[0-9]*' "$LOGFMR" | sed -E 's/to-check=([0-9]*)\/([0-9]*)/\1 \2/'
+
+					# Extraire les 5 dernières lignes et les lignes contenant "to-check"
+					tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+' | while read line; do
+					x=$(echo $line | grep -oE '[0-9]+(?=/)' )  # Valeur x avant "/"
+					y=$(echo $line | grep -oE '(?<=/)[0-9]+' )  # Valeur y après "/"
+					ratio=$(echo "scale=2; $x/$y" | bc)
+					echo "Ratio $x/$y = $ratio"
+						done
+    					;;
+	 				2)
+					line=$(grep -o 'to-check=[0-9]*/[0-9]*' "$LOGFMR" | tail -n 1)
+					values=${line#to-check=}
+
+					checked=${values%%/*}   # encore à faire
+					total=${values##*/}     # total à faire
+
+					prog=$((total - checked))
+					percent=$(( 100 * done / total ))
+					echo "Progression : $percent% ($prog sur $total fichiers traités)"
+					;;
+     					3)
+						IFS=/ read checked total <<< $(grep -o 'to-check=[0-9]*/[0-9]*' log.txt | tail -n 1 | cut -d= -f2)
+					;;
+     					4)
+						# Vérifie que le fichier existe
+						if [[ ! -f "$LOGFMR" ]]; then
+						        echo "--- ⚠️ ⚠️ Erreur : fichier '$LOGFMR' introuvable."
+						        return 1
+						    fi
+
+					    # Trouve la dernière ligne contenant to-check
+					    line=$(grep 'to-check=' "$LOGFMR" | tail -n 1)
+#						echo "--- test --- $line"
+					    # Si aucune ligne valide
+					    if [[ -z "$line" ]]; then
+					        echo "--- ⚠️ ⚠️ Aucune ligne contenant 'to-check=' trouvée."
+					        return 1
+					    fi
+
+					    # Extraction des valeurs
+#					    local values checked total prog percent
+					    values=$(echo "$line" | grep -o 'to-check=[0-9]*/[0-9]*' | cut -d= -f2)
+					    restf=${values%%/*}
+					    totalf=${values##*/}
+
+					    # Sécurité contre division par zéro
+					    if [[ "$totalf" -eq 0 ]]; then
+					        echo "--- ⚠️ ⚠️ Erreur : total = 0, division impossible."
+					        return 1
+					    fi
+						prog=$((totalf - restf))
+						percent=$((100 * prog / totalf))
+      						estimation=$((restf * SECONDS / prog / 60))
+#	    					echo "--- tests: $totalf - $restf = $prog > $percent% fait, restent $estimation minutes"
+						echo "--- Sondage $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$totalf=$percent% restent $estimation minutes"
+						;;
+#			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
+#			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
+#			    tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+'
+#			    tail -n 1 "$LOGFMR"
+					esac
+			done
+# FIN FONCTION PROGRESSION
 }
 
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
@@ -312,7 +390,7 @@ do
 		echo "$size_limit_gb go devient $limit_kb ko"
 # Trouver et filtrer les répertoires dépassant la taille limite
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
-		echo "--- Etape1: Appel fonction 'DIRS_WITH_SIZES'"
+		echo "--- Etape 1: Appel fonction 'DIRS_WITH_SIZES'"
 		DIRS_WITH_SIZES=()
 
 # Version pour MacOs
@@ -322,7 +400,6 @@ do
 #		    DIRS_WITH_SIZES+=("$line")
 # 		    echo "Tableau: $line, $limit, $limit_kb"
 #		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
-
 
   		echo "--- Vérification: Chaque ligne de 'DIRS_WITH_SIZES'"
   		for ligne in "${DIRS_WITH_SIZES[@]}"; do
@@ -343,14 +420,14 @@ do
 #  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
 #  			echo "Ligne: $ligne"
 #		done
-		echo "--- Etape3: résultat nul?"
+		echo "--- Etape 3: résultat nul?"
 		if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
 		    echo "Aucun répertoire de plus de $size_limit_gb Go trouvé."
 #		    exit 0
 		    exit 1
 		fi
   
-		echo "--- Etape4: Extraire chemins et tailles"
+		echo "--- Etape 4: Extraire chemins et tailles"
 # Extraire chemins et tailles
 		DIRS=()
 		SIZES=()
@@ -361,7 +438,7 @@ do
 		    SIZES+=("$size_kb")
 		done
   
-		echo "--- Etape5: Sort mode"
+		echo "--- Etape 5: Sort mode"
 # Tri
 		case "$sort_mode" in
 		    2)
@@ -431,7 +508,7 @@ do
 		read -r input
 		input=$(echo "$input" | tr ',' ' ')  # remplace les virgules par des espaces
 
-  		echo "--- Etape9: Conséquences options"
+  		echo "--- Etape 9: Conséquences options"
 		# Gérer les options
 		if [[ "$input" == "0" ]]; then
 		    echo "--- ⚠️ ⚠️ Abandon."
@@ -507,11 +584,12 @@ do
 #			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
 			rsync -av --whole-file --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
 
-   
 			RSYNC_PID=$!
       			status=$?
-			cycle=1
+
+# FONCTION PROGRESSION   
 			# Affichage toutes les 60s pendant l'exécution
+			cycle=1
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
    			    sleep 60
 #			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
@@ -583,6 +661,8 @@ do
 #			    tail -n 1 "$LOGFMR"
 					esac
 			done
+# FIN FONCTION PROGRESSION
+
 #			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" | grep -oP 'to-check=\d+/\d+' | awk -F= '{print $2}'
 #			grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
 #   			grep -oP '(\d+%)|to-check=\d+/\d+' logfile.txt
