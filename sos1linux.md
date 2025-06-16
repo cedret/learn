@@ -1,9 +1,9 @@
-Très bonne question ! 👍
+
 Si tu veux **vérifier quel environnement de bureau (DE)** et **quel gestionnaire de fenêtres/affichage** sont utilisés sur ton Linux Mint (ou autre distro), voici les commandes utiles :
 
 ---
 
-## 🎨 1. Vérifier l'environnement de bureau (DE – Desktop Environment)
+## 1. Vérifier l'environnement de bureau (DE – Desktop Environment)
 
 Tape simplement :
 
@@ -22,7 +22,7 @@ Cela te renverra par exemple :
 
 ---
 
-## 🖥️ 2. Vérifier le gestionnaire de session (Login Manager)
+## 2. Vérifier le gestionnaire de session (Login Manager)
 
 Pour savoir quel programme gère la connexion graphique (écran de login, LightDM, GDM, SDDM...) :
 
@@ -38,7 +38,7 @@ Exemples de résultat :
 
 ---
 
-## 🎛️ 3. Vérifier le gestionnaire de fenêtres (Window Manager)
+## 3. Vérifier le gestionnaire de fenêtres (Window Manager)
 
 Le gestionnaire de fenêtres est souvent lié à l'environnement de bureau, mais tu peux le vérifier par :
 
@@ -69,7 +69,7 @@ Tu verras :
 
 ---
 
-## 🔥 Résumé rapide
+## Résumé rapide
 
 | Vérification              | Commande                               |
 | ------------------------- | -------------------------------------- |
@@ -84,7 +84,6 @@ Veux-tu que je te prépare aussi une **commande combinée** pour t'afficher **to
 
 ## BLOC02
 
-Bien sûr ! 🎯
 Pour connaître rapidement ta **version de Linux Mint** installée, utilise cette commande simple dans le Terminal :
 
 ```bash
@@ -130,7 +129,24 @@ DESCRIPTION="Linux Mint 21.3 Virginia"
 
 Veux-tu aussi une commande pour voir la **version du noyau Linux** que tu utilises ? (Ça peut être utile parfois.) 🚀
 
-## BLOC 03
+## BLOC 3 - nombre de fichiers
+
+#Compter le nombre de fichiers et répertoires:
+			ls-l | wc-l
+   
+#Compter le nombre de sous-répertoires que:
+			ls-l | grep ^ d | wc-l
+   
+#Compter le nombre de fichiers uniquement (commande grep inversé):
+			ls-l | grep-v ^ d | wc-l
+   
+#Nombre de fichiers dans une arborescence (dossier et tous ses sous-dossiers)
+			find /home/toto -type f | wc -l | awk '{print $1}'
+   
+#Nombre de fichiers dans un dossier (sans descendre dans ses sous-dossiers)
+			find /home/toto -maxdepth 1 -type f | wc -l | awk '{print $1}'
+
+## BLOC 13
 
 Très bonne question, et ton **Mac mini 2009** (modèle *Macmini3,1*) est encore tout à fait utilisable sous Linux, **mais il faut choisir une distribution légère et compatible** parce que :
 
