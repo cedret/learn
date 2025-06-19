@@ -23,8 +23,9 @@ LOGFIX="$HOME/logs/savedata$(date +%Ys%V).log"
 LOGFMR="$HOME/logs/savelast$(date +%Ys%V).log"
 # LOGFIX="$HOME/logs/copie_$(date +%Y-S%V_%H-%M-%S).log"
 # LOGFIX="savedata.log"
+LIMIT1KB=1
 
-to_bytes() {
+function to_bytes() {
     local size=$1
     local num unit
 
@@ -50,7 +51,7 @@ to_bytes() {
     '
 }
 
-controleflux() {
+function controleflux() {
 cancelled=0
 if [[ ! "$confirm" =~ ^[Oo]$ ]]; then
   echo "--- Copie annulée." | tee -a "$LOGFIX"
@@ -87,6 +88,7 @@ function mont_nfs() {
 #  		sudo umount /nfs/home
 }
 
+
 function demont_nfs() {
    		sudo umount $MNT2NFS
      		echo "----- Démontage nfs -$MNT2NFS-"  | tee -a "$LOGFIX"
@@ -100,9 +102,9 @@ function check_confirmation() {
   fi
 }
 # Appel de la fonction
-check_confirmation
+#check_confirmation
 # Le script continue ici après la fonction, si confirm est valide
-echo "Le script continue..."
+echo "--- Le script continue..."
 
 function get_large_dirs() {
 # ATTENTION AUX BLOCS DE 512 octets au lieu de 1024 (sur MacOs?) !!!!!
@@ -110,9 +112,11 @@ function get_large_dirs() {
     limit_blocks=$((limit_kb * 2))
     while IFS= read -r line; do
         DIRS_WITH_SIZES+=("$line")
-	echo "F_Tableau: $line, $limit; $limit_kb, $limit_blocks"
+#	echo "F_Tableau: $line, $limit; $limit_kb, $limit_blocks"
     done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_blocks" '$1 >= limit')
 }
+
+# if [ -d "$dossier" ] && [ -n "$(ls -A "$dossier")" ]; then
 
 function bloc5go() {
 local
@@ -121,32 +125,50 @@ DEST_DIR="$2"
 LIMIT_GB="${3:-5}"  # seuil en Go
 LIMIT_KB=$((LIMIT_GB * 1000000))
 
+echo "=== function bloc5go"
+
 if [[ ! -d "$SOURCE_DIR" ]]; then
-    echo "Erreur : dossier source invalide"
+    echo "--- Erreur : dossier source invalide"
     exit 1
 fi
 
 mkdir -p "$DEST_DIR"
 
-echo "Recherche des sous-répertoires > ${LIMIT_GB} Go dans : $SOURCE_DIR"
+echo "--- Recherche des sous-répertoires > ${LIMIT_GB} Go dans : $SOURCE_DIR"
 echo
 
 # Lister les répertoires à copier
-mapfile -t DIRS_TO_COPY < <(
+
+while IFS= read -r line; do
+    DIRS_TO_COPY+=("$line")
+done < <(
     find "$SOURCE_DIR" -mindepth 1 -maxdepth 1 -type d |
     while read -r dir; do
         size_kb=$(du -sk "$dir" 2>/dev/null | cut -f1)
         [[ $size_kb -ge $LIMIT_KB ]] && echo "$dir"
     done
 )
+#mapfile -t DIRS_TO_COPY < <(
+#    find "$SOURCE_DIR" -mindepth 1 -maxdepth 1 -type d |
+#    while read -r dir; do
+#        size_kb=$(du -sk "$dir" 2>/dev/null | cut -f1)
+#        [[ $size_kb -ge $LIMIT_KB ]] && echo "$dir"
+#    done
+#)
+
+# Afficher chaque ligne du tableau
+		echo "--- Affiche tableau"
+  		for ligne in "${DIRS_TO_COPY[@]}"; do
+  			echo "Ligne: $ligne"
+		done
 
 total=${#DIRS_TO_COPY[@]}
-if [[ $total -eq 0 ]]; then
-    echo "Aucun répertoire > ${LIMIT_GB} Go trouvé."
-    exit 0
-fi
+#if [[ $total -eq 0 ]]; then
+#    echo "--- Aucun répertoire > ${LIMIT_GB} Go trouvé."
+#    exit 0
+#fi
 
-echo "$total répertoire(s) à copier."
+echo "--- $total sous-répertoire(s) à copier."
 
 # Chronomètre global
 start_time=$(date +%s)
@@ -163,37 +185,46 @@ for dir in "${DIRS_TO_COPY[@]}"; do
     if (( copied > 1 )); then
         avg_time=$((elapsed / (copied - 1)))
         remaining=$((avg_time * (total - copied + 1)))
-        eta=$(date -ud "@$remaining" +%T)
+# linux
+#       eta=$(date -ud "@$remaining" +%T)
+# macos
+		eta=$(date -ur "$remaining" +%T)
         echo
-        echo "Estimation : encore ~$eta"
+        echo "--- Estimation bloc actuel, encore ~$eta"
     fi
 
     echo
-    echo "[$copied / $total] Copie de : $base ($size_h)"
-    echo "→ vers : $DEST_DIR/$base"
+    echo "--- [$copied / $total] $base ($size_h) → $DEST_DIR/$base" | tee -a "$LOGFIX"
 
-    rsync -a --info=progress2 "$dir/" "$DEST_DIR/$base/"
-
-    echo "Fini : $base"
+#    rsync -a --progress "$dir/" "$DEST_DIR/$base/"
+	rsync -av --whole-file --no-owner --no-group --progress --timeout=60 --stats "$dir/" "$DEST_DIR/$base/" >> "$LOGFMR" 2>&1 &
+	RSYNC_PID=$!
+	status=$?
+	progression
+    echo "--- Copie achevée --- $base"
 done
 
 # Fin
 end_time=$(date +%s)
 total_time=$((end_time - start_time))
-duration=$(date -ud "@$total_time" +%T)
+
+# linux
+# duration=$(date -ud "@$total_time" +%T)
+# macos
+duration=$(date -ur "@$total_time" +%T)
 
 echo
-echo "Total copié : $copied répertoire(s)"
-echo "⏱ Temps total : $duration"
+echo "--- Total copié : $copied répertoire(s)"
+echo "--- Temps total : $duration"
 }
 
 function progression(){
 # FONCTION PROGRESSION   
 			# Affichage toutes les 60s pendant l'exécution
-			local cycle=1
-			local values,restf,totalf,prog,percent,estimation
+			local cycle=0
+			local values restf totalf prog percent estimation
 			while kill -0 "$RSYNC_PID" 2>/dev/null; do
-   			    sleep 60
+   			    sleep 10
 #			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
 			    ((cycle++))
 			# FOrmats d'affichage possibles
@@ -221,13 +252,13 @@ function progression(){
 					percent=$(( 100 * done / total ))
 					echo "Progression : $percent% ($prog sur $total fichiers traités)"
 					;;
-     					3)
+     				3)
 						IFS=/ read checked total <<< $(grep -o 'to-check=[0-9]*/[0-9]*' log.txt | tail -n 1 | cut -d= -f2)
 					;;
-     					4)
+     				4)
 						# Vérifie que le fichier existe
 						if [[ ! -f "$LOGFMR" ]]; then
-						        echo "--- ⚠️ ⚠️ Erreur : fichier '$LOGFMR' introuvable."
+						        echo "--- ⚠️ ⚠️ Erreur : fichier '$LOGFMR' introuvable." | tee -a "$LOGFIX"
 						        return 1
 						    fi
 
@@ -236,7 +267,7 @@ function progression(){
 #						echo "--- test --- $line"
 					    # Si aucune ligne valide
 					    if [[ -z "$line" ]]; then
-					        echo "--- ⚠️ ⚠️ Aucune ligne contenant 'to-check=' trouvée."
+					        echo "--- ⚠️ ⚠️ Aucune ligne contenant 'to-check=' trouvée." | tee -a "$LOGFIX"
 					        return 1
 					    fi
 
@@ -248,15 +279,15 @@ function progression(){
 
 					    # Sécurité contre division par zéro
 					    if [[ "$totalf" -eq 0 ]]; then
-					        echo "--- ⚠️ ⚠️ Erreur : total = 0, division impossible."
+					        echo "--- ⚠️ ⚠️ Erreur : total = 0, division impossible." | tee -a "$LOGFIX"
 					        return 1
 					    fi
 						prog=$((totalf - restf))
 						percent=$((100 * prog / totalf))
-      						estimation=$((restf * SECONDS / prog / 60))
-#	    					echo "--- tests: $totalf - $restf = $prog > $percent% fait, restent $estimation minutes"
-						echo "--- Sondage $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$totalf=$percent% restent $estimation minutes"
-						;;
+      					estimation=$((restf * SECONDS / prog))
+#	    				echo "--- tests: $totalf - $restf = $prog > $percent% fait, restent $estimation minutes"
+						echo "--- Sondage $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$totalf=$percent% restent $estimation secondes"
+					;;
 #			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
 #			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
 #			    tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+'
@@ -267,6 +298,7 @@ function progression(){
 }
 
 echo -e "\n===== ===== DEBUT SCRIPT RSYNC ===== ATTENTION AUX CABLES RESEAU !!!!! -2025 juin-"
+echo "===== ===== ET A L'ECONOMIE D'ENERGIE/ ECRAN/ DISQUES DU CLIENT !!!!!!"
 mkdir -p "$HOME/logs"
 echo "MacOs - IP locale  : $(ipconfig getifaddr $(route get default | awk '/interface:/ {print $2}'))" && echo "IP publique : $(curl -s https://api.ipify.org)"
 # echo "---------- IP : $(hostname -I)" >> rsync.log
@@ -276,8 +308,9 @@ if ! command -v rsync &> /dev/null; then
     exit 1
 fi
 echo "reset" > "$LOGFMR"
-echo " - - - - - - - - - - - - - - - - - - - - $hostname" >> "$LOGFIX"
-#hostname >> "$LOGFIX"
+echo " - - - - - - - - - - - - - - - - - - - - " >> "$LOGFIX" # $hostname
+hostname >> "$LOGFIX"
+echo " - - - - - - - - - - - - - - - - - - - - " >> "$LOGFIX" # $hostname
 uname -a
 df -H
 while true;
@@ -288,10 +321,10 @@ do
   	echo "---1 Informations ---4 Montage NFS (MacOs) ---7 Choisir source(s) + rsync"
    	echo "---2 Suite        ---5 Démontage NFS       ---8 Consulter log -fmr-"
     	echo "---3 Crontab      ---6 Montage sur Qnap    ---9 Consulter log -fix-"
-  	echo "===== ===== MONTAGES"
-   	echo "---11 Monter disques qnap ---12 Vérifier montages ---13 Démonter intelligent"
+  	echo "===== ===== MONTAGES & TESTS"
+   	echo "---11 Tester commande     ---12 Vérifier montages ---13 Démonter intelligent"
 	echo "---14 Tout démonter       ---15 Supprimer /mnt//  ---16"
- 	echo "---17                     ---18                   ---19"
+ 	echo "---17                     ---18                   ---19 Monter disques qnap"
 	echo "===== ===== ===== RESTAURATIONS"
   	echo "---31 ---34 rsync/debian  ---37"
 	echo "---32 ---35               ---38 rsync/variables"
@@ -305,15 +338,17 @@ do
   	echo "---54 simple    ---55 avec hash  ---56"
  	echo "===== ===== ===== ===== ===== ===== SUPPRESSIONS"
  	echo "---71 Supprimer avec macos/debian cible -$DST_SUPP-"
- 	echo "---73 Supprimer avec debian cible -$DST_SUPP-"
-   	echo "---79 Par rsync"
+ 	echo "---72 Supprimer avec debian cible -$DST_SUPP-"
+   	echo "---73 Par rsync"
 	echo "===== ===== ===== ===== ===== ===== ===== AUTRES"
-   	echo "---91 Activité CPU du Nas	---92 Gestion des erreurs ---93 Reset log actuel"
-   	echo "---94			---95			  ---96 "
-     	echo "---97 Tout démonter       ---98 Ajouter dans .log   ---99 Remplacer ce script"
+   	echo "---91 Activité CPU du Nas ---92 Gestion des erreurs ---93 Reset log actuel"
+   	echo "---94                     ---95                     ---96 "
+	echo "---97 Tout démonter       ---98 Ajouter dans .log   ---99 Remplacer ce script"
  	echo "===== ===== 0 pour quitter"
-  	echo "--- En attente: fonctions et return!!!! (annulation) --- Coupure NFS après 12 minutes?"
-
+  	echo "--- En attente: Fonctions et return!!!! (annulation)"
+  	echo "--- En attente: Coupure NFS après 12 minutes: Economie OS client?"
+  	echo "--- ANOMALIE: blog5go ajoute des copies dans d'autres cibles"
+  	echo "--- ANOMALIE: Pourquoi -10 est vide ???"
 	read choix
 
 	case $choix in
@@ -362,36 +397,32 @@ do
 #		Total Upload: ${totalup enp2s0}
 		;;
 	7)
+		LIMIT_GB=100
 #		SOURCE_BASE="$HOME"
-#		DESTINATION=$DST2RSNC
-		DESTINATION="/Volumes/nfs207tri2/rsy$(date +%Ys%V)mni"
+		DESTINATION=$DST2RSNC
+#		DESTINATION="/Volumes/nfs207tri2/rsy$(date +%Ys%V)mni"
 
-		# Lister les répertoires déjà dans destination
-  		if [ ! -d "$DESTINATION" ]; then
-  			echo "--- ⚠️ ⚠️ Répertoire(s) cible(s) manquant(s): $DESTINATION..."
-      		else
-			echo "--- Répertoires actuels dans cible: $DESTINATION..."
-			sudo ls $DESTINATION
-		fi
-
-		echo "--- Répertoires dans source: $SRC0BASE..."
+		echo -e "\n==7 Rsync du contenu: $SRC0BASE ---" | tee -a "$LOGFIX"
 
 # Choix du tri
-		echo -e "\n--- Tri des répertoires (> 1 Go uniquement) :"
-		echo "1) Par nom"
-		echo "2) Par taille"
-		echo "3) Par date de modification"
-		read -p "Choisissez le mode de tri [1-3, défaut=1] : " sort_mode
-		sort_mode=${sort_mode:-1}
+		echo "--- Affichage des répertoires source(s):"
+		echo "--- 1) Par nom"
+		echo "--- 2) Par taille"
+		echo "--- 3) Par date de modification"
+		echo "--- Limite actuelle de découpage des copies: $LIMIT_GB Go" | tee -a "$LOGFIX"
+		read -p "--- Choisissez le mode de tri [1-3, défaut=2] : " sort_mode
+		sort_mode=${sort_mode:-2}
 
 # Demander taille limite
-		read -p "Afficher les répertoires de plus de combien de Go ? [défaut = 1] : " size_limit_gb
+		read -p "--- Choisir les répertoires de plus de combien de ko ? [défaut = 1000] : " size_limit_kb
 		size_limit_gb=${size_limit_gb:-1}  # valeur par défaut : 1 Go
-		limit_kb=$((size_limit_gb * 1000000))  # conversion Go → kilo-octets
-		echo "$size_limit_gb go devient $limit_kb ko"
+#		limit_kb=$((size_limit_gb * 1000000))  # conversion Go → kilo-octets
+		limit_kb=${size_limit_kb:-1000}
+		echo "La lmite actuelle est $limit_kb ko"
+
 # Trouver et filtrer les répertoires dépassant la taille limite
 #		mapfile -t DIRS_WITH_SIZES < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
-		echo "--- Etape 1: Appel fonction 'DIRS_WITH_SIZES'"
+		echo "--1: Création DIRS_WITH_SIZES() avec fonction 'get_large_dirs'"
 		DIRS_WITH_SIZES=()
 
 # Version pour MacOs
@@ -402,10 +433,10 @@ do
 # 		    echo "Tableau: $line, $limit, $limit_kb"
 #		done < <(du -s "$SRC0BASE"/*/ 2>/dev/null | awk -v limit="$limit_kb" '$1 >= limit')
 
-  		echo "--- Vérification: Chaque ligne de 'DIRS_WITH_SIZES'"
-  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
-  			echo "Ligne: $ligne"
-		done
+  		echo "--2: Vérification: Chaque ligne de 'DIRS_WITH_SIZES'"
+#  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
+# 			echo "Ligne: $ligne"
+#		done
 
 #		echo "--- Etape2a: # nombre de lignes?"
 #		echo "${#DIRS_WITH_SIZES[@]}"
@@ -421,17 +452,21 @@ do
 #  		for ligne in "${DIRS_WITH_SIZES[@]}"; do
 #  			echo "Ligne: $ligne"
 #		done
-		echo "--- Etape 3: résultat nul?"
+
+		echo "--3: résultat non vide?"
 		if [[ ${#DIRS_WITH_SIZES[@]} -eq 0 ]]; then
-		    echo "Aucun répertoire de plus de $size_limit_gb Go trouvé."
+		    echo "--- ⚠ ⚠ Aucun répertoire de plus de $size_limit_gb Go trouvé. ⚠ ⚠"
 #		    exit 0
 		    exit 1
 		fi
   
-		echo "--- Etape 4: Extraire chemins et tailles"
-# Extraire chemins et tailles
+
 		DIRS=()
 		SIZES=()
+		sorted=()
+
+# Extraire chemins et tailles
+		echo "--4: Extraction chemins et tailles"
 		for entry in "${DIRS_WITH_SIZES[@]}"; do
 		    size_kb=$(awk '{print $1}' <<< "$entry")
 		    path=$(awk '{print $2}' <<< "$entry")
@@ -439,14 +474,16 @@ do
 		    SIZES+=("$size_kb")
 		done
   
-		echo "--- Etape 5: Sort mode"
+		echo "--5: Sort mode"
 # Tri
 		case "$sort_mode" in
 		    2)
-# par taille décroissante
+# par taille croissante -n, ou décroissante -nr
 			while IFS= read -r line; do
 			    sorted+=("$line")
 			done < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
+# décroissant si
+#			sort -nr
 			echo "--- case 2"
 #		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "${SIZES[$i]}|${DIRS[$i]}"; done | sort -nr)
 		        ;;
@@ -455,6 +492,7 @@ do
 			while IFS= read -r line; do
 			    sorted+=("$line")
 			done < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
+
 #		        mapfile -t sorted < <(for i in "${!DIRS[@]}"; do echo "$(stat -c '%Y' "${DIRS[$i]}")|${DIRS[$i]}"; done | sort -nr)
 			echo "--- case 3"
 	  		;;
@@ -469,7 +507,7 @@ do
 		esac
 # Afficher chaque ligne tu tableau
 
-		echo "--- Etape 6: Ré-assembler DIRS"
+		echo "--6: Ré-assembler DIRS"
 # mapfile -t DIRS < <(command) remplacer avec:
 # DIRS=()
 # while IFS= read -r line; do
@@ -481,55 +519,71 @@ do
 		for line in "${sorted[@]}"; do
 		    path="${line#*|}"
 		    DIRS+=("$path")
+#		    echo "$path - $DIRS"
 		done
   
-		echo "--- Etape 7: Affichage taille lisible"
+		echo "--7: Affichage taille source"
 # Affichage avec taille lisible
 		for ((i = 0; i < ${#DIRS[@]}; i++)); do
   		    path="${DIRS[$i]%/}" #supprime /
 		    dir_name="${path##*/}" #extrire nom dossier
 #		    dir_name="${DIRS[$i]##*/}"
 		    size=$(du -sh "${DIRS[$i]}" 2>/dev/null | cut -f1)
-		    echo "[$((i + 1))] ($size) $dir_name"
+#		    echo "[$((i))] ($size) $dir_name"
+		    echo "[$((i))] ($size) $dir_name"
 		done
-		echo "--- Etape 8: Sélection"
+
+		echo -e "\n--8: Affichage état destination"
+		# Lister les répertoires déjà dans destination
+  		if [ ! -d "$DESTINATION" ]; then
+  			echo "---  ⚠ ⚠ Répertoire(s) cible(s) manquant(s) ⚠ ⚠"
+			echo "Créer le dossier cible: $DESTINATION" | tee -a "$LOGFIX"
+			mkdir -p "$DESTINATION"
+		fi
+		echo "--- Répertoires actuels dans cible: $DESTINATION..."
+		sudo ls $DESTINATION
+
+
 #		echo "--- Répertoires dans source: $SRC0BASE..."
 #		DIRS=($(find "$SRC0BASE" -mindepth 1 -maxdepth 1 -type d))
 
-		# Affiche la liste avec index et taille
+# Affiche la liste avec index et taille
 #		for ((i = 0; i < ${#DIRS[@]}; i++)); do
 #		    dir_name="${DIRS[$i]##*/}"
 #		    dir_path="${DIRS[$i]}"
 #		    size=$(du -sh "$dir_path" 2>/dev/null | cut -f1)
 #		    echo "[$((i + 1))] $dir_name ($size)"
 #		done
-
+#		liste=()
 		# Demande de sélection
-		echo -ne "\n--- Entrez les numéros des répertoires à copier (ex: 1 7 12), * pour tout sélectionner, vide (ou 0) pour quitter : "
-		read -r input
-		input=$(echo "$input" | tr ',' ' ')  # remplace les virgules par des espaces
+		echo -ne "\n--- Entrez les numéros des répertoires à copier (ex: 1 7 12), * pour tout sélectionner, vide (ou -) pour quitter : "
+		read -r liste
+		liste=$(echo "$liste" | tr ',' ' ')  # remplace les virgules par des espaces
 
-  		echo "--- Etape 9: Conséquences options"
+  		echo "--9: Transformation en array"
 		# Gérer les options
-		if [[ "$input" == "0" ]]; then
-		    echo "--- ⚠️ ⚠️ Abandon."
+		if [[ "$liste" == "-" ]]; then
+		    echo "---  ⚠ ⚠ Abandon ⚠ ⚠  "
 		    exit 0
-		elif [[ "$input" == "*" || "$input" == "all" ]]; then
+		elif [[ "$liste" == "*" || "$liste" == "all" ]]; then
 		    # sélectionne tout
 		    indices=($(seq 1 ${#DIRS[@]}))
+		    echo "---  ⚠ ⚠  SELECTION INTEGRALE  ⚠ ⚠ ---" | tee -a "$LOGFIX"
 		else
 		    # sélection personnalisée
-		    indices=($input)
+		    indices=($liste)
 		fi
 
+		item_count=$(echo "$liste" | tr ',' ' ' | wc -w)
+
 		# Affichage des choix
-		echo "-- Etape 10: Répertoires sélectionnés :"
+		echo "-10: Disques existants :"
 		for idx in "${indices[@]}"; do
 		    # Vérifie que l'index est valide
 		    if (( idx >= 1 && idx <= ${#DIRS[@]} )); then
 		        echo " - ${DIRS[$((idx - 1))]##*/}"
 		    else
-		        echo "--- ⚠️ ⚠️ Index invalide : $idx"
+		        echo "---  ⚠ ⚠ Index invalide : $idx"
 		    fi
 		done
   
@@ -542,207 +596,173 @@ do
 #		  echo "--- Copie annulée." | tee -a "$LOGFIX"
 #		  return 1
 #		fi
-		echo "--- Etape 11: Vérification/création cible"
-		if [ ! -d "$DESTINATION" ]; then
-			# Créer le dossier de destination
-			mkdir -p "$DESTINATION"
-		fi
+		echo "-11: Vérification/création cible"
+
 #		date >> $LOGFIX
 
 		# Copier les répertoires sélectionnés avec rsync
-  		echo "--- Etape 12: Démarrage RSync"
-		echo "=7= Sélection(s) pour rsync de:" | tee -a "$LOGFIX"
+		echo "-12: Sélection(s) de ${#indices[@]} source(s) pour rsync" | tee -a "$LOGFIX"
 		for index in "${indices[@]}"; do
 		  if [[ "$index" =~ ^[0-9]+$ ]] && [ "$index" -lt "${#DIRS[@]}" ]; then
 			src="${DIRS[$index]}"
 			dst="$DESTINATION/rsy$(basename "$src")"
-			TAILLE1=$(du -sm "$src" | cut -f1)
 
-			if [ -d "{$dst}" ]; then  # Vérifie si le répertoire existe
-	   			TAILLE3=$(du -sm "$dst" | cut -f1) # taille destination présente
-				else
-				TAILLE3=0
-			fi
-			RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
-			TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
-			SECONDS=0
-			echo "--- $TAILLE1 Mo --- $src ---"
-			echo "--- $TAILLE3 Mo --- $dst ---"
-#		    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
-#		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
-#		    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dst" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
-#		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> "$LOGFMR" 2>&1 && \
-#			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> "$LOGFIX" || \
-#			echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
+			if [ ! -d "$src" ]; then      # src absent?
+				echo "---  ⚠ ⚠ Anomalie avec --- $src" | tee -a "$LOGFIX"
+			elif [ -z "$(ls -A $src)" ]; then
+				echo "---  ⚠ ⚠ Pas de contenu dans --- $src" | tee -a "$LOGFIX"
+			else
+				TAILLE1=$(du -sm "$src" | cut -f1)
+				if [ -d "$dst" ]; then  # Vérifie si le répertoire existe
+#				if [ -d "{$dst}" ]; then  # Vérifie si le répertoire existe
+		   			TAILLE3=$(du -sm "$dst" | cut -f1) # taille destination présente
+					else
+					TAILLE3=0
+				fi
+
+#			    rsync -az --inplace --no-owner --no-group --progress "$src/" "$dst/"
+#			    rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
+#		    	rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> /path/to/LOGFIX.log 2>&1 && echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès. Total des fichiers transférés : $(find "$dst" -type f | wc -l)" >> /path/to/LOGFIX.log || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
+#				rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> "$LOGFMR" 2>&1 && \
+#				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Copie terminée avec succès" >> "$LOGFIX" || \
+#				echo "[$(date '+%Y-%m-%d %H:%M:%S')] Erreur lors de la copie" >> "$LOGFIX"
 
 # version avec nombre de fichiers!
-#		rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> "$LOGFMR" 2>&1 && \
-#  			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync sans erreur ℹ ℹ --- Total des fichiers transférés : $(find "$dst" -type f | wc -l)" | tee -a "$LOGFIX" || \
+#				rsync -a --inplace --no-owner --no-group --progress "$src/" "$dst/" >> "$LOGFMR" 2>&1 && \
+#  				echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ℹ ℹ Rsync sans erreur ℹ ℹ --- Total des fichiers transférés : $(find "$dst" -type f | wc -l)" | tee -a "$LOGFIX" || \
 #     			echo "[$(date '+%Y-%m-%d %H:%M:%S')] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) ⚠️ ⚠️ -----" | tee -a "$LOGFIX"
-##			$RSYNC1CMD
+##				$RSYNC1CMD
 # Lancer rsync en arrière-plan
-#			rsync -av --progress --log-file="$LOGFMR" source/ dest/ &
-#			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
-			rsync -av --whole-file --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
+#				rsync -av --progress --log-file="$LOGFMR" source/ dest/ &
+#				rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
 
-			RSYNC_PID=$!
-      			status=$?
+# Calculate the size of src in bytes
+#			    SOURCE_SIZE_BYTES
+#			    SOURCE_SIZE_BYTES=$(du -sb "$src" | awk '{ print $1 }')
+# Convert the size from bytes to gigabytes
+#			    SOURCE_SIZE_GB
+#			    SOURCE_SIZE_GB=$(echo "scale=2; $SOURCE_SIZE_BYTES / (1024*1024*1024)" | bc)
 
-# FONCTION PROGRESSION   
-			# Affichage toutes les 60s pendant l'exécution
-			cycle=1
-			while kill -0 "$RSYNC_PID" 2>/dev/null; do
-   			    sleep 60
-#			    echo "--- Minute $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- extraire to-check/ taille fichier(s)?"
-			    ((cycle++))
+#				RSYNC1CMD="rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1"
 
-				filtre=4
-    				case $filtre in
-					1)
-#				       grep -o 'to-check=[0-9]*/[0-9]*' "$LOGFMR" | sed -E 's/to-check=([0-9]*)\/([0-9]*)/\1 \2/'
+				TIMESTAMP1=$(date '+%Y-%m-%d %H:%M:%S')
+				SECONDES=1
+				echo "--- $TAILLE1 Mo --- $src ---"
+				echo "--- $TAILLE3 Mo --- $dst ---"
 
-					# Extraire les 5 dernières lignes et les lignes contenant "to-check"
-					tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+' | while read line; do
-					x=$(echo $line | grep -oE '[0-9]+(?=/)' )  # Valeur x avant "/"
-					y=$(echo $line | grep -oE '(?<=/)[0-9]+' )  # Valeur y après "/"
-					ratio=$(echo "scale=2; $x/$y" | bc)
-					echo "Ratio $x/$y = $ratio"
-						done
-    					;;
-	 				2)
-					line=$(grep -o 'to-check=[0-9]*/[0-9]*' "$LOGFMR" | tail -n 1)
-					values=${line#to-check=}
 
-					checked=${values%%/*}   # encore à faire
-					total=${values##*/}     # total à faire
+# FILTRAGE PAR TAILLE
+# Calculate the size of src in kilobytes
+			    SOURCE_SIZE_KB=$(du -sk "$src" | awk '{ print $1 }')
+# Convert the size from kilobytes to gigabytes
+			    SOURCE_SIZE_GB=$(echo "scale=2; $SOURCE_SIZE_KB / (1024*1024)" | bc)
 
-					prog=$((total - checked))
-					percent=$(( 100 * done / total ))
-					echo "Progression : $percent% ($prog sur $total fichiers traités)"
-					;;
-     					3)
-						IFS=/ read checked total <<< $(grep -o 'to-check=[0-9]*/[0-9]*' log.txt | tail -n 1 | cut -d= -f2)
-					;;
-     					4)
-						# Vérifie que le fichier existe
-						if [[ ! -f "$LOGFMR" ]]; then
-						        echo "--- ⚠️ ⚠️ Erreur : fichier '$LOGFMR' introuvable."
-						        return 1
-						    fi
+			    echo "-13 TEST: Source directory size: $SOURCE_SIZE_GB GB (LIMIT = $LIMIT_GB GB)"
 
-					    # Trouve la dernière ligne contenant to-check
-					    line=$(grep 'to-check=' "$LOGFMR" | tail -n 1)
-#						echo "--- test --- $line"
-					    # Si aucune ligne valide
-					    if [[ -z "$line" ]]; then
-					        echo "--- ⚠️ ⚠️ Aucune ligne contenant 'to-check=' trouvée."
-					        return 1
-					    fi
 
-					    # Extraction des valeurs
-#					    local values checked total prog percent
-					    values=$(echo "$line" | grep -o 'to-check=[0-9]*/[0-9]*' | cut -d= -f2)
-					    restf=${values%%/*}
-					    totalf=${values##*/}
 
-					    # Sécurité contre division par zéro
-					    if [[ "$totalf" -eq 0 ]]; then
-					        echo "--- ⚠️ ⚠️ Erreur : total = 0, division impossible."
-					        return 1
-					    fi
-						prog=$((totalf - restf))
-						percent=$((100 * prog / totalf))
-      						estimation=$((restf * SECONDS / prog / 60))
-#	    					echo "--- tests: $totalf - $restf = $prog > $percent% fait, restent $estimation minutes"
-						echo "--- Sondage $cycle --- $(date '+%Y-%m-%d %H:%M:%S') --- $prog/$totalf=$percent% restent $estimation minutes"
-						;;
-#			    tail -n 5 "$LOGFMR" | grep -oP '(\d+%)|to-check=\d+/\d+'
-#			    tail -n 5 "$LOGFMR" | grep -oE '[0-9]+%|to-check=[0-9]+/[0-9]+'
-#			    tail -n 5 "$LOGFMR" | grep -oE 'to-check=[0-9]+/[0-9]+'
-#			    tail -n 1 "$LOGFMR"
-					esac
-			done
-# FIN FONCTION PROGRESSION
+# COMMANDES ESSENTIELLES:
 
-#			rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" | grep -oP 'to-check=\d+/\d+' | awk -F= '{print $2}'
-#			grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
+# Check if the size exceeds the limit
+			    if (( $(echo "$SOURCE_SIZE_GB > $LIMIT_GB" | bc -l) )); then
+			        echo "--- Source directory size > $LIMIT_GB GB, copies découpées"
+			        echo "--- Rsync découpé de $src " | tee -a "$LOGFIX"
+# Rsync des fichiers immédiats
+		    	    rsync -avm --whole-file --stats --include='*/' --include='*' --exclude='*' --no-owner --no-group --progress --timeout=60 "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
+			        bloc5go $src $dst 0
+			    else
+####				if [[ $src -ne 0 ]]; then
+#					if [ ! -d "$src" ]; then
+#						echo "--- $src refusé" | tee -a "$LOGFIX"
+#					elif [ -z "$(ls -A $src)" ]; then
+#						echo "--- $src vide" | tee -a "$LOGFIX"
+#					else
+				    echo "--- Source directory size < $LIMIT_GB GB, copie en un seul bloc"
+					rsync -av --whole-file --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 &
+					RSYNC_PID=$!
+	      			status=$?
+	      			progression
+#	    	  		fi
+			    fi
+
+
+
+#				rsync -av --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" | grep -oP 'to-check=\d+/\d+' | awk -F= '{print $2}'
+#				grep -oP 'to-check=\d+/\d+' logfile.txt | awk -F= '{print $2}'
 #   			grep -oP '(\d+%)|to-check=\d+/\d+' logfile.txt
-#			tail -n 5 logfile.txt | grep -oP '(\d+%)|to-check=\d+/\d+'
-
-#			rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
-#Compter le nombre de fichiers et répertoires:
-			ls-l | wc-l
-#Compter le nombre de sous-répertoires que:
-			ls-l | grep ^ d | wc-l
-#Compter le nombre de fichiers uniquement (commande grep inversé):
-			ls-l | grep-v ^ d | wc-l
-#Nombre de fichiers dans une arborescence (dossier et tous ses sous-dossiers)
-			​find /home/toto -type f | wc -l | awk '{print $1}'
-#Nombre de fichiers dans un dossier (sans descendre dans ses sous-dossiers)
-			​find /home/toto -maxdepth 1 -type f | wc -l | awk '{print $1}'
-			TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
+#				tail -n 5 logfile.txt | grep -oP '(\d+%)|to-check=\d+/\d+'
+#				rsync -a --inplace --no-owner --no-group --progress --timeout=60 --stats "$src/" "$dst/" >> "$LOGFMR" 2>&1 
+#				TOTALR=$(ls -l $DESTINATION| grep -v '^d' | wc -l)
+				TOTALR=$(find $dst -type f | wc -l | awk '{print $1}')
+				TIMESTAMP2=$(date '+%Y-%m-%d %H:%M:%S')
 # Calcul vitesse data transfer
 # Get the size of the source (in a human-readable format)
-			TAILLE2=$(du -sm "$dst"| cut -f1)
+				TAILLE2=$(du -sm "$dst"| cut -f1)
 # Extract the size part (without the human-readable unit, e.g., "5.2M")
-#			SIZE1=$(echo "$TAILLE1" | cut -f1)
-			SIZE1=$(echo "$TAILLE1" | awk '{print $1}')
-			SIZE2=$(echo "$TAILLE2" | awk '{print $1}')
-#			SIZE2=$(echo "$TAILLE2" | cut -f1)
+#				SIZE1=$(echo "$TAILLE1" | cut -f1)
+				SIZE1=$(echo "$TAILLE1" | awk '{print $1}')
+				SIZE2=$(echo "$TAILLE2" | awk '{print $1}')
+#				SIZE2=$(echo "$TAILLE2" | cut -f1)
 # Convert the human-readable size into bytes
-#			SIZE1BYTES=$(echo "$SIZE1" | numfmt --from=iec)
-#			SIZE2BYTES=$(to_bytes $SIZE2)
-#			echo "--- $SIZE2 en $SIZE2BYTES ---"
-			MINUTES=$((SECONDS / 60))
-#			SPEED_BPS=$((SIZE2BYTES / SECONDS))
-			SPEED2BPS=$((TAILLE2 / MINUTES))
-			SPEED2FPS=$((totalf / MINUTES))
-   			MOYFIC=$((TAILLE2 / totalf))
-#			SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
+#				SIZE1BYTES=$(echo "$SIZE1" | numfmt --from=iec)
+#				SIZE2BYTES=$(to_bytes $SIZE2)
+#				echo "--- $SIZE2 en $SIZE2BYTES ---"
+				MINUTES=$((SECONDES / 60))
+#				SPEED_BPS=$((SIZE2BYTES / SECONDES))
+				SPEED2BPS=$((TAILLE2 / SECONDES * 60))
+				SPEED2FPS=$((TOTALR / SECONDES * 60))
+   				MOYFIC=$((TAILLE2 / TOTALR))
+#				SPEED_MBPS=$(echo "scale=2; $SPEED_BPS / 1048576" | bc)  # Convert bytes per second to MB per second
 # Format and print the output
-#			echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
+#				echo "[$TIMESTAMP2] $TAILLE transferred in $MINUTES minutes at a speed of $SPEED_MBPS MB/s" | tee -a "$LOGFIX"
 # Vérification du code de sortie de rsync
-			echo "--- DE [$TIMESTAMP1] - $TAILLE1 Mo ---$src" >> "$LOGFIX"
-			echo "---  A [$TIMESTAMP2] - $TAILLE2 Mo ---$dst" >> "$LOGFIX"
-			echo "--- $totalf fichiers en $MINUTES min, environ $MOYFIC Mo/fichier" >> "$LOGFIX"
+				echo "--- DE [$TIMESTAMP1] - $TAILLE1 Mo ---$src" | tee -a "$LOGFIX"
+				echo "---  A [$TIMESTAMP2] - $TAILLE2 Mo ---$dst" | tee -a "$LOGFIX"
+				echo "--- $TOTALR fichiers en $MINUTES min, environ $MOYFIC Mo/fichier" | tee -a "$LOGFIX"
 #      			echo "[$TIMESTAMP2] $MINUTES min. à $SPEED2BPS Mo/s" | tee -a "$LOGFIX"
-#			echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
+#				echo "$(date '+%Y-%m-%d %H:%M:%S') - Size1: $TAILLE1, Size2: $TAILLE2, Total Size: $SIZE, Duration: $MINUTES minutes, Speed: $SPEED_MBPS Mbps" | tee -a "$LOGFIX"
 
-   			if [ $status -eq 0 ]; then
-				echo "--- Vitesses moyennes: $SPEED2BPS Mo/min & $SPEED2FPS f/min" | tee -a "$LOGFIX"
-				echo "--- Stats des logs" >> "$LOGFIX"
-#				echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
+	   			if [ $status -eq 0 ]; then
+					echo "--- Vitesses moyennes: $SPEED2BPS Mo/min & $SPEED2FPS f/min" | tee -a "$LOGFIX"
+					echo "--- Stats des logs" >> "$LOGFIX"
+#					echo "[$TIMESTAMP2] --- ℹ ℹ Rsync en $MINUTES min. de $(find "$dst" -type f | wc -l) fichiers: $SPEED_BPS B/s" | tee -a "$LOGFIX"
 #    				fichier="fichier.log"
-#				tail -n 12 "$LOGFMR" >> "$LOGFIX"
-				tail -n 14 "$LOGFMR" | head -n 4 >> "$LOGFIX"
-			else
-				echo "[$TIMESTAMP2] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) après $MINUTES min. ⚠ ⚠" | tee -a "$LOGFIX"
-#			echo "Détails de l'erreur:" >> "$LOGFIX"
-				tail -n 15 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
+#					tail -n 12 "$LOGFMR" >> "$LOGFIX"
+					tail -n 14 "$LOGFMR" | head -n 4 >> "$LOGFIX"
+				else
+					echo "[$TIMESTAMP2] --- ⚠️ ⚠️ Rsync avec erreur(s): (code $status) après $MINUTES min." | tee -a "$LOGFIX"
+#					echo "Détails de l'erreur:" >> "$LOGFIX"
+					tail -n 15 "$LOGFMR" | grep -i 'error' >> "$LOGFIX"
+				fi
 			fi
-			echo "=== Cycle terminé, démonter/remonter réseau entre chaque itération?"
 #		    STATUS="Rsync vers '$dst' fini à:" 
 #		    date >> $LOGFIX
 #		    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
-		#   rsync -avz source/ user@host:/destination/
+#			rsync -avz source/ user@host:/destination/
 #		    echo "Code retour rsync : $?" | tee -a "$LOGFIX"
 #		    echo "$DATE0 | $STATUS [$TIMESTAMP]" >> "$LOGFIX"
 #		    sudo rsync -avh --no-owner --no-group --progress $SRC0BASE $DST2RSNC
 		  else
-		    echo "--- ⚠️ ⚠️ Index invalide : $index (ignoré)" | tee -a "$LOGFIX"
+		    echo "--- ⚠️ ⚠️ Index invalide : $index (ignoré) ---" | tee -a "$LOGFIX"
 		  fi
 		done
-		echo "=== Rsync terminé, voir logs pour détails."
+		echo "=== Rsync terminé, voir logs pour détails ===" | tee -a "$LOGFIX"
 		;;
-    	8)
- 		echo -e "\n ---8 Logs fmr"
+    8)
+ 		echo -e "\n---8 Afficher Logs fmr"
 		cat $LOGFMR
   		ls $HOME/logs
 		;;
   	9)
- 		echo -e "\n ---9 Logs fix"
+ 		echo -e "\n---9 Afficher logs fix"
 		cat $LOGFIX
   		ls $HOME/logs
+		;;
+	11)
+		echo "$DST2RSNC"
+		find $DST2RSNC -type f | wc -l | awk '{print $1}'
+#		TOTALR=$(ls -l $DESTINATION| grep -v '^d' | wc -l)
+		echo "$TOTALR"
 		;;
   	12)
 		mount | grep '^/mnt'
@@ -968,7 +988,7 @@ EOF
 		# Nettoyage
 		rm "$TMP1" "$TMP2"
 		;;
-    	71)
+    71)
 		echo "----- SUPPRESSION depuis MACOS/Debian"
 		sudo ls $DST_SUPP
 #		ls -al $dst_SUPP
@@ -983,7 +1003,7 @@ EOF
 		echo "----- Fin suppression $DST_SUPP:" >> "$LOGFIX"
 		date >> "$LOGFIX"
 		;;
-	79)
+	73)
  		mkdir empty_dir
 		rsync -a --delete --progress empty_dir/ target_dir/
 		;; 
@@ -1016,7 +1036,7 @@ EOF
 #  		sudo umount /nfs/home
 		;;
   	0)
-   		echo "Sortie script" >> "$LOGFIX"
+   		echo "--- Break script" >> "$LOGFIX"
 		break
 		;;
 	esac
