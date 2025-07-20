@@ -608,9 +608,10 @@ notify-send "ALERTE Réseau" "Coupure détectée"
 
 Souhaites-tu que je t’aide à intégrer ça **dans un thème Conky existant** ou que je t’ajoute un **son ou une action automatique** en cas de coupure ?
 
-## G - Oui, il est tout à fait possible de **greffer un script Bash** dans **Conky**, ce qui permet d'afficher des informations dynamiques issues de scripts ou de commandes personnalisées directement sur ton bureau.
+## G - **Greffer un script Bash** dans **Conky**
+Ceci permet d'afficher des informations dynamiques issues de scripts ou de commandes personnalisées directement sur le bureau.
 
-Voici comment tu peux intégrer un script Bash dans un fichier de configuration Conky.
+Voici comment intégrer un script Bash dans un fichier de configuration Conky.
 
 ---
 
