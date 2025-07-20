@@ -735,3 +735,121 @@ Est-ce que tu veux un exemple concret de script ou une fonction particulière à
 
 sensors | grep "Core 0" | awk '{print $3}'
 ```
+## H - Version MBA [Zorin17]
+``secours@secours-mba:~$ cat /etc/conky/conky.conf``
+
+```
+secours@secours-mba:~$ cat /etc/conky/conky.conf 
+-- Conky, a system monitor https://github.com/brndnmtthws/conky
+--
+-- This configuration file is Lua code. You can write code in here, and it will
+-- execute when Conky loads. You can use it to generate your own advanced
+-- configurations.
+--
+-- Try this (remove the `--`):
+--
+--   print("Loading Conky config")
+--
+-- For more on Lua, see:
+-- https://www.lua.org/pil/contents.html
+ 
+conky.config = {
+    alignment = 'bottom_left',
+    background = false,
+    border_width = 1,
+    cpu_avg_samples = 2,
+    default_color = 'white',
+    default_outline_color = 'white',
+    default_shade_color = 'white',
+    double_buffer = true,
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+    extra_newline = false,
+    font = 'DejaVu Sans Mono:size=10',
+    gap_x = 10,
+    gap_y = 10,
+    minimum_height = 5,
+    minimum_width = 5,
+    net_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_ncurses = false,
+    out_to_stderr = false,
+    out_to_x = true,
+    own_window = true,
+    own_window_class = 'Conky',
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 0,
+    show_graph_range = false,
+    show_graph_scale = false,
+    stippled_borders = 0,
+    update_interval = 2.0,
+    uppercase = false,
+    use_spacer = 'none',
+    use_xft = true,
+};
+
+conky.text = [[
+${alignr} ${(time %m) * 10}}déplacement
+# ${align ${(time %d) * 10}}Texte déplaçant horizontalement${alignr}
+
+${color grey}Info:$color ${scroll 32 Conky $conky_version - $sysname $nodename $kernel $machine}
+$hr
+${color grey}SysTmp: ${execi 10 sensors | grep 'temp1' | awk '{print $2}'} - Uptime:$color $uptime
+${color grey}Frequency (in MHz):$color $freq
+${color grey}Frequency (in GHz):$color $freq_g
+${color grey}RAM Usage:$color $mem/$memmax - $memperc% ${membar 4}
+${color grey}Swap Usage:$color $swap/$swapmax - $swapperc% ${swapbar 4}
+${color grey}CPU Usage:$color $cpu% ${cpubar 4}
+${color grey}Processes:$color $processes  ${color grey}Running:$color $running_processes
+$hr
+${color yellow}File systems:
+ = $color${fs_used /}/${fs_size /} ${fs_bar 3 /}
+ = $color${fs_used /media/secours/secu2505v1}/${fs_size /media/secours/secu2505v1} ${fs_bar 3 /media/secours/secu2505v1}
+ = $color${fs_used /media/secours/secu2505v2}/${fs_size /media/secours/secu2505v2} ${fs_bar 3 /media/secours/secu2505v2}
+${color grey}Networking: Local IP: ${addr wlp3s0}
+# Network speed (download and upload) with graph
+# Download speed
+${downspeedgraph wlp3s0 20,150 0000ff 00ff00}  # Graph for download speed (20 width, 150 height, colors)
+Dw:$color ${downspeed wlp3s0} KB/s
+# Upload speed
+${upspeedgraph wlp3s0 20,150 ff0000 ffff00}  # Graph for upload speed (20 width, 150 height, colors)
+Up:$color ${upspeed wlp3s0} KB/s
+
+# Add total data transferred
+Total Download: ${totaldown wlp3s0} 
+Total Upload: ${totalup wlp3s0}
+$hr
+${color grey}Name              PID     CPU%   MEM%
+${color lightgrey} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+${color lightgrey} ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
+${color lightgrey} ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
+${color lightgrey} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
+${color lightgrey} ${top name 5} ${top pid 5} ${top cpu 5} ${top mem 5}
+$hr
+#${color lightblue}Drive Usage${color}
+#Root (/)      : ${fs_used /} / ${fs_size /} (${fs_used_perc /}%)
+#Home (/home)  : ${fs_used /home} / ${fs_size /home} (${fs_used_perc /home}%)
+#Secu1 (/dev/sda) : ${fs_used /media/secours/secu2505v1} / ${fs_size /media/secours/secu2505v1} (${fs_used_perc /media/secours/secu2505v1}%)
+#Secu2 (/dev/sdb) : ${fs_used /media/secours/secu2505v2} / ${fs_size /media/secours/secu2505v2} (${fs_used_perc /media/secours/secu2505v2}%)
+#External (/media/usb) : ${fs_used /media/usb} / ${fs_size /media/usb} (${fs_used_perc /media/usb}%)
+# Fan speed
+#CpuTmp: ${execi 10 sensors | grep 'Core0' | awk '{print $2}'}
+
+#acpitz-acpi-0
+#Adapter: ACPI interface
+#temp1:        +26.8°C  (crit = +95.0°C)
+#coretemp-isa-0000
+#Adapter: ISA adapter
+#Core 0:       +45.0°C  (high = +90.0°C, crit = +90.0°C)
+#Core 1:       +45.0°C  (high = +90.0°C, crit = +90.0°C)
+#Core 2:       +47.0°C  (high = +90.0°C, crit = +90.0°C)
+#Core 3:       +47.0°C  (high = +90.0°C, crit = +90.0°C)
+${execi 5 ~/sec	 Tél/conky/sc11snmp.sh}
+
+]];
+```
