@@ -5,17 +5,19 @@
 
 ## A - First step
 
+### --1 Install
+``sudo apt update && sudo apt-get install conky-all``
+
+### --2 Autostart (ci-après)
 ```
-    1  sudo apt update
-    2  sudo apt-get install conky-all
     3  mkdir -p ~/.config/autostart
-    4  sudo nano ~/.config/autostart/conky.desktop
-    5  
+    4  sudo nano ~/.config/autostart/conky.desktop  
     6  sudo chmod +x ~/.config/autostart/conky.desktop
     7  history
     8  reboot
-
-secours@secours-NUC7i7BNH:~$ cat ~/.config/autostart/conky.desktop
+```
+``secours@secours-NUC7i7BNH:~$ cat ~/.config/autostart/conky.desktop``
+```
 [Desktop Entry]
 Type=Application
 Exec=conky -p 5
@@ -26,19 +28,14 @@ Name[fr_FR]=Conky
 Comment[fr_FR]=Conky
 X-GNOME-Autostart-Delay=0
 ```
-#### Avec sensors
+### --3 Avec sensors
 ```
-    1  sudo apt-get install conky-all
-    2  mkdir -p ~/.config/autostart
-    3  sudo chmod +x ~/.config/autostart/conky.desktop
-    4  cat /etc/conky/conky.conf
-    5  sudo nano /etc/conky/conky.conf
-    6  sudo apt-get install lm-sensors
-    7  sudo sensors-detect
+    sudo apt-get install lm-sensors
+    sudo sensors-detect
 ```
 ## B - Second step
 
-secours@secours-Macmini:~$ cat /etc/conky/conky.conf
+``secours@secours-Macmini:~$ cat /etc/conky/conky.conf``
 ```
 -- Conky, a system monitor https://github.com/brndnmtthws/conky
 --
